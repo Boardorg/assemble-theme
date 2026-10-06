@@ -36,19 +36,19 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Placeholders
 
-- **Site Settings** are defaults in code (`assemble-core/inc/site-settings.php`), read through `assemble_site_setting()` / the theme's `assemble_setting()`. The ACF Pro options page plugs in later without template changes.
+- **Site Settings** are defaults in code (`assemble-core/inc/site-settings.php`), read through `assemble_site_setting()` / the theme's `assemble_setting()`. The SCF (or ACF) options page plugs in later without template changes.
 - **Footer links:** wireframe items without a page yet are left out (Press, Newsletters, Privacy/Terms as separate pages); Legal points at `/policies/`. LinkedIn is the live site's URL.
 - **Masthead nav fallback** (until `wp assemble setup` creates the menu): Insights → `/field-reports/`, Communities → `/field-reports/` (placeholder: no communities index yet), Summits → `/summits/`.
 - **Mobile drawer, search, logged-in masthead state:** no wireframe. Built plain and on-system; flag for design. Search links to the default WordPress search; logged-in users see one "Account" button.
 - **Block editor palette** is the neutrals only; practice colours come from `data-area`, not from editors.
 
-- `.wp-env.json` loads free ACF from wordpress.org. Swap in `./vendor-zips/advanced-custom-fields-pro.zip` once the license arrives.
+- Custom fields plugin: **Secure Custom Fields** (WordPress.org's ACF fork, free; includes repeater, options pages, flexible content). `.wp-env.json` loads it. Beta still runs ACF free 6.8 until Cale/Mark OK the swap; production switches at launch.
 
 ## Follow-ups
 
 - Waiting on Cale: `WPE_PROD_ENV` and a required reviewer on the `production` environment; a beta backup point.
 - Activate the new theme on the beta (and deactivate Elementor + Elementor Pro): Cale's call, probably after Phase 2 so reviewers don't see the bare placeholder.
-- Later: ACF Pro zip (free ACF until then). SSO: Mark is building it; build without it for now (Cale, 2026-10-06). Contentful CMA token rotation: deferred by Cale.
+- Decide: swap the beta from ACF to Secure Custom Fields (proposed by Cale's developer, verified locally 2026-10-06). Mark to sanity-check (decision #2). SSO: Mark is building it; build without it for now (Cale, 2026-10-06). Contentful CMA token rotation: deferred by Cale.
 - Docker must be running before `npx @wordpress/env start`. Use `npx @wordpress/env`, not `npx wp-env` (an unrelated package).
 
 ## Log
@@ -63,3 +63,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **2026-10-06:** Unpublish test passed: unpublishing the `[test] … Tacos` entry moved beta post 2276 to draft via `ContentManagement.Entry.unpublish`.
 - **2026-10-06:** `assemble-content` 1.1.0: content-type registry (`AFR_Types`, filter `afr_content_types`), paginated CDA fetch ordered by `sys.id` with de-duplication, orphan drafting only after a complete fetch and only within the synced type, synced types hidden from wp-admin (status screen at Settings → Assemble Content), `sync --type`, `types` command, dry run lists drafts. Local: forced re-sync left all 7 posts byte-identical (`tests/fingerprint.php`); `tests/sync-test.php` passes (150 entries over 2 pages; failed, short and shifted pages draft nothing; complete fetch drafts real removals; type isolation). Yoast sitemap still lists Field Reports. Beta: dry run 7 unchanged / 0 drafted, `--entry` path OK, leak checks 2–4 pass. Phase 1 complete.
 - **2026-10-06:** Phase 2 brand foundation. `tokens.css` (verbatim from guide Draft 0.3) + `base.css` (guide components rule for rule) + `theme.json` v3 (palette, IvyOra/Parabolica, type and spacing scales, custom colours off). Icon sprite (16 icons), logo SVG (`currentColor`), image sizes for the IMG slots, labels in one place (`assemble_label()`), Site Settings reader in `assemble-core`. Modules `public-masthead` (with phone/tablet drawer) and `public-footer`: at 1440 both measure identical to the mockup; checked at 980 and 375 (no horizontal scroll; drawer opens, closes on Escape, returns focus). Local PHP 8.2 lint clean. `docs/design-sync.md` records the manifest hashes.
+- **2026-10-06:** Evaluated Secure Custom Fields 6.9.5 locally: 37 field types incl. repeater, flexible content, gallery, clone; options pages, blocks, local JSON, `get_field()` all present; it auto-deactivates ACF. Site Settings code works unchanged. Local now uses SCF instead of ACF Pro.
