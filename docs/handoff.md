@@ -40,7 +40,6 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 ## Follow-ups
 
 - Waiting on Cale: `WPE_PROD_ENV` and a required reviewer on the `production` environment; a beta backup point.
-- Delete the inactive `assemble-field-reports` folder on the beta (`./scripts/wpbeta.sh plugin delete assemble-field-reports`); left for Cale.
 - Activate the new theme on the beta (and deactivate Elementor + Elementor Pro): Cale's call, probably after Phase 2 so reviewers don't see the bare placeholder.
 - Webhook test: publish a trivial edit in Contentful and confirm it reaches the beta.
 - Later: ACF Pro zip (free ACF until then). SSO: Mark is building it; build without it for now (Cale, 2026-10-06). Contentful CMA token rotation: deferred by Cale.
@@ -53,3 +52,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **2026-10-06:** Created `Boardorg/assemble-core` and `Boardorg/assemble-content` (public) and pushed all three repos. First beta deploys fail at SSH until the deploy key is added; nothing reached the beta.
 - **2026-10-06:** Deploy key added in WP Engine; `WPE_SSHG_KEY_PRIVATE` set as a repo secret on all three repos (the gh login lacks `admin:org`, so not an org secret). First beta deploys succeeded. On the beta, `assemble-content` and `assemble-core` are installed but inactive; `assemble-field-reports` and `assemble-2026` are still active. The theme folder isn't listed as a theme yet because it has no `style.css` (Phase 1).
 - **2026-10-06:** Phase 1. Local PHP set to 8.2. `assemble-core`: host-based noindex guard (header, robots meta overriding Yoast, robots.txt) and production-only bypass-off filter. Minimal theme (header, footer, index, Adobe kit, 16px root); IvyOra and Parabolica confirmed loading locally. Beta DB snapshot saved in the hub's `private/beta-db/`. Beta switched from `assemble-field-reports` to `assemble-content` + `assemble-core` in one command: status healthy (7 reports, webhook secret set), dry-run sync 7 unchanged / 0 drafted, `wp field-report` alias works. On the beta: `X-Robots-Tag: noindex, nofollow`, robots meta `noindex, nofollow`, robots.txt disallows all. Leak checks 2–4 pass. WPCode: ZoomInfo and Clarity are drafts (inactive); snippet 2016 is the Power BI benchmark embed, not analytics (inventory it with the benchmark pages, §9.1).
+- **2026-10-06:** Cale deleted the old `assemble-field-reports` plugin folder from the beta.
