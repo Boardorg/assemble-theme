@@ -1,7 +1,6 @@
 <?php
 /**
- * Public masthead. Theme-owned (Mark's plan): logo only, no date.
- * Phase 2 replaces this with the style guide's public-masthead module.
+ * Document head and the public masthead. Theme-owned (Mark's plan).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -14,9 +13,6 @@ defined( 'ABSPATH' ) || exit;
 </head>
 <body <?php body_class(); ?> data-area="neutral">
 <?php wp_body_open(); ?>
-<header class="site-header">
-	<div class="wrap">
-		<a class="site-header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
-	</div>
-</header>
+<a class="skip-link screen-reader-text" href="#main"><?php esc_html_e( 'Skip to content', 'assemble' ); ?></a>
+<?php get_template_part( 'template-parts/modules/public-masthead' ); ?>
 <main class="site-main" id="main">

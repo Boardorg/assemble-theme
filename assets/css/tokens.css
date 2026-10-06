@@ -1,0 +1,116 @@
+/*
+ * Assemble design tokens. THE single tokens file for the theme.
+ *
+ * Source: web-style-guide.html, <style id="website-system-css">,
+ * "ASSEMBLE WEBSITE SYSTEM · DRAFT 0.3 · 2026-10-01". Copied verbatim; when the
+ * guide's draft number changes, re-diff its :root against this file first
+ * (docs/design-sync.md). theme.json mirrors these values for the block editor.
+ *
+ * Public pages default to data-area="neutral": don't paint the whole site one
+ * practice colour. Templates set data-area on a section; never write a hex value.
+ */
+
+:root {
+	color-scheme:light;
+	--bg:#F7F5F0;
+	--surface:#FFFFFF;
+	--surface-sunken:#EFEDE5;
+	--ink-900:#26251F;
+	--ink-700:#57544C;
+	--ink-500:#8B887C;
+	--ink-300:#C9C5B7;
+	--line:#E6E2D5;
+	--footer-bg:#211F1A;
+	--accent-ink:#572F8B;
+	--accent:#823E97;
+	--accent-violet:#402C78;
+	--accent-deep:#2D2A68;
+	--accent-mid:#BFA8C6;
+	--accent-soft:#D7CEDD;
+	--font-display:ivyora-display,Georgia,"Times New Roman",serif;
+	--font-text:ivyora-text,Georgia,"Times New Roman",serif;
+	--font-body:parabolica,Arial,"Helvetica Neue",Helvetica,sans-serif;
+	--font-label:var(--font-body);
+	--r-xs:3px;
+	--r-sm:8px;
+	--r-md:14px;
+	--r-lg:18px;
+	--r-pill:999px;
+	--s-1:4px;
+	--s-2:8px;
+	--s-3:12px;
+	--s-4:16px;
+	--s-5:24px;
+	--s-6:32px;
+	--s-7:48px;
+	--s-8:64px;
+	--s-9:96px;
+	--max-content:86rem;
+	--max-prose:45rem;
+	--gutter:40px;
+	--shadow-card:0 1px 2px rgba(38,37,31,.035),0 10px 22px rgba(38,37,31,.025);
+	--shadow-lift:0 12px 24px rgba(38,37,31,.045);
+	--motion:160ms ease;
+
+	/* Not in the guide's :root; used by the mockups' footer and grids. */
+	--footer-ink: #D8D4C7;
+	--gutter-sm: 24px;
+}
+
+/* Practice-area ramps. Each one overrides only the accent slots. */
+[data-area="human-resources"] {
+	--accent-ink:#572F8B;
+	--accent:#823E97;
+	--accent-violet:#402C78;
+	--accent-deep:#2D2A68;
+	--accent-mid:#BFA8C6;
+	--accent-soft:#D7CEDD;
+}
+[data-area="technology"] {
+	--accent-ink:#9A1B37;
+	--accent:#CC2128;
+	--accent-violet:#7E132F;
+	--accent-deep:#60121A;
+	--accent-mid:#E59693;
+	--accent-soft:#F0C6C5;
+}
+[data-area="finance"] {
+	--accent-ink:#065E31;
+	--accent:#138443;
+	--accent-violet:#084C26;
+	--accent-deep:#113B21;
+	--accent-mid:#97CEB0;
+	--accent-soft:#BAD8C8;
+}
+[data-area="manufacturing"] {
+	--accent-ink:#1D458B;
+	--accent:#276CB3;
+	--accent-violet:#1D3E74;
+	--accent-deep:#182850;
+	--accent-mid:#89B4D7;
+	--accent-soft:#BFD4E5;
+}
+[data-area="marketing"] {
+	--accent-ink:#00575D;
+	--accent:#038681;
+	--accent-violet:#01404E;
+	--accent-deep:#013140;
+	--accent-mid:#8EBCB8;
+	--accent-soft:#C4D9D8;
+}
+[data-area="neutral"] {
+	--accent-ink:#26251F;
+	--accent:#57544C;
+	--accent-violet:#26251F;
+	--accent-deep:#211F1A;
+	--accent-mid:#C9C5B7;
+	--accent-soft:#EFEDE5;
+}
+
+@media (max-width: 980px) {
+	:root { --gutter: 24px; }
+}
+
+@media (max-width: 640px) {
+	:root { --gutter: 18px; }
+}

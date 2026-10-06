@@ -4,7 +4,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Current status
 
-**Phase 1: done (2026-10-06).** Pipeline proven: all three repos deploy to the beta. `assemble-content` 1.1.0 has the content-type registry and safe paginated sync. The beta runs `assemble-content` and `assemble-core`; the new theme is deployed but not yet active (the July `assemble-2026` theme still is).
+**Phase 2: brand foundation built (2026-10-06); not yet visible on the beta** because the new theme isn't active there. **Phase 1: done (2026-10-06).** Pipeline proven: all three repos deploy to the beta. `assemble-content` 1.1.0 has the content-type registry and safe paginated sync. The beta runs `assemble-content` and `assemble-core`; the new theme is deployed but not yet active (the July `assemble-2026` theme still is).
 
 | Repo | State |
 |---|---|
@@ -36,6 +36,12 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Placeholders
 
+- **Site Settings** are defaults in code (`assemble-core/inc/site-settings.php`), read through `assemble_site_setting()` / the theme's `assemble_setting()`. The ACF Pro options page plugs in later without template changes.
+- **Footer links:** wireframe items without a page yet are left out (Press, Newsletters, Privacy/Terms as separate pages); Legal points at `/policies/`. LinkedIn is the live site's URL.
+- **Masthead nav fallback** (until `wp assemble setup` creates the menu): Insights → `/field-reports/`, Communities → `/field-reports/` (placeholder: no communities index yet), Summits → `/summits/`.
+- **Mobile drawer, search, logged-in masthead state:** no wireframe. Built plain and on-system; flag for design. Search links to the default WordPress search; logged-in users see one "Account" button.
+- **Block editor palette** is the neutrals only; practice colours come from `data-area`, not from editors.
+
 - `.wp-env.json` loads free ACF from wordpress.org. Swap in `./vendor-zips/advanced-custom-fields-pro.zip` once the license arrives.
 
 ## Follow-ups
@@ -56,3 +62,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **2026-10-06:** Webhook test passed: Cale published a cloned `[test] … Tacos` entry in Contentful; the beta created post 2276 at 22:02:47 via `ContentManagement.Entry.publish` and serves it (200). Phase 1 pipeline checks complete except the registry work.
 - **2026-10-06:** Unpublish test passed: unpublishing the `[test] … Tacos` entry moved beta post 2276 to draft via `ContentManagement.Entry.unpublish`.
 - **2026-10-06:** `assemble-content` 1.1.0: content-type registry (`AFR_Types`, filter `afr_content_types`), paginated CDA fetch ordered by `sys.id` with de-duplication, orphan drafting only after a complete fetch and only within the synced type, synced types hidden from wp-admin (status screen at Settings → Assemble Content), `sync --type`, `types` command, dry run lists drafts. Local: forced re-sync left all 7 posts byte-identical (`tests/fingerprint.php`); `tests/sync-test.php` passes (150 entries over 2 pages; failed, short and shifted pages draft nothing; complete fetch drafts real removals; type isolation). Yoast sitemap still lists Field Reports. Beta: dry run 7 unchanged / 0 drafted, `--entry` path OK, leak checks 2–4 pass. Phase 1 complete.
+- **2026-10-06:** Phase 2 brand foundation. `tokens.css` (verbatim from guide Draft 0.3) + `base.css` (guide components rule for rule) + `theme.json` v3 (palette, IvyOra/Parabolica, type and spacing scales, custom colours off). Icon sprite (16 icons), logo SVG (`currentColor`), image sizes for the IMG slots, labels in one place (`assemble_label()`), Site Settings reader in `assemble-core`. Modules `public-masthead` (with phone/tablet drawer) and `public-footer`: at 1440 both measure identical to the mockup; checked at 980 and 375 (no horizontal scroll; drawer opens, closes on Escape, returns focus). Local PHP 8.2 lint clean. `docs/design-sync.md` records the manifest hashes.
