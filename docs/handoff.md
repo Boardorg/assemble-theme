@@ -32,8 +32,9 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 ## Follow-ups
 
 - Waiting on Cale/Mark: create `Boardorg/assemble-core` and `Boardorg/assemble-content`; add the WP Engine deploy key and the `WPE_SSHG_KEY_PRIVATE` secret; set `WPE_PROD_ENV` and a required reviewer on the `production` environment; beta backup point; ACF Pro zip; SSO plugin details; rotate the Contentful CMA token.
-- Docker must be running before `npx @wordpress/env start`.
+- Docker must be running before `npx @wordpress/env start`. Use `npx @wordpress/env`, not `npx wp-env` (an unrelated package).
 
 ## Log
 
 - **2026-10-06:** Phase 0 started. Hub folders, `.wp-env.json`, `scripts/wpbeta.sh` and `.env.contentful` set up. Theme cloned; `assemble-core` and `assemble-content` created as local repos. Beta PHP version confirmed as 8.4.
+- **2026-10-06:** Local CMS works. wp-env running at http://localhost:8888 with `assemble-content` and `assemble-core` active; `afr_settings` copied from the beta (environment `field-report`, no webhook secret locally); `wp assemble-content sync --all` created all 7 reports and 1 site feature. `/wp-json/wp/v2/field_report` returns 404. No theme code yet, so WordPress falls back to a default theme.
