@@ -18,7 +18,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 |---|---|---|
 | Local | wp-env, `.wp-env.json` in the hub, http://localhost:8888 | PHP 8.2 (production's version; code must run there) and WP 7.0.5. Uses free ACF until the ACF Pro zip is in `vendor-zips/`. |
 | Review | `https://assemblebeta.wpenginepowered.com` (own WP Engine site, "Assemble Dev Site") | PHP 8.4.25, WP-CLI 2.12.0 (checked 2026-10-06). Deploys on push to `main`. |
-| Production | theassemble.com, WP Engine install `assemble1` (PHP 8.2) | Off limits outside the launch runbook. The production workflow needs the `WPE_PROD_ENV` repo/org variable and a reviewer on the `production` environment. |
+| Production | theassemble.com, WP Engine install `assemble1` (PHP 8.2). **Launch = fresh start:** the launch-clean beta is copied onto it; nothing in its database is kept. | Off limits outside the launch runbook. The production workflow needs the `WPE_PROD_ENV` repo/org variable and a reviewer on the `production` environment. |
 
 ## Decisions
 
@@ -42,7 +42,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **Mobile drawer, search, logged-in masthead state:** no wireframe. Built plain and on-system; flag for design. Search links to the default WordPress search; logged-in users see one "Account" button.
 - **Block editor palette** is the neutrals only; practice colours come from `data-area`, not from editors.
 
-- Custom fields plugin: **Secure Custom Fields** (WordPress.org's ACF fork, free; includes repeater, options pages, flexible content). `.wp-env.json` loads it. Beta still runs ACF free 6.8 until Cale/Mark OK the swap; production switches at launch.
+- Custom fields plugin: **Secure Custom Fields** (WordPress.org's ACF fork, free; includes repeater, options pages, flexible content). `.wp-env.json` loads it. Beta still runs ACF free 6.8 until Cale/Mark OK the swap; production gets SCF with the launch copy.
 
 ## Follow-ups
 
@@ -64,3 +64,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **2026-10-06:** `assemble-content` 1.1.0: content-type registry (`AFR_Types`, filter `afr_content_types`), paginated CDA fetch ordered by `sys.id` with de-duplication, orphan drafting only after a complete fetch and only within the synced type, synced types hidden from wp-admin (status screen at Settings → Assemble Content), `sync --type`, `types` command, dry run lists drafts. Local: forced re-sync left all 7 posts byte-identical (`tests/fingerprint.php`); `tests/sync-test.php` passes (150 entries over 2 pages; failed, short and shifted pages draft nothing; complete fetch drafts real removals; type isolation). Yoast sitemap still lists Field Reports. Beta: dry run 7 unchanged / 0 drafted, `--entry` path OK, leak checks 2–4 pass. Phase 1 complete.
 - **2026-10-06:** Phase 2 brand foundation. `tokens.css` (verbatim from guide Draft 0.3) + `base.css` (guide components rule for rule) + `theme.json` v3 (palette, IvyOra/Parabolica, type and spacing scales, custom colours off). Icon sprite (16 icons), logo SVG (`currentColor`), image sizes for the IMG slots, labels in one place (`assemble_label()`), Site Settings reader in `assemble-core`. Modules `public-masthead` (with phone/tablet drawer) and `public-footer`: at 1440 both measure identical to the mockup; checked at 980 and 375 (no horizontal scroll; drawer opens, closes on Escape, returns focus). Local PHP 8.2 lint clean. `docs/design-sync.md` records the manifest hashes.
 - **2026-10-06:** Evaluated Secure Custom Fields 6.9.5 locally: 37 field types incl. repeater, flexible content, gallery, clone; options pages, blocks, local JSON, `get_field()` all present; it auto-deactivates ACF. Site Settings code works unchanged. Local now uses SCF instead of ACF Pro.
+- **2026-10-06:** Launch decided (Cale): **fresh start.** The beta becomes production via WP Engine "Copy environment"; no member accounts (Ultimate Member dropped), no Elementor pages carry over. Only the URLs worth keeping (BUILD-INSTRUCTIONS §9.1) are rebuilt or redirected. So the beta must be launch-clean before the copy, and there is no plugin/settings work on production. BUILD-INSTRUCTIONS §1, §3.2, Phase 7, the runbook, §9.1 and decisions #3/#11 updated.
