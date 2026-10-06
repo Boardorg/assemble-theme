@@ -17,13 +17,15 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 | | Where | Notes |
 |---|---|---|
 | Local | wp-env, `.wp-env.json` in the hub, http://localhost:8888 | PHP 8.4 and WP 7.0.5 to match the beta. Uses free ACF until the ACF Pro zip is in `vendor-zips/`. |
-| Review | `https://assemblebeta.wpenginepowered.com` | PHP 8.4.25, WP-CLI 2.12.0 (checked 2026-10-06). Deploys on push to `main`. |
-| Production | theassemble.com | Off limits outside the launch runbook. The production workflow needs the `WPE_PROD_ENV` repo/org variable and a reviewer on the `production` environment. |
+| Review | `https://assemblebeta.wpenginepowered.com` (own WP Engine site, "Assemble Dev Site") | PHP 8.4.25, WP-CLI 2.12.0 (checked 2026-10-06). Deploys on push to `main`. |
+| Production | theassemble.com, WP Engine install `assemble1` (PHP 8.2) | Off limits outside the launch runbook. The production workflow needs the `WPE_PROD_ENV` repo/org variable and a reviewer on the `production` environment. |
 
 ## Decisions
 
 - Deploy workflows read the production install name from `vars.WPE_PROD_ENV` instead of hard-coding it, and fail fast if it is unset.
 - The one-off Contentful migration scripts (`migrate-takeaways-*`, July 2026, already run) are archived in the private hub, not in `assemble-content`: they delete content and must not be rerun.
+
+- PHP mismatch: beta 8.4, production 8.2. Code must run on 8.2 until production is upgraded (Mark's call). Local wp-env uses 8.4 to match the beta.
 
 ## Placeholders
 
