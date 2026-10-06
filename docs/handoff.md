@@ -4,7 +4,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Current status
 
-**Phase 1: in progress.** Pipeline proven: all three repos deploy to the beta. The beta runs `assemble-content` and `assemble-core`; the new theme is deployed but not yet active (the July `assemble-2026` theme still is).
+**Phase 1: done (2026-10-06).** Pipeline proven: all three repos deploy to the beta. `assemble-content` 1.1.0 has the content-type registry and safe paginated sync. The beta runs `assemble-content` and `assemble-core`; the new theme is deployed but not yet active (the July `assemble-2026` theme still is).
 
 | Repo | State |
 |---|---|
@@ -31,6 +31,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 | Date | Where | 1 gate | 2 REST 404 | 3 bad secret 401 | 4 teaser-only feed | 5 anon `?afr_as` |
 |---|---|---|---|---|---|---|
+| 2026-10-06 | beta, `assemble-content` 1.1.0 (registry) | n/a (bypass `open`) | pass | pass | pass (7 items, no body markers) | n/a (bypass `open`) |
 | 2026-10-06 | beta, after switch to `assemble-content` | n/a (bypass `open`) | pass | pass (wrong and missing secret) | pass (7 items, no body markers) | n/a (bypass `open`) |
 
 ## Placeholders
@@ -41,7 +42,6 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 - Waiting on Cale: `WPE_PROD_ENV` and a required reviewer on the `production` environment; a beta backup point.
 - Activate the new theme on the beta (and deactivate Elementor + Elementor Pro): Cale's call, probably after Phase 2 so reviewers don't see the bare placeholder.
-- Unpublish the `[test] … Tacos` entry in Contentful and confirm the beta moves post 2276 to draft (tests the unpublish path).
 - Later: ACF Pro zip (free ACF until then). SSO: Mark is building it; build without it for now (Cale, 2026-10-06). Contentful CMA token rotation: deferred by Cale.
 - Docker must be running before `npx @wordpress/env start`. Use `npx @wordpress/env`, not `npx wp-env` (an unrelated package).
 
@@ -54,3 +54,5 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 - **2026-10-06:** Phase 1. Local PHP set to 8.2. `assemble-core`: host-based noindex guard (header, robots meta overriding Yoast, robots.txt) and production-only bypass-off filter. Minimal theme (header, footer, index, Adobe kit, 16px root); IvyOra and Parabolica confirmed loading locally. Beta DB snapshot saved in the hub's `private/beta-db/`. Beta switched from `assemble-field-reports` to `assemble-content` + `assemble-core` in one command: status healthy (7 reports, webhook secret set), dry-run sync 7 unchanged / 0 drafted, `wp field-report` alias works. On the beta: `X-Robots-Tag: noindex, nofollow`, robots meta `noindex, nofollow`, robots.txt disallows all. Leak checks 2–4 pass. WPCode: ZoomInfo and Clarity are drafts (inactive); snippet 2016 is the Power BI benchmark embed, not analytics (inventory it with the benchmark pages, §9.1).
 - **2026-10-06:** Cale deleted the old `assemble-field-reports` plugin folder from the beta.
 - **2026-10-06:** Webhook test passed: Cale published a cloned `[test] … Tacos` entry in Contentful; the beta created post 2276 at 22:02:47 via `ContentManagement.Entry.publish` and serves it (200). Phase 1 pipeline checks complete except the registry work.
+- **2026-10-06:** Unpublish test passed: unpublishing the `[test] … Tacos` entry moved beta post 2276 to draft via `ContentManagement.Entry.unpublish`.
+- **2026-10-06:** `assemble-content` 1.1.0: content-type registry (`AFR_Types`, filter `afr_content_types`), paginated CDA fetch ordered by `sys.id` with de-duplication, orphan drafting only after a complete fetch and only within the synced type, synced types hidden from wp-admin (status screen at Settings → Assemble Content), `sync --type`, `types` command, dry run lists drafts. Local: forced re-sync left all 7 posts byte-identical (`tests/fingerprint.php`); `tests/sync-test.php` passes (150 entries over 2 pages; failed, short and shifted pages draft nothing; complete fetch drafts real removals; type isolation). Yoast sitemap still lists Field Reports. Beta: dry run 7 unchanged / 0 drafted, `--entry` path OK, leak checks 2–4 pass. Phase 1 complete.
