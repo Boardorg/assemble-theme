@@ -4,13 +4,13 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Current status
 
-**Phase 0 (setup): in progress.** The three code folders are prepared locally. Nothing is pushed or deployed yet.
+**Phase 0 (setup): in progress.** All three repos are on GitHub. Beta deploys wait on the WP Engine deploy key.
 
 | Repo | State |
 |---|---|
 | `Boardorg/assemble-theme` | Cloned. `.gitignore`, `.deployignore`, deploy workflows and this file added locally. No theme code yet (Phase 1). |
-| `Boardorg/assemble-core` | Local repo only, waiting for the GitHub repo to be created. Plugin header, README, workflows. |
-| `Boardorg/assemble-content` | Local repo only, waiting for the GitHub repo to be created. Imported from `assemble-field-reports` unchanged, then renamed (folder, main file, header, text domain) with `wp assemble-content` added and `wp field-report` kept as an alias. Contentful scripts in `contentful/`. VIP PHPCS workflow, report-only. |
+| `Boardorg/assemble-core` | Created 2026-10-06. Plugin header, README, workflows. |
+| `Boardorg/assemble-content` | Created 2026-10-06. Imported from `assemble-field-reports` unchanged, then renamed (folder, main file, header, text domain) with `wp assemble-content` added and `wp field-report` kept as an alias. Contentful scripts in `contentful/`. VIP PHPCS workflow, report-only. |
 
 ## Environments
 
@@ -31,10 +31,12 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Follow-ups
 
-- Waiting on Cale/Mark: create `Boardorg/assemble-core` and `Boardorg/assemble-content`; add the WP Engine deploy key and the `WPE_SSHG_KEY_PRIVATE` secret; set `WPE_PROD_ENV` and a required reviewer on the `production` environment; beta backup point; ACF Pro zip; SSO plugin details; rotate the Contentful CMA token.
+- Waiting on Cale: the WP Engine deploy key and the `WPE_SSHG_KEY_PRIVATE` secret; `WPE_PROD_ENV` and a required reviewer on the `production` environment; a beta backup point.
+- Later: ACF Pro zip (free ACF until then). SSO: Mark is building it; build without it for now (Cale, 2026-10-06). Contentful CMA token rotation: deferred by Cale.
 - Docker must be running before `npx @wordpress/env start`. Use `npx @wordpress/env`, not `npx wp-env` (an unrelated package).
 
 ## Log
 
 - **2026-10-06:** Phase 0 started. Hub folders, `.wp-env.json`, `scripts/wpbeta.sh` and `.env.contentful` set up. Theme cloned; `assemble-core` and `assemble-content` created as local repos. Beta PHP version confirmed as 8.4.
 - **2026-10-06:** Local CMS works. wp-env running at http://localhost:8888 with `assemble-content` and `assemble-core` active; `afr_settings` copied from the beta (environment `field-report`, no webhook secret locally); `wp assemble-content sync --all` created all 7 reports and 1 site feature. `/wp-json/wp/v2/field_report` returns 404. No theme code yet, so WordPress falls back to a default theme.
+- **2026-10-06:** Created `Boardorg/assemble-core` and `Boardorg/assemble-content` (public) and pushed all three repos. First beta deploys fail at SSH until the deploy key is added; nothing reached the beta.
