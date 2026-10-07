@@ -1,0 +1,26 @@
+/*
+ * Module: learn-more-band. Measured from the logged-out home mockup at 1440:
+ * a white card with a ruled head and three whole-card links on the page tint.
+ */
+
+.learn-more-band{margin-top:18px;padding:32px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.learn-more-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.learn-more-head h2{margin:0;line-height:1.15}
+.learn-more-head p{max-width:48ch;margin:0;font-size:.875rem;line-height:1.6}
+.learn-more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.learn-more-card{display:flex;flex-direction:column;min-height:180px;padding:22px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);color:var(--accent-ink);text-decoration:none}
+.learn-more-card:hover{text-decoration:none}
+.learn-more-card .eyebrow{display:block;margin-bottom:14px}
+.learn-more-card h3{margin:0 0 10px}
+.learn-more-card p{margin:0 0 12px;font-size:.875rem;line-height:1.65}
+.learn-more-card .link-arrow{align-self:flex-start;margin-top:auto;font-size:.875rem}
+.learn-more-card:hover .link-arrow{text-decoration-thickness:2px}
+
+@media (max-width:900px){
+	.learn-more-grid{grid-template-columns:1fr}
+	.learn-more-head{flex-direction:column;align-items:flex-start}
+}
+
+@media (max-width:640px){
+	.learn-more-band{padding:22px 20px}
+}

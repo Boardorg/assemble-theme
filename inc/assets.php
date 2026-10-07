@@ -45,6 +45,24 @@ add_action(
 		assemble_enqueue_module_style( 'public-masthead' );
 		assemble_enqueue_module_style( 'public-footer' );
 
+		// Homepage modules.
+		if ( is_front_page() ) {
+			foreach ( array( 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+
+			wp_enqueue_script(
+				'assemble-content-explorer',
+				get_template_directory_uri() . '/assets/js/content-explorer.js',
+				array(),
+				assemble_asset_version( 'assets/js/content-explorer.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
 		wp_enqueue_script(
 			'assemble-masthead',
 			get_template_directory_uri() . '/assets/js/public-masthead.js',

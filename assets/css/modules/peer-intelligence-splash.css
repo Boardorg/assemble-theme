@@ -1,0 +1,29 @@
+/*
+ * Module: peer-intelligence-splash (+ the free-account call to action under it).
+ * Measured from the logged-out home mockup at 1440: sunken full-width band,
+ * 1.05fr / .95fr grid, 42px Display statement, white CTA card.
+ */
+
+.peer-intelligence-splash{padding:64px 0;background:var(--surface-sunken);color:var(--ink-900)}
+.peer-intelligence-banner{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:34px}
+.pi-headline{max-width:14ch;margin:0 0 18px}
+.pi-text{max-width:60ch;margin:0;font-size:1.125rem;line-height:1.65}
+.pi-link{display:inline-block;margin-top:16px;font-size:.875rem;color:var(--ink-900)}
+/* The mockup has no art for this slot yet: an empty on-system frame (guide .peer-intelligence-splash__media). */
+.pi-placeholder{aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.free-account-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:42px;padding:28px 30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-card)}
+.free-account-cta h3{margin:0 0 7px;font:500 1.5625rem/1.2 var(--font-text)}
+.free-account-cta p{margin:0;font-size:.875rem;line-height:1.6}
+.free-account-cta .btn-solid{flex:none;padding:13px 24px}
+
+@media (max-width:780px){
+	.free-account-cta{flex-direction:column;align-items:flex-start;gap:20px}
+}
+
+@media (max-width:640px){
+	.peer-intelligence-splash{padding-block:40px}
+	.peer-intelligence-banner{grid-template-columns:1fr}
+	.pi-headline{font-size:2.125rem}
+	.free-account-cta{margin-top:32px;padding:22px 20px}
+	.free-account-cta h3{font-size:1.25rem}
+}
