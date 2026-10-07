@@ -2,7 +2,8 @@
  * Assemble design tokens. THE single tokens file for the theme.
  *
  * Source: web-style-guide.html, <style id="website-system-css">,
- * "ASSEMBLE WEBSITE SYSTEM · DRAFT 0.3 · 2026-10-01". Copied verbatim; when the
+ * "ASSEMBLE WEBSITE SYSTEM · DRAFT 0.4 · 2026-10-06". Copied verbatim (0.4 changed
+ * no token values, only component sizes in base.css); when the
  * guide's draft number changes, re-diff its :root against this file first
  * (docs/design-sync.md). theme.json mirrors these values for the block editor.
  *

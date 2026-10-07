@@ -22,3 +22,14 @@ footer.site-footer{background:var(--footer-bg);color:var(--footer-ink);padding:6
 	footer.site-footer{padding:48px 0 32px}
 	.footer-grid{grid-template-columns:1fr}
 }
+
+/* Logged-out create-account row above the columns (guide Draft 0.4). */
+.footer-cta-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin:0 0 28px;padding:0 0 28px;border-bottom:1px solid rgba(247,245,240,.18)}
+.footer-cta-row p{margin:0;font:500 1.25rem/1.3 var(--font-text);color:var(--footer-ink)}
+.site-footer .footer-cta{background:var(--bg);border-color:var(--bg);color:var(--ink-900)}
+.site-footer .footer-cta:hover{background:var(--surface);border-color:var(--surface);text-decoration:none}
+
+@media (max-width:780px){
+	.footer-cta-row{display:block}
+	.footer-cta-row p{margin-bottom:14px}
+}
