@@ -8,7 +8,9 @@ Which version of the design the theme last matched. Update this at the end of an
 2. Compare `assemble-site-v2-manifest.json` with the hashes below. A changed page hash means that page's modules changed; a changed guide CSS hash means tokens or shared components changed.
 3. If `web-style-guide.html`'s draft number changed, re-diff its `:root` against `assets/css/tokens.css` first.
 
-## Last synced: 2026-10-06 (Draft 0.4, after the content review)
+## Last synced: 2026-10-07 (Draft 0.4; Phase 4 article)
+
+2026-10-07 check: guide CSS, components and every public page source unchanged. The built rollup and builder hashes changed only because of the Member Center / Network split (2026-10-07): diffing the rollup's `wireframeData` against the archived `2026-10-07-before-network-split` build shows all 11 public entries byte-identical, including "4. Article". Nothing to port.
 
 | Source | Value |
 |---|---|
@@ -16,8 +18,8 @@ Which version of the design the theme last matched. Update this at the end of an
 | Guide CSS (`guide_css_sha256`) | `989685b0079b237ca0c801d958f137dbfc797583fd8eda1200e844e397b6ecec` |
 | Components (`components_sha256`) | `8765eaee10d750f771ffa81b56c9e3f0ece8cafe2ab193caf9b6437212a784c0` |
 | Rollup source (`source_sha256`) | `6c420607aa7f80fb34de53d5aaec76b9461e0ce6a4bbe2d2d9c86b45d6005bdc` |
-| Built rollup (`assemble-site.html`, sha256) | `5a242b98ba265987aa0152a80ab8cd2d1230b1662f7924bc6e1bad2fa4872294` |
-| Builder (`scripts/build-assemble-site-v2.py`, sha256) | `a69995949bf812c99b82e23c59d14c660264a72e9acd10c031646b836e1b1bfc` |
+| Built rollup (`assemble-site.html`, sha256) | `fb0025c6e597d4f16db239f80ad5ef0871d7efd9c556af8408c9100fcea11a5b` (was `5a242b98…`) |
+| Builder (`scripts/build-assemble-site-v2.py`, sha256) | `e7beffb094efaa4dc1d4c6f345f4e3a4d278887be126f05aaec21d815ce6c3d2` (was `a6999594…`) |
 
 **Why the last two rows:** since 2026-10-06 most page edits live in the builder's `review_edits` pass, not in the standalone page files, so the per-page source hashes below don't move when a page's design changes. Compare the built rollup's hash (`shasum -a 256 assemble-site.html`) as well; if it changed, diff the extracted page against the theme.
 
@@ -34,6 +36,12 @@ Which version of the design the theme last matched. Update this at the end of an
 | `content-explorer` (`explore-peer-intelligence`, `topic-navigation`, `ld-insights-card`, `ld-benchmark-card`) | home mockup + guide gallery | 1440: heading, pill rows (48px pills), intro and card styles match. Source card, Working Sessions, Next Summit and Leaders not built (no data source) |
 | `learn-more-band` | home mockup | 1440: identical boxes. Rendered once below the panels, in neutral |
 | `assets/svg/icons.svg` | guide `#icon-sprite` | 16 icons |
+| `article-hero` (breadcrumbs, content head, share row, inline author, hero image) | article mockup (rollup) | 1440: breadcrumbs, hero (1120), tag, title (637×145), dek (960), date, share row, meta row and hero image (1120×560) boxes identical. 980/375: no sideways scroll; title 34px at ≤640 |
+| `article-body-with-aside` | article mockup | 1440: layout 1120, body 720, aside 328 sticky, h2 30/34.5 accent ink, blockquote, aside card and button identical. Field Report sections (Story in Brief, takeaways list, council expander, engagement cards) are on-system additions |
+| `article-author-bio` | article mockup | 1440: full width 1296, portrait 110×130, h3 25/30 identical |
+| `related-peer-intelligence` (+ `report-card`) | article mockup | 1440: grid 1120, cards 361, thumb 323×182, h3 20/25 identical. The same card fills the Insights archives |
+| `account-cta` | article mockup | Ported from the mockup's rules (logged-out only, so not measured in the admin session) |
+| `report-gate`, `report-archive` | — | No wireframe: on-system, flagged in the handoff |
 
 ### Page hashes at last sync
 
@@ -45,7 +53,7 @@ Which version of the design the theme last matched. Update this at the end of an
 | 3a. Summit (NALES Agenda).html | `7f64c036e271` | — |
 | 3b. Summit (NALES Speakers).html | `3bad201cadc0` | — |
 | 3c. Summit (NALES Delegates).html | `c68e6b6941a7` | — |
-| 4. Article.html | `9e9f37b00af6` | — |
+| 4. Article.html | `9e9f37b00af6` | article modules (2026-10-07, rollup with content review edits) |
 | 5. Playbook.html | `8854a18a226c` | — |
 | 6. Create Account.html | `c51eaf4da36b` | — |
 | 7. Home (logged in).html | `1c7a4e08e9b6` | — |
