@@ -7,7 +7,7 @@
  * the inline author. Then the hero image. Every part prints only if the view
  * model has it: the public and denied views have no byline, for example.
  *
- * @var array $args { report: view model from assemble_report_view(), area: data-area key }
+ * @var array $args { report: view model, area: data-area key, url: permalink ('' in a draft preview: no share row) }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,8 +17,8 @@ $assemble_s      = (array) ( $assemble_report['sections'] ?? array() );
 $assemble_area   = (string) ( $args['area'] ?? 'neutral' );
 $assemble_topic  = $assemble_s['topics'][0] ?? null;
 $assemble_author = $assemble_s['byline'] ?? null;
-$assemble_title  = (string) ( $assemble_s['headline'] ?? get_the_title() );
-$assemble_url    = (string) get_permalink();
+$assemble_title  = (string) ( $assemble_s['headline'] ?? '' );
+$assemble_url    = (string) ( $args['url'] ?? '' );
 $assemble_crumbs = assemble_report_crumbs( $assemble_s['kicker'] ?? null );
 $assemble_mins   = assemble_read_minutes( (int) ( $assemble_report['words'] ?? 0 ) );
 
@@ -54,6 +54,7 @@ if ( $assemble_mins ) {
 		<p class="article-date meta"><?php echo implode( ' · ', $assemble_when ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?></p>
 	<?php endif; ?>
 
+	<?php if ( '' !== $assemble_url ) : ?>
 	<div class="share-row" aria-label="<?php esc_attr_e( 'Share this Insight', 'assemble' ); ?>">
 		<a class="share-link" href="<?php echo esc_url( add_query_arg( 'url', rawurlencode( $assemble_url ), 'https://www.linkedin.com/sharing/share-offsite/' ) ); ?>" target="_blank" rel="noopener">
 			<?php echo assemble_icon( 'linkedin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?><span><?php esc_html_e( 'LinkedIn', 'assemble' ); ?></span>
@@ -65,6 +66,7 @@ if ( $assemble_mins ) {
 			<?php echo assemble_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?><span><?php esc_html_e( 'Copy link', 'assemble' ); ?></span>
 		</button>
 	</div>
+	<?php endif; ?>
 
 	<?php if ( $assemble_author ) : ?>
 		<div class="article-meta-row">

@@ -45,8 +45,8 @@ add_action(
 		assemble_enqueue_module_style( 'public-masthead' );
 		assemble_enqueue_module_style( 'public-footer' );
 
-		// Homepage modules.
-		if ( is_front_page() ) {
+		// Homepage modules (a draft preview is served from the home URL but isn't the homepage).
+		if ( is_front_page() && ! assemble_is_report_preview() ) {
 			foreach ( array( 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
@@ -63,8 +63,8 @@ add_action(
 			);
 		}
 
-		// Field Report pages (single-field_report.php).
-		if ( is_singular( 'field_report' ) ) {
+		// Field Report pages (single-field_report.php) and draft previews.
+		if ( is_singular( 'field_report' ) || assemble_is_report_preview() ) {
 			foreach ( array( 'article-hero', 'article-body-with-aside', 'article-author-bio', 'related-peer-intelligence', 'account-cta', 'report-gate' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}

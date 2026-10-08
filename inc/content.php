@@ -335,3 +335,29 @@ add_action(
 		}
 	}
 );
+
+/** Is this request a draft preview (assemble-content 1.4.0 or later)? */
+function assemble_is_report_preview(): bool {
+	return class_exists( 'AFR_Preview' ) && null !== AFR_Preview::current();
+}
+
+/*
+ * Draft previews render through the same template part as the live page. The
+ * plugin has already checked who may see the draft and chosen the view.
+ */
+add_action(
+	'afr_render_preview',
+	static function ( array $report ): void {
+		get_header();
+		get_template_part(
+			'template-parts/report-page',
+			null,
+			array(
+				'report'  => $report,
+				'post_id' => 0,
+				'url'     => '',
+			)
+		);
+		get_footer();
+	}
+);

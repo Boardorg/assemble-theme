@@ -80,3 +80,17 @@ $assemble_archive_title = static function ( $title ) {
 };
 add_filter( 'wpseo_title', $assemble_archive_title );
 add_filter( 'wpseo_opengraph_title', $assemble_archive_title );
+
+// Draft previews are served from the home URL; title them with the draft's headline.
+$assemble_preview_title = static function ( $title ) {
+	if ( ! assemble_is_report_preview() ) {
+		return $title;
+	}
+
+	$headline = (string) ( AFR_Preview::current()['sections']['headline'] ?? '' );
+
+	/* translators: %s: draft headline. */
+	return sprintf( __( 'Draft preview: %s', 'assemble' ), $headline ) . ' - ' . get_bloginfo( 'name' );
+};
+add_filter( 'wpseo_title', $assemble_preview_title, 20 );
+add_filter( 'pre_get_document_title', $assemble_preview_title, 20 );
