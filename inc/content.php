@@ -79,7 +79,10 @@ function assemble_first_sentence( string $text ): string {
 /**
  * One Field Report as a card.
  *
- * @return array{id:int,title:string,url:string,excerpt:string,date:string,area:string,topic:?array{name:string,slug:string},image:?array}
+ * `locked` is the plugin's answer to "would this visitor be refused?", for
+ * the "Board Members only" label on cards. It never hides anything.
+ *
+ * @return array{id:int,title:string,url:string,excerpt:string,date:string,area:string,topic:?array{name:string,slug:string},image:?array,locked:bool}
  */
 function assemble_story( WP_Post $post ): array {
 	$entry  = AFR_Renderer::data( $post->ID );
@@ -95,6 +98,7 @@ function assemble_story( WP_Post $post ): array {
 		'area'    => assemble_area( class_exists( 'AFR_Communities' ) ? AFR_Communities::practice_area_for_post( $post->ID ) : '' ),
 		'topic'   => $topics[0] ?? null,
 		'image'   => is_array( $image ) ? $image : null,
+		'locked'  => class_exists( 'AFR_Audience' ) && 'denied' === AFR_Audience::view_for( $post->ID ),
 	);
 }
 
@@ -179,3 +183,155 @@ function assemble_cf_image( ?array $asset, string $ratio = '16:9', string $sizes
 		$class ? ' class="' . esc_attr( $class ) . '"' : ''
 	);
 }
+
+/*
+ * ---------------------------------------------------------------------------
+ * Field Report pages (Phase 4). The plugin decides what a visitor may see and
+ * hands the theme a view model; the theme only formats it. Nothing below
+ * decides access.
+ */
+
+/** Does the feed expose the view model (assemble-content 1.3.0 or later)? */
+function assemble_has_report_view(): bool {
+	return class_exists( 'AFR_Renderer' ) && method_exists( 'AFR_Renderer', 'view_model' );
+}
+
+/**
+ * The view model for one report, for the current visitor: `view` plus only the
+ * sections that view may show (see AFR_Renderer::view_model()). Null when the
+ * feed is too old or the report has no data, and the template falls back to
+ * the_content().
+ *
+ * @return array{view:string,post_id:int,sections:array,words:int,notices:array}|null
+ */
+function assemble_report_view( int $post_id ): ?array {
+	if ( ! assemble_has_report_view() ) {
+		return null;
+	}
+
+	$view = AFR_Renderer::view_model( $post_id );
+
+	return '' === $view['view'] ? null : $view;
+}
+
+/*
+ * The theme renders single reports itself, so the feed's the_content document
+ * and its styles are switched off there. Listings and feeds still get the
+ * feed's teaser.
+ */
+add_filter(
+	'afr_filter_the_content',
+	static function ( bool $filter ): bool {
+		return is_singular( 'field_report' ) && assemble_has_report_view() ? false : $filter;
+	}
+);
+
+add_action(
+	'wp_enqueue_scripts',
+	static function (): void {
+		if ( ( is_singular( 'field_report' ) && assemble_has_report_view() ) || is_post_type_archive( 'field_report' ) || is_tax( 'field_report_community' ) ) {
+			wp_dequeue_style( 'afr-field-report' );
+			wp_dequeue_style( 'afr-fonts' );
+		}
+	},
+	20
+);
+
+/** Reading time in minutes at about 230 words a minute; 0 when there is nothing to read. */
+function assemble_read_minutes( int $words ): int {
+	return $words > 0 ? (int) max( 1, ceil( $words / 230 ) ) : 0;
+}
+
+/**
+ * Where a practice area's Insights live. There is no per-area index yet, so
+ * this is the Insights index (placeholder; see the theme handoff).
+ */
+function assemble_area_url( string $area ): string {
+	/**
+	 * Filter a practice area's Insights URL.
+	 *
+	 * @param string $url
+	 * @param string $area
+	 */
+	return (string) apply_filters( 'assemble/area_url', assemble_insights_url(), $area );
+}
+
+/** A Community's short label, e.g. "AEO" for the AEO Board. */
+function assemble_community_label( array $community ): string {
+	$short = trim( (string) ( $community['short_name'] ?? '' ) );
+
+	return '' !== $short ? $short : (string) preg_replace( '/\s+Board$/', '', (string) ( $community['name'] ?? '' ) );
+}
+
+/** "AEO Board" reads as "the AEO Board" in a sentence; brand names like "SocialMedia.org" take no article. */
+function assemble_community_in_sentence( string $name ): string {
+	return preg_match( '/\b(Board|Council|Network|Community)$/', $name ) ? sprintf( /* translators: %s: Community name. */ __( 'the %s', 'assemble' ), $name ) : $name;
+}
+
+/**
+ * Breadcrumbs for a report: Insights › practice area › Community.
+ *
+ * @param array|null $community The view model's `kicker` section.
+ * @return array<int,array{label:string,url:string}>
+ */
+function assemble_report_crumbs( ?array $community ): array {
+	$crumbs = array(
+		array(
+			'label' => assemble_label( 'insights' ),
+			'url'   => assemble_insights_url(),
+		),
+	);
+
+	if ( $community ) {
+		$area  = assemble_area( (string) $community['practice_area'] );
+		$areas = assemble_practice_areas();
+
+		if ( isset( $areas[ $area ] ) ) {
+			$crumbs[] = array(
+				'label' => $areas[ $area ],
+				'url'   => assemble_area_url( $area ),
+			);
+		}
+
+		if ( '' !== $community['slug'] ) {
+			$crumbs[] = array(
+				'label' => assemble_community_label( $community ),
+				'url'   => assemble_community_url( (string) $community['slug'] ),
+			);
+		}
+	}
+
+	return $crumbs;
+}
+
+/**
+ * Up to $count other reports from the same Community, newest first, topped up
+ * from the stream. Cards only: listing a gated report is deliberate.
+ *
+ * @return array<int,array> Cards from assemble_story().
+ */
+function assemble_related_stories( int $post_id, string $community_slug, int $count = 3 ): array {
+	if ( ! assemble_has_feed() ) {
+		return array();
+	}
+
+	$posts = '' !== $community_slug ? AFR_Query::in_community( $community_slug, $count + 1 ) : array();
+	$posts = array_filter( $posts, static fn( $post ) => (int) $post->ID !== $post_id );
+
+	if ( count( $posts ) < $count ) {
+		$exclude = array_merge( array( $post_id ), wp_list_pluck( $posts, 'ID' ) );
+		$posts   = array_merge( $posts, AFR_Query::rest_of_stream( $exclude, $count - count( $posts ) ) );
+	}
+
+	return array_map( 'assemble_story', array_slice( array_values( $posts ), 0, $count ) );
+}
+
+/** Twelve cards a page on the Insights index and Community archives (a 3-up grid). */
+add_action(
+	'pre_get_posts',
+	static function ( WP_Query $query ): void {
+		if ( ! is_admin() && $query->is_main_query() && ( $query->is_post_type_archive( 'field_report' ) || $query->is_tax( 'field_report_community' ) ) ) {
+			$query->set( 'posts_per_page', 12 );
+		}
+	}
+);

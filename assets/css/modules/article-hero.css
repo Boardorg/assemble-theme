@@ -1,0 +1,31 @@
+/*
+ * Module: article-hero. Measured from the "4. Article" mockup (rollup, with the
+ * content-review edits) at 1440: breadcrumbs, the content head (3px accent rule,
+ * 28px inset), title, dek, date under the dek, share row, inline author, then
+ * the hero image. Also the page shell the article modules sit in.
+ */
+
+.article-shell{padding:58px 0 80px}
+.article-shell .breadcrumbs{margin:8px 0 20px}
+
+.article-hero{max-width:1120px;margin:0 auto}
+.article-hero .article-category{margin-bottom:12px}
+.article-title{max-width:26ch;margin:0 0 22px;font:500 2.625rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
+.article-dek{max-width:48em;margin:0 0 18px;font:400 1.25rem/1.65 var(--font-body);color:var(--ink-700)}
+.article-date{margin:4px 0 16px}
+.article-hero .share-row{margin:0 0 18px -8px}
+.article-meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
+.author-inline{display:flex;align-items:center;gap:12px}
+.author-avatar{width:40px;height:40px;flex:0 0 40px}
+.article-meta-copy strong{display:block;font-size:.875rem;font-weight:700;line-height:1.7;color:var(--ink-900)}
+.article-meta-copy span{font-size:.875rem;line-height:1.7;color:var(--ink-700)}
+
+/* Hero image: 16:9, at most 560px (L1 slot) or 65vh tall. Empty sunken frame without an image. */
+.hero-image{width:100%;max-width:1120px;aspect-ratio:16/9;max-height:min(560px,65vh);margin:28px auto 0}
+
+@media (max-width:640px){
+	.article-shell{padding-top:36px}
+	.article-title{font-size:2.125rem}
+	.article-dek{font-size:1.125rem}
+	.hero-image{max-height:none}
+}

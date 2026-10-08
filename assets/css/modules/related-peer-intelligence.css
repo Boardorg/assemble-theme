@@ -1,0 +1,22 @@
+/*
+ * Module: related-peer-intelligence. Measured from the "4. Article" mockup at
+ * 1440: three white cards, 18px apart, each closing with its own "See more" link.
+ * The same card (template-parts/modules/report-card.php) fills the Insights archives.
+ */
+
+.related{max-width:1120px;margin:56px auto 0}
+.related .section-title{margin:0 0 20px;padding-bottom:16px;border-bottom:1px solid var(--line);font:500 1.875rem/1.15 var(--font-display)}
+.related-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.related-card{display:flex;flex-direction:column;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.related-card .thumb{aspect-ratio:16/9;margin-bottom:16px}
+.related-card .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.related-card .card-title{margin:0 0 16px;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
+.related-card .card-title a{color:var(--ink-900);text-decoration:none}
+.related-card .card-title a:hover{text-decoration:underline;text-underline-offset:3px}
+.related-card .card-date{margin-top:auto;padding-top:12px}
+.related-card p{margin:0;font-size:.875rem;line-height:1.6;color:var(--ink-700)}
+.related-card .related-more{align-self:flex-start;margin-top:auto;padding-top:12px;color:var(--ink-900)}
+
+@media (max-width:980px){
+	.related-grid{grid-template-columns:1fr}
+}

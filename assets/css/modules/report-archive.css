@@ -1,0 +1,25 @@
+/*
+ * The Insights index and Community archives. No wireframe: the article page's
+ * shell, breadcrumbs and content head, then the related-card grid.
+ */
+
+.archive-head{max-width:1120px;margin:0 auto 40px}
+.archive-head h1{margin:0 0 14px}
+.archive-head .article-dek{margin:0}
+.archive-grid{max-width:1120px;margin:0 auto}
+.report-archive .empty-state{max-width:1120px;margin:0 auto;color:var(--ink-700)}
+
+.report-archive .pagination{max-width:1120px;margin:40px auto 0}
+.report-archive .nav-links{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.report-archive .page-numbers{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);font-size:.875rem;color:var(--ink-900);text-decoration:none}
+.report-archive .page-numbers.current{background:var(--ink-900);border-color:var(--ink-900);color:var(--surface)}
+.report-archive a.page-numbers:hover{background:var(--surface-sunken)}
+.report-archive .page-numbers.dots{border:0;background:none}
+
+@media (max-width:980px){
+	.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media (max-width:640px){
+	.archive-grid{grid-template-columns:1fr}
+}

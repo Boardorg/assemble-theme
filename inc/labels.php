@@ -16,6 +16,7 @@ function assemble_label( string $key ): string {
 		'sign_in'          => __( 'Sign in', 'assemble' ),
 		'create'           => __( 'Create free account', 'assemble' ),
 		'search'           => __( 'Search', 'assemble' ),
+		'members_only'     => __( 'Board Members only', 'assemble' ), // The gated label, everywhere (wireframe edits A).
 		'menu'             => __( 'Menu', 'assemble' ),
 	];
 

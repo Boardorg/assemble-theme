@@ -63,6 +63,31 @@ add_action(
 			);
 		}
 
+		// Field Report pages (single-field_report.php).
+		if ( is_singular( 'field_report' ) ) {
+			foreach ( array( 'article-hero', 'article-body-with-aside', 'article-author-bio', 'related-peer-intelligence', 'account-cta', 'report-gate' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+
+			wp_enqueue_script(
+				'assemble-article-hero',
+				get_template_directory_uri() . '/assets/js/article-hero.js',
+				array(),
+				assemble_asset_version( 'assets/js/article-hero.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
+		// Insights index and Community archives.
+		if ( is_post_type_archive( 'field_report' ) || is_tax( 'field_report_community' ) ) {
+			foreach ( array( 'article-hero', 'related-peer-intelligence', 'report-archive' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
+
 		wp_enqueue_script(
 			'assemble-masthead',
 			get_template_directory_uri() . '/assets/js/public-masthead.js',
