@@ -4,12 +4,12 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Current status
 
-**Phases 0–4 done; Phase 5a (Summits) built locally 2026-10-09, waiting for Cale's review before the push** (brief: the hub's `PHASE-5-HANDOFF.md`). Summit facts are read from executiveplatforms.com by `assemble-core`, which stays EP's reader until EP's workflow moves; summits move into Contentful only then. Field Reports render in brand markup on the beta. The new theme is active on the beta; Elementor is deactivated. Still open: real featured images in Contentful.
+**Phases 0–4 and 5a (Summits) done; 5a pushed and live on the beta 2026-10-09** (brief: the hub's `PHASE-5-HANDOFF.md`). Summit facts are read from executiveplatforms.com by `assemble-core`, which stays EP's reader until EP's workflow moves; summits move into Contentful only then. Field Reports render in brand markup on the beta. The new theme is active on the beta; Elementor is deactivated. Still open: real featured images in Contentful.
 
 | Repo | State |
 |---|---|
-| `Boardorg/assemble-theme` | 0.5.0 local (Phase 5a): `/summits/` (`page-summits.php` with `summits-hero`, `summits-selector`, `summits-practice-detail`, `summits-matrix`) and the homepage Next Summit card (`ld-summit-card`), all fed from `assemble_upcoming_summits()`; every summit link goes to EP through `assemble_summit_url()`. 0.4.1 on the beta: draft preview through the same template part (`template-parts/report-page.php`); Field Report pages from the feed's view model (`single-field_report.php`, article modules, gate), the Insights index and Community archives, Yoast share image and titles. |
-| `Boardorg/assemble-core` | 0.4.0 local: Assemble-only summit extras (`assemble_summits_with_extras()`), a daily refresh with an admin notice on failure. 0.3.0 on the beta: summits read from executiveplatforms.com (`wp assemble summits refresh`, `assemble_summits()`). Host-based noindex guard, production bypass-off guard, Site Settings (reader + options page as ACF JSON). |
+| `Boardorg/assemble-theme` | 0.5.0 on the beta (Phase 5a): `/summits/` (`page-summits.php` with `summits-hero`, `summits-selector`, `summits-practice-detail`, `summits-matrix`) and the homepage Next Summit card (`ld-summit-card`), all fed from `assemble_upcoming_summits()`; every summit link goes to EP through `assemble_summit_url()`. Also: draft preview through the same template part (`template-parts/report-page.php`); Field Report pages from the feed's view model (`single-field_report.php`, article modules, gate), the Insights index and Community archives, Yoast share image and titles. |
+| `Boardorg/assemble-core` | 0.4.0 on the beta: Assemble-only summit extras (`assemble_summits_with_extras()`), a daily refresh with an admin notice on failure; summits read from executiveplatforms.com (`wp assemble summits refresh`, `assemble_summits()`). Host-based noindex guard, production bypass-off guard, Site Settings (reader + options page as ACF JSON). |
 | `Boardorg/assemble-content` | 1.4.0 on the beta: draft preview (`AFR_Preview`); `AFR_Renderer::view_model()` and the `afr_filter_the_content` opt-out (feed change #2). Content-type registry, paginated sync with safe orphan drafting, community directory, query helpers. Formerly `assemble-field-reports`. Contentful scripts in `contentful/`; VIP PHPCS workflow, report-only. |
 
 ## Environments
@@ -33,6 +33,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 | Date | Where | 1 gate | 2 REST 404 | 3 bad secret 401 | 4 teaser-only feed | 5 anon `?afr_as` |
 |---|---|---|---|---|---|---|
+| 2026-10-09 | beta, `assemble-core` 0.4.0 + theme 0.5.0 | n/a (bypass `open`) | pass | pass (wrong secret) | pass (7 items, no body markers) | n/a (bypass `open`) |
 | 2026-10-08 | beta, `assemble-content` 1.3.0 + theme 0.4.0 | n/a (bypass `open`: anonymous gets `report--standard` with the beta banner) | pass | pass (wrong and missing secret) | pass (7 items, no body markers) | n/a (bypass `open`) |
 | 2026-10-07 | **local**, `assemble-content` 1.3.0 + theme 0.4.0, bypass `off` | pass (anonymous: `report--denied`, no Focus/takeaway/pullquote text) | pass | n/a (no local secret: 503) | pass (7 items, no body markers) | pass (still `report--denied`) |
 | 2026-10-06 | beta, `assemble-content` 1.2.0, new theme active | n/a (bypass `open`) | pass | pass | pass (7 items, no body markers) | n/a (bypass `open`) |
@@ -90,6 +91,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Log
 
+- **2026-10-09:** Phase 5a pushed (`assemble-core` 1357a99, theme 4f2247f + docs); both beta deploys succeeded. Beta: core 0.4.0 active, 16 summits refreshed, daily refresh scheduled; `/summits/` serves page 2250 through `page-summits.php` (15 rows, 14 panels, no PHP notices, every summit link to executiveplatforms.com); homepage shows 11 Next Summit cards; shared summit logos return 200. Leak checks 2–4 pass.
 - **2026-10-09:** Phase 5a built locally (theme 0.5.0, `assemble-core` 0.4.0). Extras agreed with Cale; daily summit refresh (Cale's choice) with an admin notice when a run fails or nothing has refreshed for three days. `/summits/` and the homepage Next Summit card measured against the rollup at 1440 (boxes identical apart from content length), 980 and 375 (no sideways scroll); no console errors or PHP notices; the past FWS summit is hidden; every summit link goes to executiveplatforms.com; both pages render with no stored summits and with `assemble-core` inactive. Core tests: 32 pass. The beta already has a published "Summits" page (ID 2250, from the old site), which `page-summits.php` takes over; there's no `/summits/` on today's theassemble.com, so no redirect.
 - **2026-10-08:** Shared images moved to `wp-content/assets/` (Cale's choice) on production and the beta; BUILD-INSTRUCTIONS and the catalogue updated.
 - **2026-10-08:** Shared image library uploaded to the beta's `wp-content/uploads/assets/` (426 files in `brand/`, `boards/`, `councils/`, `summits/`, `illustrations/`, `headshots/`); sample URLs return 200. Master copy is in a private shared folder outside the repos; the catalogue is a private shared doc, not in this repo. Production upload is Cale's, over SFTP.
