@@ -18,6 +18,9 @@ function assemble_label( string $key ): string {
 		'search'           => __( 'Search', 'assemble' ),
 		'members_only'     => __( 'Board Members only', 'assemble' ), // The gated label, everywhere (wireframe edits A).
 		'menu'             => __( 'Menu', 'assemble' ),
+		'reserve_seat'     => __( 'Reserve your seat', 'assemble' ), // Summit CTA to EP's registration (wireframe 2).
+		'summit_details'   => __( 'View Summit details', 'assemble' ), // Homepage Next Summit card (wireframe 1).
+		'all_summits'      => __( 'See all Summits', 'assemble' ),
 	];
 
 	/**

@@ -1,0 +1,17 @@
+/*
+ * Module: summits-selector (wireframe 2, "Find your humans."). The pills come
+ * from content-explorer.css; this sets the section's rules and spacing,
+ * measured from the rollup at 1440.
+ */
+
+.summits-selector{margin-bottom:34px;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.summits-selector-head{margin-bottom:18px}
+.summits-selector-head h2{margin:0;font:500 1.875rem/1.15 var(--font-display)}
+.summits-selector .tab-buttons{gap:18px;margin:0;padding:0;border:0}
+.summits-selector .tab-btn{padding:0 16px}
+
+@media (max-width:640px){
+	.summits-selector{padding:24px 0}
+	.summits-selector-head h2{font-size:1.6875rem}
+	.summits-selector .tab-buttons{gap:12px}
+}

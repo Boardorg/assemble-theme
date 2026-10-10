@@ -63,6 +63,24 @@ add_action(
 			);
 		}
 
+		// The Summits page (page-summits.php): the selector shares the explorer's pills and script.
+		if ( is_page( 'summits' ) ) {
+			foreach ( array( 'content-explorer', 'summits-hero', 'summits-selector', 'summits-practice-detail', 'summits-matrix' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+
+			wp_enqueue_script(
+				'assemble-content-explorer',
+				get_template_directory_uri() . '/assets/js/content-explorer.js',
+				array(),
+				assemble_asset_version( 'assets/js/content-explorer.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
 		// Field Report pages (single-field_report.php) and draft previews.
 		if ( is_singular( 'field_report' ) || assemble_is_report_preview() ) {
 			foreach ( array( 'article-hero', 'article-body-with-aside', 'article-author-bio', 'related-peer-intelligence', 'account-cta', 'report-gate' ) as $assemble_module ) {

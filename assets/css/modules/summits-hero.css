@@ -1,0 +1,20 @@
+/*
+ * Module: summits-hero (wireframe 2). Measured from the rollup at 1440: copy
+ * and a 16:9 image side by side (1.05fr / .85fr, 48 gap), stacked at ≤1100.
+ */
+
+.summits-page{padding-top:56px}
+.summits-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.85fr);gap:var(--s-7);align-items:center;margin-bottom:44px}
+.summits-hero .eyebrow{margin:0;color:var(--ink-700)}
+.summits-hero h1{max-width:13ch;margin:12px 0 18px;letter-spacing:-.02em}
+.summits-hero p{max-width:66ch;margin:0;color:var(--ink-700);line-height:1.7}
+.summits-hero-image{border-radius:var(--r-md)}
+
+@media (max-width:1100px){
+	.summits-hero{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.summits-page{padding-top:var(--s-5)}
+	.summits-hero{gap:var(--s-5);margin-bottom:var(--s-6)}
+}

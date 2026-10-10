@@ -58,6 +58,14 @@
 .benchmark-bars span:nth-child(3){height:36px;background:rgba(38,37,31,.62)}
 .ld-cta-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
 
+/* ld-summit-card (Next Summit). The mockup's visual is a photo placeholder; with
+ * no summit photography it holds the summit's colour logo on a sunken 16:9 frame. */
+.ld-summit-body{display:flex;flex-direction:column;gap:14px}
+.ld-summit-body h5{margin:0;font:500 1.25rem/1.18 var(--font-text);letter-spacing:-.012em}
+.ld-summit-body p{margin:0;color:var(--ink-700);font-size:.875rem;line-height:1.65}
+.ld-summit-visual{display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;padding:12%;background:var(--surface-sunken);border-radius:var(--r-sm)}
+.ld-summit-visual img{display:block;width:100%;height:100%;object-fit:contain}
+
 @media (max-width:1180px){
 	.ld-card-grid,.ld-card-grid--two,.ld-topic-intro-row{grid-template-columns:1fr}
 }

@@ -9,9 +9,12 @@
  * community directory, so Communities without reports still get a tab and an
  * empty state.
  *
+ * Next Summit (ld-summit-card) is the soonest summit featured for the
+ * Community, from executiveplatforms.com through assemble-core (Phase 5a).
+ *
  * Not built yet, because nothing feeds them: the source-branding card
- * (topic-intro-source-card), Upcoming Working Sessions, Next Summit (Phase 5)
- * and Leaders to follow. See docs/handoff.md → Placeholders.
+ * (topic-intro-source-card), Upcoming Working Sessions and Leaders to follow.
+ * See docs/handoff.md → Placeholders.
  *
  * Without JavaScript the opening panel shows and the pills do nothing.
  */
@@ -112,7 +115,8 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 							</div>
 						</div>
 
-						<div class="ld-card-grid<?php echo $assemble_feature ? ' ld-card-grid--two' : ' ld-card-grid--one'; ?>">
+						<?php $assemble_summit = assemble_next_summit( $assemble_key, $assemble_community['slug'] ); ?>
+						<div class="ld-card-grid<?php echo $assemble_feature || $assemble_summit ? ' ld-card-grid--two' : ' ld-card-grid--one'; ?>">
 							<?php
 							get_template_part(
 								'template-parts/modules/ld-insights-card',
@@ -120,9 +124,14 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 								array( 'community' => $assemble_community )
 							);
 
-							if ( $assemble_feature ) {
+							if ( $assemble_feature || $assemble_summit ) {
 								echo '<div class="ld-side-stack">';
-								get_template_part( 'template-parts/modules/ld-benchmark-card', null, array( 'feature' => $assemble_feature ) );
+								if ( $assemble_feature ) {
+									get_template_part( 'template-parts/modules/ld-benchmark-card', null, array( 'feature' => $assemble_feature ) );
+								}
+								if ( $assemble_summit ) {
+									get_template_part( 'template-parts/modules/ld-summit-card', null, array( 'summit' => $assemble_summit ) );
+								}
 								echo '</div>';
 							}
 							?>

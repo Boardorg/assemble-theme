@@ -51,7 +51,7 @@ function assemble_primary_nav_fallback(): array {
 		),
 		array(
 			'label' => assemble_label( 'summits' ),
-			'url'   => home_url( '/summits/' ),
+			'url'   => assemble_summits_url(),
 		),
 	);
 }

@@ -361,3 +361,159 @@ add_action(
 		get_footer();
 	}
 );
+
+/*
+ * ---------------------------------------------------------------------------
+ * Summits (Phase 5a). Facts come from executiveplatforms.com through
+ * assemble-core (assemble_summits()), plus Assemble's own extras: practice
+ * area, Communities, blurb and logo. Every summit link goes to EP through
+ * assemble_summit_url(), the one thing that changes when summit pages move
+ * onto Assemble (5b).
+ */
+
+/** Is assemble-core's summits reader active, at 0.4.0 or later (extras)? */
+function assemble_has_summits(): bool {
+	return function_exists( 'assemble_summits_with_extras' );
+}
+
+/**
+ * Upcoming summits, soonest first, with extras merged in. `area` is always a
+ * `data-area` value ('neutral' when the summit has no colour ramp).
+ *
+ * @return array<int,array>
+ */
+function assemble_upcoming_summits(): array {
+	if ( ! assemble_has_summits() ) {
+		return array();
+	}
+
+	return array_map(
+		static function ( array $summit ): array {
+			$summit['area'] = assemble_area( (string) $summit['area'] );
+
+			return $summit;
+		},
+		assemble_summits_with_extras()
+	);
+}
+
+/**
+ * The summits to feature for a Community, or for a practice area with no
+ * Communities: the ones mapped to it (or to every Community in its area), else
+ * the soonest in its area.
+ *
+ * @param string $community_slug '' for a practice area's own panel.
+ * @return array<int,array>
+ */
+function assemble_featured_summits( string $community_slug, string $area, int $count = 3 ): array {
+	$in_area  = array_filter( assemble_upcoming_summits(), static fn( $s ) => $s['area'] === $area );
+	$featured = '' === $community_slug ? array() : array_filter(
+		$in_area,
+		static fn( $s ) => in_array( $community_slug, $s['communities'], true ) || in_array( '*', $s['communities'], true )
+	);
+
+	return array_slice( array_values( $featured ? $featured : $in_area ), 0, $count );
+}
+
+/**
+ * The next summit for a Community (its own summit first, e.g. NALES for L&D,
+ * then one shared by its whole area), for a practice area, or of all when both
+ * are ''.
+ */
+function assemble_next_summit( string $area = '', string $community_slug = '' ): ?array {
+	if ( '' === $area ) {
+		return assemble_upcoming_summits()[0] ?? null;
+	}
+
+	$featured = assemble_featured_summits( $community_slug, $area, PHP_INT_MAX );
+	$own      = array_filter( $featured, static fn( $s ) => in_array( $community_slug, $s['communities'], true ) );
+
+	return $own ? reset( $own ) : ( $featured[0] ?? null );
+}
+
+/**
+ * Where a summit link goes: its executiveplatforms.com page, or EP's
+ * registration page for "Reserve your seat". Summit pages on Assemble (5b)
+ * change only this.
+ *
+ * @param string $which 'details' or 'register'.
+ */
+function assemble_summit_url( array $summit, string $which = 'details' ): string {
+	$url = 'register' === $which && '' !== (string) ( $summit['register_url'] ?? '' ) ? $summit['register_url'] : (string) ( $summit['url'] ?? '' );
+
+	/**
+	 * Filter a summit link.
+	 *
+	 * @param string $url
+	 * @param array  $summit
+	 * @param string $which
+	 */
+	return (string) apply_filters( 'assemble/summit_url', $url, $summit, $which );
+}
+
+/**
+ * A summit's dates from its start and end (never EP's own date line):
+ * "April 5–7, 2027", "September 30 – October 2, 2026",
+ * "December 30, 2026 – January 1, 2027". 'short' abbreviates the months.
+ */
+function assemble_summit_dates( array $summit, string $style = 'long' ): string {
+	$utc   = new DateTimeZone( 'UTC' );
+	$start = date_create_immutable_from_format( '!Y-m-d', (string) ( $summit['start'] ?? '' ), $utc );
+	$end   = date_create_immutable_from_format( '!Y-m-d', (string) ( $summit['end'] ?? '' ), $utc );
+
+	if ( ! $start ) {
+		return '';
+	}
+
+	$month = 'short' === $style ? 'M' : 'F';
+	$date  = static fn( DateTimeImmutable $d, string $format ): string => wp_date( $format, $d->getTimestamp(), $utc );
+
+	if ( ! $end || $end <= $start ) {
+		return $date( $start, "$month j, Y" );
+	}
+
+	if ( $start->format( 'Y' ) !== $end->format( 'Y' ) ) {
+		return $date( $start, "$month j, Y" ) . ' – ' . $date( $end, "$month j, Y" );
+	}
+
+	if ( $start->format( 'm' ) !== $end->format( 'm' ) ) {
+		return $date( $start, "$month j" ) . ' – ' . $date( $end, "$month j, Y" );
+	}
+
+	return $date( $start, "$month j" ) . '–' . $date( $end, 'j, Y' );
+}
+
+/** "Palm Springs, CA", with no trailing period (wireframe edits B.2). */
+function assemble_summit_place( array $summit ): string {
+	return trim( rtrim( trim( (string) ( $summit['city'] ?? '' ) . ', ' . trim( (string) ( $summit['state'] ?? '' ) ) ), ', .' ) );
+}
+
+/** "38 days away", "Tomorrow", "Today" or "Happening now", from the site's today. */
+function assemble_summit_countdown( array $summit ): string {
+	$today = date_create_immutable( wp_date( 'Y-m-d' ), new DateTimeZone( 'UTC' ) );
+	$start = date_create_immutable( (string) ( $summit['start'] ?? '' ), new DateTimeZone( 'UTC' ) );
+
+	if ( ! $today || ! $start || '' === (string) ( $summit['start'] ?? '' ) ) {
+		return '';
+	}
+
+	$days = (int) $today->diff( $start )->format( '%r%a' );
+
+	if ( $days < 0 ) {
+		return __( 'Happening now', 'assemble' );
+	}
+
+	if ( $days <= 1 ) {
+		return 0 === $days ? __( 'Today', 'assemble' ) : __( 'Tomorrow', 'assemble' );
+	}
+
+	/* translators: %d: number of days until the summit starts. */
+	return sprintf( _n( '%d day away', '%d days away', $days, 'assemble' ), $days );
+}
+
+/** The Summits page (a WordPress page with the slug "summits", rendered by page-summits.php). */
+function assemble_summits_url(): string {
+	$page = get_page_by_path( 'summits' );
+
+	return $page ? (string) get_permalink( $page ) : home_url( '/summits/' );
+}
