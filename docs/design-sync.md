@@ -8,7 +8,10 @@ Which version of the design the theme last matched. Update this at the end of an
 2. Compare `assemble-site-v2-manifest.json` with the hashes below. A changed page hash means that page's modules changed; a changed guide CSS hash means tokens or shared components changed.
 3. If `web-style-guide.html`'s draft number changed, re-diff its `:root` against `assets/css/tokens.css` first.
 
-## Last synced: 2026-10-07 (Draft 0.4; Phase 4 article)
+## Last synced: 2026-10-09 (Draft 0.4; Phase 5a Summits)
+
+2026-10-09 check: `--check` reports the rollup current; guide CSS, components, rollup source and built rollup hashes all identical to the 2026-10-07 values below. Ported "2. Summits" from the rollup's `wireframeData`.
+
 
 2026-10-07 check: guide CSS, components and every public page source unchanged. The built rollup and builder hashes changed only because of the Member Center / Network split (2026-10-07): diffing the rollup's `wireframeData` against the archived `2026-10-07-before-network-split` build shows all 11 public entries byte-identical, including "4. Article". Nothing to port.
 
@@ -33,7 +36,7 @@ Which version of the design the theme last matched. Update this at the end of an
 | `public-footer` | home mockup + `assemble-public-v2.css` | 1440: columns identical; Draft 0.4 logged-out create-account row added (measured identical). Stacks 2-up at 980, 1-up at 640. YouTube waits on a URL |
 | `home-top-stories` | home mockup (rollup) | 1440: card, grid (793/397), image, tag, headline and side-card boxes identical to the mockup; real headlines run longer than the sample copy |
 | `peer-intelligence-splash` (+ free-account CTA) | home mockup | 1440: band, grid (663/599), statement and CTA card identical. Art slot is an empty frame (no image in the design yet) |
-| `content-explorer` (`explore-peer-intelligence`, `topic-navigation`, `ld-insights-card`, `ld-benchmark-card`) | home mockup + guide gallery | 1440: heading, pill rows (48px pills), intro and card styles match. Source card, Working Sessions, Next Summit and Leaders not built (no data source) |
+| `content-explorer` (`explore-peer-intelligence`, `topic-navigation`, `ld-insights-card`, `ld-benchmark-card`, `ld-summit-card`) | home mockup + guide gallery | 1440: heading, pill rows (48px pills), intro and card styles match. Next Summit added in Phase 5a. Source card, Working Sessions and Leaders not built (no data source) |
 | `learn-more-band` | home mockup | 1440: identical boxes. Rendered once below the panels, in neutral |
 | `assets/svg/icons.svg` | guide `#icon-sprite` | 16 icons |
 | `article-hero` (breadcrumbs, content head, share row, inline author, hero image) | article mockup (rollup) | 1440: breadcrumbs, hero (1120), tag, title (637×145), dek (960), date, share row, meta row and hero image (1120×560) boxes identical. 980/375: no sideways scroll; title 34px at ≤640 |
@@ -42,13 +45,18 @@ Which version of the design the theme last matched. Update this at the end of an
 | `related-peer-intelligence` (+ `report-card`) | article mockup | 1440: grid 1120, cards 361, thumb 323×182, h3 20/25 identical. The same card fills the Insights archives |
 | `account-cta` | article mockup | Ported from the mockup's rules (logged-out only, so not measured in the admin session) |
 | `report-gate`, `report-archive` | — | No wireframe: on-system, flagged in the handoff |
+| `summits-hero` | Summits mockup (rollup) | 1440: grid 690/558, kicker, h1 (531×206, 70/.98, −.02em), intro (653) and 16:9 image (558×314) identical; 56px below the masthead as in the mockup. Stacks at ≤1100 |
+| `summits-selector` | Summits mockup + `content-explorer` pills | 1440: section rules, heading 30/34.5, pills 44 tall with 16px padding, rows 18 apart. About 10px shorter than the mockup (its row wrapper has extra space) |
+| `summits-practice-detail` (+ `event-card`, `free-account-cta`) | Summits mockup | 1440: intro card (min 254, 44 padding, h2 42), Featured Summits head (25/30), event cards 420×270 with centred button, free-account CTA 1296×109 identical. The "Source of peer intelligence" panel, Summit talks and Leaders to follow aren't built (no data source) |
+| `summits-matrix` | Summits mockup | 1440: rows 250/770/174 with a 4px area rule, eyebrow 12/700, title 20/25 in accent ink, date line 16/24 500, blurb 16/1.55, button 162×44 identical; rows run taller where EP's titles are longer. One column at ≤760 |
+| `ld-summit-card` (Next Summit) | home mockup | Title, dates, place, button and "See all Summits" from the mockup; the photo placeholder holds the summit's colour logo on a sunken 16:9 frame |
 
 ### Page hashes at last sync
 
 | Page | sha256 (first 12) | Ported |
 |---|---|---|
 | 1. Home (logged out).html | `6a983f9de5d7` | header, footer, homepage modules (2026-10-06, rollup with content review edits) |
-| 2. Summits.html | `a4fa6c082769` | — |
+| 2. Summits.html | `a4fa6c082769` | summits modules (2026-10-09, rollup with content review edits) |
 | 3. Summit (NALES).html | `616a48ad7e44` | — |
 | 3a. Summit (NALES Agenda).html | `7f64c036e271` | — |
 | 3b. Summit (NALES Speakers).html | `3bad201cadc0` | — |
