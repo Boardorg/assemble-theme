@@ -8,7 +8,9 @@ Which version of the design the theme last matched. Update this at the end of an
 2. Compare `assemble-site-v2-manifest.json` with the hashes below. A changed page hash means that page's modules changed; a changed guide CSS hash means tokens or shared components changed.
 3. If `web-style-guide.html`'s draft number changed, re-diff its `:root` against `assets/css/tokens.css` first.
 
-## Last synced: 2026-10-09 (Draft 0.4; Phase 5a Summits)
+## Last synced: 2026-10-11 (Draft 0.4; Phase 6 standard pages)
+
+2026-10-11 check: `--check` reports the rollup current; built rollup `fb0025c6…` and the guide CSS and components hashes identical to 2026-10-09. Standard pages, search and 404 have no wireframe or gallery module, so nothing was ported: they're built on-system from `base.css` and flagged for design. `theme.json`'s Meta and Compact font sizes raised to 14px (Draft 0.4's floor).
 
 2026-10-09 check: `--check` reports the rollup current; guide CSS, components, rollup source and built rollup hashes all identical to the 2026-10-07 values below. Ported "2. Summits" from the rollup's `wireframeData`.
 
