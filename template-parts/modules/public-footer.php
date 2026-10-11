@@ -15,7 +15,7 @@ $assemble_columns = (array) assemble_setting( 'footer_columns', array() );
 		<?php if ( ! is_user_logged_in() ) : ?>
 			<div class="footer-cta-row">
 				<p><?php echo esc_html( (string) assemble_setting( 'footer_cta_text', '' ) ); ?></p>
-				<a class="btn-solid footer-cta" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
+				<a class="btn-solid footer-cta" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
 			</div>
 		<?php endif; ?>
 		<div class="footer-grid">

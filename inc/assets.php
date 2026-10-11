@@ -87,6 +87,20 @@ add_action(
 				assemble_enqueue_module_style( $assemble_module );
 			}
 
+			// The free-read meter, signed-out only (Phase 7).
+			if ( ! is_user_logged_in() && is_singular( 'field_report' ) ) {
+				wp_enqueue_script(
+					'assemble-report-meter',
+					get_template_directory_uri() . '/assets/js/report-meter.js',
+					array(),
+					assemble_asset_version( 'assets/js/report-meter.js' ),
+					array(
+						'strategy'  => 'defer',
+						'in_footer' => true,
+					)
+				);
+			}
+
 			wp_enqueue_script(
 				'assemble-article-hero',
 				get_template_directory_uri() . '/assets/js/article-hero.js',
@@ -99,8 +113,15 @@ add_action(
 			);
 		}
 
+		// Account pages (Phase 7): Sign in, Create account, Account.
+		if ( assemble_is_account_page() ) {
+			foreach ( array( 'account-header', 'account-details-form', 'interest-area-grid' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
+
 		// Standard pages, team bios, search and 404 (Phase 6). The homepage and Summits page have their own modules.
-		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) ) || is_singular( 'team' ) || is_search() || is_404() ) {
+		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() ) || is_singular( 'team' ) || is_search() || is_404() ) {
 			assemble_enqueue_module_style( 'page-content' );
 		}
 		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {

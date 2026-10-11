@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 		<p><?php esc_html_e( 'Follow the Communities that matter to you and get fresh insights, benchmarks, community conversations, and upcoming executive gatherings from across Assemble.', 'assemble' ); ?></p>
 	</div>
 	<div class="actions">
-		<a class="btn-solid" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
-		<a class="btn-outline" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'sign_in_url', '/login/' ) ) ); ?>"><?php echo esc_html( assemble_label( 'sign_in' ) ); ?></a>
+		<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register', (string) get_permalink() ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
+		<a class="btn-outline" href="<?php echo esc_url( assemble_account_link( 'login', (string) get_permalink() ) ); ?>"><?php echo esc_html( assemble_label( 'sign_in' ) ); ?></a>
 	</div>
 </section>

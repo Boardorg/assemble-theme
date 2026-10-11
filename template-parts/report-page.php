@@ -33,14 +33,29 @@ $assemble_classes   = array( 'report', 'report--' . $assemble_report['view'] );
 			<?php
 			get_template_part( 'template-parts/modules/article-hero', null, $assemble_args );
 
-			switch ( $assemble_report['view'] ) {
-				case 'public':
-				case 'denied':
-					get_template_part( 'template-parts/modules/report-gate', null, $assemble_args );
-					break;
-				default:
-					get_template_part( 'template-parts/modules/article-body-with-aside', null, $assemble_args );
-					get_template_part( 'template-parts/modules/article-author-bio', null, $assemble_args );
+			$assemble_view = (string) $assemble_report['view'];
+
+			if ( 'public' === $assemble_view && ! empty( $assemble_report['full_text'] ) ) {
+				// A Public report in full (the feed's afr_public_full_text, from assemble-core).
+				// Signed out, the free-read meter (assets/js/report-meter.js) may swap it for
+				// the create-account prompt after a few reads; without JavaScript it stays open.
+				$assemble_metered = ! is_user_logged_in() && $assemble_post_id;
+				if ( $assemble_metered ) {
+					$assemble_free = function_exists( 'assemble_free_reads' ) ? assemble_free_reads() : (int) assemble_setting( 'free_reads', 2 );
+					printf( '<div class="report-meter" data-report-meter data-report-id="%d" data-free-reads="%d">', (int) $assemble_post_id, (int) $assemble_free );
+				}
+				get_template_part( 'template-parts/modules/article-body-with-aside', null, $assemble_args );
+				get_template_part( 'template-parts/modules/article-author-bio', null, $assemble_args );
+				if ( $assemble_metered ) {
+					echo '</div><div class="report-meter-prompt" data-report-meter-prompt hidden>';
+					get_template_part( 'template-parts/modules/report-gate', null, $assemble_args + array( 'metered' => true ) );
+					echo '</div>';
+				}
+			} elseif ( 'public' === $assemble_view || 'denied' === $assemble_view ) {
+				get_template_part( 'template-parts/modules/report-gate', null, $assemble_args );
+			} else {
+				get_template_part( 'template-parts/modules/article-body-with-aside', null, $assemble_args );
+				get_template_part( 'template-parts/modules/article-author-bio', null, $assemble_args );
 			}
 
 			get_template_part(

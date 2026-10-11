@@ -79,7 +79,7 @@ $assemble_heading   = $assemble_community ? $assemble_community['label'] : (stri
 					?>
 				</p>
 			</div>
-			<a class="btn-solid" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
+			<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
 		</div>
 	<?php endif; ?>
 </section>

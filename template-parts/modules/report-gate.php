@@ -6,9 +6,14 @@
  *
  * Public: the attribution line and the opening paragraphs the feed allows,
  * then the join prompt. Denied: the source line and the members-only gate.
- * The beta bypass button appears only when the feed offers it.
+ * The beta bypass button appears only when the feed offers it. A signed-in
+ * free account gets "Ask about membership" (the membership_url Site Setting)
+ * instead of Sign in.
  *
- * @var array $args { report: view model, area: data-area key }
+ * Metered: the free-read meter's prompt for a Public report (Phase 7, no
+ * wireframe): the opening paragraphs, then Create free account and Sign in.
+ *
+ * @var array $args { report: view model, area: data-area key, metered?: bool }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -16,11 +21,15 @@ defined( 'ABSPATH' ) || exit;
 $assemble_report = (array) ( $args['report'] ?? array() );
 $assemble_s      = (array) ( $assemble_report['sections'] ?? array() );
 $assemble_public = 'public' === ( $assemble_report['view'] ?? '' );
+$assemble_metered = ! empty( $args['metered'] );
 $assemble_join   = (array) ( $assemble_s['join'] ?? array() );
 $assemble_gate   = (array) ( $assemble_s['gate'] ?? array() );
 $assemble_bypass = $assemble_public ? ( $assemble_join['bypass'] ?? null ) : ( $assemble_gate['bypass'] ?? null );
-$assemble_create = assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) );
-$assemble_signin = $assemble_gate['sign_in_url'] ?? ( is_user_logged_in() ? '' : assemble_url( (string) assemble_setting( 'sign_in_url', '/login/' ) ) );
+$assemble_here   = (string) get_permalink();
+$assemble_create = assemble_account_link( 'register', $assemble_here );
+$assemble_signin = $assemble_gate['sign_in_url'] ?? ( is_user_logged_in() ? '' : assemble_account_link( 'login', $assemble_here ) );
+// A signed-in free account can't sign in again: offer the membership link instead (Phase 7).
+$assemble_member = is_user_logged_in() ? assemble_url( (string) assemble_setting( 'membership_url', '/contact-us/' ) ) : '';
 ?>
 <div class="report-gate-layout" data-area="<?php echo esc_attr( (string) ( $args['area'] ?? 'neutral' ) ); ?>">
 	<?php if ( $assemble_public && isset( $assemble_s['setup'] ) ) : ?>
@@ -33,9 +42,14 @@ $assemble_signin = $assemble_gate['sign_in_url'] ?? ( is_user_logged_in() ? '' :
 	<?php endif; ?>
 
 	<section class="report-gate" aria-labelledby="report-gate-title">
-		<span class="tag tag-access"><?php echo assemble_icon( 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?><?php echo esc_html( assemble_label( 'members_only' ) ); ?></span>
+		<?php if ( ! $assemble_metered ) : ?>
+			<span class="tag tag-access"><?php echo assemble_icon( 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?><?php echo esc_html( assemble_label( 'members_only' ) ); ?></span>
+		<?php endif; ?>
 
-		<?php if ( $assemble_public ) : ?>
+		<?php if ( $assemble_metered ) : ?>
+			<h2 id="report-gate-title"><?php esc_html_e( 'Keep reading with a free account', 'assemble' ); ?></h2>
+			<p><?php esc_html_e( 'You’ve read your free Field Reports for now. Create a free account to keep reading, or sign in.', 'assemble' ); ?></p>
+		<?php elseif ( $assemble_public ) : ?>
 			<h2 id="report-gate-title"><?php esc_html_e( 'Read the full Field Report', 'assemble' ); ?></h2>
 			<p>
 				<?php
@@ -52,8 +66,13 @@ $assemble_signin = $assemble_gate['sign_in_url'] ?? ( is_user_logged_in() ? '' :
 		<?php endif; ?>
 
 		<div class="actions">
-			<?php if ( $assemble_public ) : ?>
+			<?php if ( $assemble_metered ) : ?>
+				<a class="btn-solid" href="<?php echo esc_url( $assemble_create ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
+			<?php elseif ( $assemble_public ) : ?>
 				<a class="btn-solid" href="<?php echo esc_url( ! empty( $assemble_join['url'] ) ? $assemble_join['url'] : $assemble_create ); ?>"><?php esc_html_e( 'Join the Assemble network', 'assemble' ); ?></a>
+			<?php endif; ?>
+			<?php if ( $assemble_member && ! $assemble_public ) : ?>
+				<a class="btn-solid" href="<?php echo esc_url( $assemble_member ); ?>"><?php esc_html_e( 'Ask about membership', 'assemble' ); ?></a>
 			<?php endif; ?>
 			<?php if ( $assemble_signin ) : ?>
 				<a class="<?php echo $assemble_public ? 'btn-outline' : 'btn-solid'; ?>" href="<?php echo esc_url( $assemble_signin ); ?>"><?php echo esc_html( assemble_label( 'sign_in' ) ); ?></a>

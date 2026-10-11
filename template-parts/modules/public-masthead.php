@@ -12,26 +12,36 @@ defined( 'ABSPATH' ) || exit;
 
 $assemble_nav = assemble_primary_nav_items();
 
+// Signed in: one Account button in the masthead; the drawer adds Sign out.
+// The signed-in state has no wireframe: on-system, flagged for design.
 $assemble_account = is_user_logged_in()
 	? array(
 		array(
-			'label' => __( 'Account', 'assemble' ),
-			'url'   => assemble_url( '/account/' ),
+			'label' => assemble_label( 'account' ),
+			'url'   => assemble_account_link( 'account' ),
 			'class' => 'btn-outline',
 		),
 	)
 	: array(
 		array(
 			'label' => assemble_label( 'sign_in' ),
-			'url'   => assemble_url( (string) assemble_setting( 'sign_in_url', '/login/' ) ),
+			'url'   => assemble_account_link( 'login' ),
 			'class' => 'btn-outline',
 		),
 		array(
 			'label' => assemble_label( 'create' ),
-			'url'   => assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) ),
+			'url'   => assemble_account_link( 'register' ),
 			'class' => 'btn-solid',
 		),
 	);
+$assemble_drawer_actions = $assemble_account;
+if ( is_user_logged_in() ) {
+	$assemble_drawer_actions[] = array(
+		'label' => assemble_label( 'sign_out' ),
+		'url'   => assemble_account_link( 'logout' ),
+		'class' => 'btn-outline',
+	);
+}
 
 $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 ?>
@@ -87,7 +97,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 				</ul>
 			</nav>
 			<div class="site-drawer__actions">
-				<?php foreach ( $assemble_account as $assemble_action ) : ?>
+				<?php foreach ( $assemble_drawer_actions as $assemble_action ) : ?>
 					<a class="<?php echo esc_attr( $assemble_action['class'] ); ?>" href="<?php echo esc_url( $assemble_action['url'] ); ?>"><?php echo esc_html( $assemble_action['label'] ); ?></a>
 				<?php endforeach; ?>
 			</div>

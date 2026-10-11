@@ -96,7 +96,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 								printf( esc_html__( '%1$s %2$s are on their way. Create a free account to hear when they launch.', 'assemble' ), esc_html( $assemble_area['label'] ), esc_html( assemble_label( 'communities' ) ) );
 								?>
 							</p>
-							<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'create_account_url', '/register/' ) ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
+							<a class="link-arrow" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
 						</div>
 					</div>
 				</div>
