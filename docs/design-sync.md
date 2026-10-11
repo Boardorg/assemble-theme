@@ -8,7 +8,11 @@ Which version of the design the theme last matched. Update this at the end of an
 2. Compare `assemble-site-v2-manifest.json` with the hashes below. A changed page hash means that page's modules changed; a changed guide CSS hash means tokens or shared components changed.
 3. If `web-style-guide.html`'s draft number changed, re-diff its `:root` against `assets/css/tokens.css` first.
 
-## Last synced: 2026-10-11 (Draft 0.4; Phase 7 accounts)
+## Last synced: 2026-10-11 (Draft 0.4; Phase 8 playbooks)
+
+2026-10-11 (Phase 8) check: `--check` reports the rollup current; built rollup `fb0025c6…` unchanged. Ported "5. Playbook" from the rollup's `wireframeData` (page HTML sha256 `77eb04bcb93a…`) and the guide gallery's five `playbook-*` entries: `playbook-hero`, `playbook-toc`, `playbook-intro-block`, `playbook-phase-section`, `playbook-continuing-cards`, measured at 1440. The mockup's tablet title size (48px at ≤980) not copied, as on the article.
+
+## Previous: 2026-10-11 (Draft 0.4; Phase 7 accounts)
 
 2026-10-11 (Phase 7) check: `--check` reports the rollup current; built rollup `fb0025c6…`, guide CSS, components and builder hashes unchanged. Ported "6. Create Account" (source `c51eaf4da36b…`) from the rollup's `wireframeData`: `account-header`, `account-details-form`, `interest-area-grid`, measured at 1440. Newsletter toggles and topic tags left out (Cale: later phase); the Communities drill-down added on-system.
 
