@@ -120,6 +120,35 @@ function assemble_community_stories( string $community_slug, int $count = 3 ): a
 	return assemble_has_feed() ? array_map( 'assemble_story', AFR_Query::in_community( $community_slug, $count ) ) : array();
 }
 
+/**
+ * Field Reports matching a search, newest first, as cards. Matched on the title
+ * and excerpt only: the stored post_content is the full rendered report, and a
+ * match on it would reveal what a gated report says (see inc/pages.php).
+ *
+ * @return array<int,array> Cards from assemble_story().
+ */
+function assemble_search_stories( string $terms, int $count = 9 ): array {
+	if ( ! assemble_has_feed() || '' === trim( $terms ) ) {
+		return array();
+	}
+
+	$query = new WP_Query(
+		array(
+			'post_type'           => AFR_CPT::POST_TYPE,
+			'post_status'         => 'publish',
+			's'                   => $terms,
+			'search_columns'      => array( 'post_title', 'post_excerpt' ),
+			'posts_per_page'      => $count,
+			'orderby'             => 'date',
+			'order'               => 'DESC',
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+		)
+	);
+
+	return array_map( 'assemble_story', $query->posts );
+}
+
 /** Where a community's full list of Insights lives. */
 function assemble_community_url( string $community_slug ): string {
 	if ( class_exists( 'AFR_CPT' ) ) {

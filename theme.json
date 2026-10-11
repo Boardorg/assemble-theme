@@ -42,8 +42,8 @@
 				{ "slug": "body", "name": "Parabolica", "fontFamily": "parabolica, Arial, \"Helvetica Neue\", Helvetica, sans-serif" }
 			],
 			"fontSizes": [
-				{ "slug": "meta", "name": "Meta", "size": "0.75rem" },
-				{ "slug": "compact", "name": "Compact", "size": "0.8125rem" },
+				{ "slug": "meta", "name": "Meta", "size": "0.875rem" },
+				{ "slug": "compact", "name": "Compact", "size": "0.875rem" },
 				{ "slug": "body", "name": "Body", "size": "1rem" },
 				{ "slug": "lead", "name": "Lead", "size": "1.25rem" },
 				{ "slug": "h4", "name": "Heading 4", "size": "1.25rem" },

@@ -99,6 +99,18 @@ add_action(
 			);
 		}
 
+		// Standard pages, team bios, search and 404 (Phase 6). The homepage and Summits page have their own modules.
+		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) ) || is_singular( 'team' ) || is_search() || is_404() ) {
+			assemble_enqueue_module_style( 'page-content' );
+		}
+		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {
+			assemble_enqueue_module_style( 'team' );
+		}
+		if ( is_search() ) {
+			assemble_enqueue_module_style( 'related-peer-intelligence' );
+			assemble_enqueue_module_style( 'search-results' );
+		}
+
 		// Insights index and Community archives.
 		if ( is_post_type_archive( 'field_report' ) || is_tax( 'field_report_community' ) ) {
 			foreach ( array( 'article-hero', 'related-peer-intelligence', 'report-archive' ) as $assemble_module ) {

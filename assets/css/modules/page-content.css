@@ -1,0 +1,109 @@
+/*
+ * Standard pages (page.php, Our Team, team bios, search, 404). No wireframe:
+ * on-system and flagged for design. The shell and head follow the article page
+ * (1120px column, content head with the 3px rule); the body is a 720px column
+ * with the article body's type. The block rules below are also the block
+ * editor's styles (inc/setup.php), so editors see what visitors see.
+ */
+
+.page-shell{padding:58px 0 96px}
+.page-shell .breadcrumbs{max-width:1120px;margin:8px auto 20px}
+.page-head{max-width:1120px;margin:0 auto 48px}
+.page-head h1{max-width:26ch;margin:0}
+.page-dek{max-width:48em;margin:18px 0 0;font:400 1.25rem/1.65 var(--font-body);color:var(--ink-700)}
+
+/* The body column. Wide blocks (and "full" ones, kept inside the page) take the 1120px column. */
+.page-content{max-width:1120px;margin:0 auto}
+.page-content>*{max-width:720px}
+.page-content>.alignwide,.page-content>.alignfull,.page-content>.contact-band,.page-content>.wp-block-columns{max-width:1120px}
+
+/* Blocks. Shared by the front end and the editor (.editor-styles-wrapper). */
+.editor-styles-wrapper{padding-inline:var(--gutter)}
+.page-content,.editor-styles-wrapper{font:400 1rem/1.7 var(--font-body);color:var(--ink-700)}
+.page-content p,.editor-styles-wrapper p{margin:0 0 24px}
+.page-content .is-style-lead,.editor-styles-wrapper .is-style-lead{font-size:1.25rem;line-height:1.65;color:var(--ink-900)}
+.page-content h2,.editor-styles-wrapper h2{margin:56px 0 16px}
+.page-content h3,.editor-styles-wrapper h3{margin:40px 0 12px}
+.page-content h4,.editor-styles-wrapper h4{margin:32px 0 10px}
+.page-content>:first-child,.page-content>:first-child>:first-child{margin-top:0}
+.page-content a,.editor-styles-wrapper a{color:var(--ink-900)}
+.page-content strong{color:var(--ink-900)}
+.page-content ul,.page-content ol,.editor-styles-wrapper ul,.editor-styles-wrapper ol{margin:0 0 24px;padding-left:20px}
+.page-content li+li,.editor-styles-wrapper li+li{margin-top:8px}
+.page-content blockquote,.editor-styles-wrapper blockquote{margin:40px 0}
+.page-content blockquote p{margin:0;color:var(--ink-900)}
+.page-content blockquote cite{display:block;margin-top:12px;font:400 .875rem/1.55 var(--font-body);font-style:normal;color:var(--ink-700)}
+.page-content figure,.editor-styles-wrapper figure{margin:40px 0}
+.page-content figure img{border-radius:var(--r-sm)}
+.page-content figcaption,.editor-styles-wrapper figcaption{margin-top:8px;font:400 .875rem/1.55 var(--font-body);color:var(--ink-700)}
+.page-content hr,.wp-block-separator{height:0;margin:48px 0;border:0;border-top:1px solid var(--line)}
+.page-content table{width:100%;border-collapse:collapse;font-size:.875rem}
+.page-content th,.page-content td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.page-content th{color:var(--ink-900);font-weight:500}
+.page-content iframe{max-width:100%}
+
+/* Buttons: pills, sentence case, centred, no arrow (.btn-solid / .btn-outline). */
+.wp-block-buttons{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+.wp-block-button__link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border:1px solid var(--ink-900);border-radius:var(--r-pill);background:var(--ink-900);color:var(--surface)!important;font:500 .875rem/1.4 var(--font-body);letter-spacing:.02em;text-align:center;text-decoration:none;transition:background var(--motion)}
+.wp-block-button__link:hover{background:var(--ink-700);border-color:var(--ink-700);text-decoration:none}
+.is-style-outline>.wp-block-button__link{background:transparent;color:var(--ink-900)!important}
+.is-style-outline>.wp-block-button__link:hover{background:var(--surface-sunken);border-color:var(--ink-900)}
+
+/* Columns (core's flex layout, stacking below 782px). "Lists in columns" sets short headed lists side by side. */
+.wp-block-columns{gap:32px;margin:0 0 32px}
+.wp-block-column>:last-child{margin-bottom:0}
+.wp-block-columns.list-columns{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:24px 32px;padding:28px 0;border-block:1px solid var(--line)}
+.list-columns h3{margin:0 0 10px;font:500 .75rem/1.4 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-900)}
+.list-columns ul{margin:0;padding:0;list-style:none;font-size:.875rem;line-height:1.6}
+.list-columns li+li{margin-top:4px}
+
+/* A closing call to action: copy beside a button, like account-cta. */
+.contact-band{display:grid;grid-template-columns:1fr auto;gap:12px 30px;align-items:center;max-width:1120px;margin:64px auto 0;padding:36px 40px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.contact-band h2{margin:0 0 8px!important;font:500 1.875rem/1.15 var(--font-display)}
+.contact-band p{margin:0}
+.contact-band .wp-block-buttons{margin:0}
+.contact-band.wp-block-group{grid-template-columns:1fr}
+
+/* Forms embedded in a page (HubSpot's inline embed, with its own CSS turned off). */
+.hubspot-form{max-width:720px;margin:0 0 40px;padding:32px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.hubspot-form fieldset{max-width:none!important;margin:0;padding:0;border:0}
+.hubspot-form .form-columns-2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.hubspot-form .hs-form-field{margin:0 0 18px}
+.hubspot-form .form-columns-2 .hs-form-field{width:auto!important;float:none!important}
+.hubspot-form .input{margin:0!important}
+.hubspot-form label{display:block;margin-bottom:8px;font:500 .875rem/1.4 var(--font-body);color:var(--ink-900)}
+.hubspot-form .hs-form-required{margin-left:2px;color:var(--ink-700)}
+.hubspot-form .hs-input{width:100%!important;min-height:44px;padding:10px 12px;border:1px solid var(--ink-300);border-radius:var(--r-sm);background:var(--surface);color:var(--ink-900);font:400 1rem/1.5 var(--font-body)}
+.hubspot-form textarea.hs-input{min-height:140px;resize:vertical}
+.hubspot-form input[type=checkbox].hs-input,.hubspot-form input[type=radio].hs-input{width:auto!important;min-height:0;margin-right:8px}
+.hubspot-form .inputs-list{margin:0;padding:0;list-style:none}
+.hubspot-form .hs-error-msgs{margin:6px 0 0;padding:0;list-style:none;font-size:.875rem;color:var(--ink-900)}
+.hubspot-form .hs-error-msg::before{content:"! "}
+.hubspot-form .legal-consent-container,.hubspot-form .hs-richtext{font-size:.875rem;line-height:1.6;color:var(--ink-700)}
+.hubspot-form .hs-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border:1px solid var(--ink-900);border-radius:var(--r-pill);background:var(--ink-900);color:var(--surface);font:500 .875rem/1.4 var(--font-body);letter-spacing:.02em;cursor:pointer}
+.hubspot-form .hs-button:hover{background:var(--ink-700);border-color:var(--ink-700)}
+.hubspot-form .submitted-message{font-size:1.125rem;color:var(--ink-900)}
+.form-note{font-size:.875rem;line-height:1.6}
+
+/* Search form (search page, 404). */
+.search-form{display:flex;gap:10px;max-width:720px;margin:0 0 32px}
+.search-form .field-input{flex:1}
+.destination-links{display:flex;flex-wrap:wrap;gap:12px 32px;margin:0;padding:0;list-style:none}
+.destination-links li+li{margin-top:0}
+
+@media (max-width:980px){
+	.contact-band:not(.wp-block-group){grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.page-shell{padding:36px 0 64px}
+	.page-head{margin-bottom:32px}
+	.page-head h1{font-size:2.125rem}
+	.page-dek{font-size:1.125rem}
+	.wp-block-columns.list-columns{grid-template-columns:1fr 1fr}
+	.contact-band{padding:28px 22px}
+	.contact-band h2{font-size:1.6875rem}
+	.hubspot-form{padding:22px 18px}
+	.hubspot-form .form-columns-2{grid-template-columns:1fr}
+	.search-form{flex-direction:column}
+}

@@ -13,8 +13,9 @@ add_action(
 		add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'editor-styles' );
-		add_editor_style( array( 'assets/css/tokens.css', 'assets/css/base.css' ) );
+		add_editor_style( array( 'assets/css/tokens.css', 'assets/css/base.css', 'assets/css/modules/page-content.css' ) );
 
+		// The footer reads Site Settings → Footer columns, so the masthead is the only menu.
 		register_nav_menus(
 			array(
 				'primary' => __( 'Primary (masthead row)', 'assemble' ),
@@ -34,8 +35,8 @@ add_action(
 );
 
 /**
- * Masthead navigation when no menu is assigned yet (`wp assemble setup` creates
- * the real one in Phase 6). Labels come from assemble_label().
+ * Masthead navigation when no menu is assigned to "primary" (`wp assemble setup`
+ * creates and assigns the "Masthead" menu). Labels come from assemble_label().
  *
  * @return array<int,array{label:string,url:string}>
  */
