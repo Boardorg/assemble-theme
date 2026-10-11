@@ -2,7 +2,8 @@
 /**
  * Search results: matching Insights as report cards (title and excerpt matches
  * only; see assemble_search_stories()), then matching pages and team members
- * as plain rows (the main query, paginated). No wireframe: on-system, flagged.
+ * as plain rows (the main query, paginated). With no terms (the masthead's
+ * search icon), just the form. No wireframe: on-system, flagged.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -11,7 +12,7 @@ get_header();
 
 $assemble_terms   = get_search_query( false );
 $assemble_stories = is_paged() ? array() : assemble_search_stories( $assemble_terms );
-$assemble_pages   = (int) $GLOBALS['wp_query']->found_posts;
+$assemble_pages   = '' !== $assemble_terms ? (int) $GLOBALS['wp_query']->found_posts : 0;
 ?>
 <div class="page-shell search-page" data-area="neutral">
 	<div class="wrap">
@@ -63,7 +64,7 @@ $assemble_pages   = (int) $GLOBALS['wp_query']->found_posts;
 			</section>
 		<?php endif; ?>
 
-		<?php if ( have_posts() ) : ?>
+		<?php if ( '' !== $assemble_terms && have_posts() ) : ?>
 			<section class="search-section" aria-labelledby="search-pages">
 				<h2 class="stories-section-heading" id="search-pages"><?php esc_html_e( 'Pages', 'assemble' ); ?></h2>
 				<ul class="search-rows" role="list">

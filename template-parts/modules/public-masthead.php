@@ -61,7 +61,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 			</a>
 		</div>
 		<div class="right">
-			<a class="header-search-icon" href="<?php echo esc_url( get_search_link() ); ?>" aria-label="<?php echo esc_attr( assemble_label( 'search' ) ); ?>">
+			<a class="header-search-icon" href="<?php echo esc_url( add_query_arg( 's', '', home_url( '/' ) ) ); ?>" aria-label="<?php echo esc_attr( assemble_label( 'search' ) ); ?>">
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 			</a>
 			<?php foreach ( $assemble_account as $assemble_action ) : ?>
