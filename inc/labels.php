@@ -23,6 +23,12 @@ function assemble_label( string $key ): string {
 		'reserve_seat'     => __( 'Reserve your seat', 'assemble' ), // Summit CTA to EP's registration (wireframe 2).
 		'summit_details'   => __( 'View Summit details', 'assemble' ), // Homepage Next Summit card (wireframe 1).
 		'all_summits'      => __( 'See all Summits', 'assemble' ),
+		'playbook'         => __( 'Playbook', 'assemble' ), // Content-type tag (wireframe 5).
+		'playbooks'        => __( 'Playbooks', 'assemble' ),
+		'guidance_layers'  => __( 'How the guidance layers', 'assemble' ), // Default heading of a Layers callout (wireframe 5).
+		'phase'            => __( 'Phase %d', 'assemble' ), // TOC caption of a phase chapter; %d is its number.
+		'help_card'        => __( 'We’re here to help.', 'assemble' ), // Playbook help card heading (wireframe 5).
+		'manage_follows'   => __( 'Manage what you follow', 'assemble' ), // Signed-in TOC card (no wireframe).
 	];
 
 	/**

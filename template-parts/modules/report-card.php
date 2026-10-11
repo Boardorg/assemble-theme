@@ -1,6 +1,7 @@
 <?php
 /**
- * One Field Report card: thumbnail, topic tag, title, excerpt, and an optional
+ * One Field Report (or playbook) card: thumbnail, content-type tag for a playbook,
+ * topic tag, title, excerpt, and an optional
  * "See more" link. Used by related-peer-intelligence and the Insights archives.
  * Gated reports are listed on purpose (sign-ups) and carry the "Board Members
  * only" tag when the feed says this visitor would be refused.
@@ -22,8 +23,11 @@ if ( ! $assemble_story ) {
 	<a class="thumb media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
 		<?php echo assemble_cf_image( $assemble_story['image'], '16:9', '(max-width: 980px) 100vw, 360px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
 	</a>
-	<?php if ( $assemble_story['topic'] || ! empty( $assemble_story['locked'] ) ) : ?>
+	<?php if ( $assemble_story['topic'] || ! empty( $assemble_story['locked'] ) || ! empty( $assemble_story['format'] ) ) : ?>
 		<div class="card-tags">
+			<?php if ( ! empty( $assemble_story['format'] ) ) : ?>
+				<span class="tag tag-format"><?php echo esc_html( $assemble_story['format'] ); ?></span>
+			<?php endif; ?>
 			<?php if ( $assemble_story['topic'] ) : ?>
 				<span class="tag tag-topic kicker" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
 			<?php endif; ?>

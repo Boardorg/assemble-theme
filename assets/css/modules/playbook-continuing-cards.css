@@ -1,0 +1,31 @@
+/*
+ * Module: playbook-continuing-cards. Measured from the "5. Playbook" mockup at
+ * 1440: a ruled section with eyebrow, heading and "See all" link, then two
+ * white cards side by side (stacked below 980). Also the playbook's author bio,
+ * which is the article module with the mockup's round 96px photo.
+ */
+
+.continuing{max-width:1120px;margin:18px auto 0;padding-top:50px;border-top:1px solid var(--line)}
+.continuing>.eyebrow{margin:0 0 12px;color:var(--ink-700)}
+.continuing>h2{margin:0 0 22px;font:500 1.875rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
+.continuing .section-link{margin:20px 0 0}
+.continuing .section-link .link-arrow,.info-card .link-arrow{color:var(--ink-900)}
+.continuing-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.continuing-grid.is-single{grid-template-columns:minmax(0,551px)}
+.info-card{padding:25px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.info-card .eyebrow{margin:0 0 12px;color:var(--ink-900)}
+.info-card h3{margin:8px 0 10px;font:500 1.25rem/1.2 var(--font-text);letter-spacing:-.012em;color:var(--ink-900)}
+.info-card p{margin:0;font-size:.875rem;line-height:1.7;color:var(--ink-700)}
+.info-card .link-arrow{display:inline-block;margin-top:12px}
+
+.playbook .author-bio{grid-template-columns:96px 1fr;gap:10px 24px;align-items:start;margin-top:56px}
+.playbook .author-bio .portrait{width:96px;height:96px;border:1px solid var(--line);border-radius:50%}
+.playbook .author-bio h3{margin:2px 0 7px;line-height:1.2}
+
+@media (max-width:980px){
+	.continuing-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.playbook .author-bio{grid-template-columns:1fr}
+}

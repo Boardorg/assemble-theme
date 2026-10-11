@@ -1,0 +1,35 @@
+/*
+ * Module: playbook-hero. Measured from the "5. Playbook" mockup (rollup) at 1440:
+ * breadcrumbs, the content head (3px accent rule, 28px inset) with the
+ * "Playbook" tag, title, dek, edition, share row and the two bylines. Also the
+ * page shell and the two-column layout the playbook modules sit in.
+ */
+
+.playbook-shell{padding:58px 0 84px}
+.playbook-shell .breadcrumbs{margin:8px 0 20px}
+
+.playbook-hero{max-width:1120px;margin:0 auto 40px}
+.playbook-hero .playbook-type{margin-bottom:10px}
+.playbook-title{max-width:26ch;margin:0 0 22px;font:500 2.625rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
+.playbook-dek{max-width:50em;margin:0 0 18px;font:400 1.25rem/1.65 var(--font-body);color:var(--ink-700)}
+.playbook-edition{margin:4px 0 16px}
+.playbook-hero .share-row{margin:0 0 18px -8px}
+.playbook-hero .meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
+.author-card{display:flex;align-items:center;gap:14px}
+.author-card .author-photo{width:40px;height:40px;flex:0 0 40px;border:1px solid var(--line);border-radius:50%}
+.author-name{margin-bottom:4px;font:400 1.25rem/1.2 var(--font-display);color:var(--ink-900)}
+.author-role{font-size:.875rem;font-weight:500;line-height:1.7;color:var(--accent-ink)}
+
+/* Table of contents beside the body: 280 + 60 + 720 (the body's column is 780 wide, its text 720). */
+.playbook-layout{display:grid;grid-template-columns:280px minmax(0,780px);gap:60px;max-width:1120px;margin:54px auto 0}
+
+@media (max-width:980px){
+	.playbook-layout{grid-template-columns:minmax(0,1fr);gap:40px}
+}
+
+@media (max-width:640px){
+	.playbook-shell{padding-top:36px}
+	.playbook-title{font-size:2.125rem}
+	.playbook-dek{font-size:1.125rem}
+	.playbook-hero .meta-row{gap:12px}
+}

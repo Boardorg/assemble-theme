@@ -5,7 +5,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ASSEMBLE_THEME_VERSION', '0.7.0' );
+define( 'ASSEMBLE_THEME_VERSION', '0.8.0' );
 
 require_once get_template_directory() . '/inc/labels.php';
 require_once get_template_directory() . '/inc/template-tags.php';

@@ -82,7 +82,7 @@ function assemble_first_sentence( string $text ): string {
  * `locked` is the plugin's answer to "would this visitor be refused?", for
  * the "Board Members only" label on cards. It never hides anything.
  *
- * @return array{id:int,title:string,url:string,excerpt:string,date:string,area:string,topic:?array{name:string,slug:string},image:?array,locked:bool}
+ * @return array{id:int,title:string,url:string,excerpt:string,date:string,area:string,topic:?array{name:string,slug:string},image:?array,locked:bool,format:string}
  */
 function assemble_story( WP_Post $post ): array {
 	$entry  = AFR_Renderer::data( $post->ID );
@@ -99,6 +99,8 @@ function assemble_story( WP_Post $post ): array {
 		'topic'   => $topics[0] ?? null,
 		'image'   => is_array( $image ) ? $image : null,
 		'locked'  => class_exists( 'AFR_Audience' ) && 'denied' === AFR_Audience::view_for( $post->ID ),
+		// A content-type tag for anything that isn't a Field Report ("Playbook").
+		'format'  => 'playbook' === $post->post_type ? assemble_label( 'playbook' ) : '',
 	);
 }
 
@@ -360,6 +362,64 @@ add_action(
 	'pre_get_posts',
 	static function ( WP_Query $query ): void {
 		if ( ! is_admin() && $query->is_main_query() && ( $query->is_post_type_archive( 'field_report' ) || $query->is_tax( 'field_report_community' ) ) ) {
+			$query->set( 'posts_per_page', 12 );
+		}
+	}
+);
+
+/*
+ * ---------------------------------------------------------------------------
+ * Playbooks (Phase 8). Rendered from the feed's own view model
+ * (AFR_Playbook::view_model(), assemble-content 1.8.0): the plugin decides the
+ * view and hands over only what it allows. On a playbook, the_content is
+ * always the feed's teaser, so nothing here prints the stored body.
+ */
+
+/** Does the feed carry playbooks (assemble-content 1.8.0 or later)? */
+function assemble_has_playbooks(): bool {
+	return class_exists( 'AFR_Playbook' ) && post_type_exists( 'playbook' );
+}
+
+/**
+ * The view model for one playbook, for the current visitor. Null without the
+ * feed or data; the template then shows the title and the teaser.
+ *
+ * @return array{view:string,post_id:int,sections:array,words:int,full_text:bool,notices:array}|null
+ */
+function assemble_playbook_view( int $post_id ): ?array {
+	if ( ! assemble_has_playbooks() ) {
+		return null;
+	}
+
+	$view = AFR_Playbook::view_model( $post_id );
+
+	return '' === $view['view'] ? null : $view;
+}
+
+/** The /playbooks/ index. */
+function assemble_playbooks_url(): string {
+	$link = post_type_exists( 'playbook' ) ? get_post_type_archive_link( 'playbook' ) : false;
+
+	return $link ? $link : home_url( '/playbooks/' );
+}
+
+/**
+ * The summit for a playbook's help card: the Community's featured Summit (its
+ * own first, then its area's), or null.
+ */
+function assemble_playbook_summit( ?array $community ): ?array {
+	if ( ! $community || ! assemble_has_summits() ) {
+		return null;
+	}
+
+	return assemble_next_summit( assemble_area( (string) $community['practice_area'] ), (string) $community['slug'] );
+}
+
+/** Twelve cards a page on the /playbooks/ index, like the Insights index. */
+add_action(
+	'pre_get_posts',
+	static function ( WP_Query $query ): void {
+		if ( ! is_admin() && $query->is_main_query() && $query->is_post_type_archive( 'playbook' ) ) {
 			$query->set( 'posts_per_page', 12 );
 		}
 	}

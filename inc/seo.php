@@ -1,9 +1,9 @@
 <?php
 /**
- * Yoast SEO for Field Reports: the share image from the report's Contentful
- * featuredImage (Images API, 1200×630), the dek as the meta description, and
- * "Insights" titles for the index and Community archives. Each hook does
- * nothing without Yoast or the feed.
+ * Yoast SEO for Field Reports and playbooks: the share image from the entry's
+ * Contentful featuredImage (Images API, 1200×630), the dek as the meta
+ * description, and "Insights" / "Playbooks" titles for the indexes and Community
+ * archives. Each hook does nothing without Yoast or the feed.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -24,11 +24,11 @@ function assemble_share_image_url( ?array $asset ): string {
 	);
 }
 
-// The report's featured image as og:image (and so twitter:image).
+// The report's or playbook's featured image as og:image (and so twitter:image).
 add_action(
 	'wpseo_add_opengraph_images',
 	static function ( $images ): void {
-		if ( ! is_singular( 'field_report' ) || ! assemble_has_feed() ) {
+		if ( ! is_singular( array( 'field_report', 'playbook' ) ) || ! assemble_has_feed() ) {
 			return;
 		}
 
@@ -49,7 +49,7 @@ add_action(
 add_filter(
 	'wpseo_metadesc',
 	static function ( $description ) {
-		if ( '' === (string) $description && is_singular( 'field_report' ) ) {
+		if ( '' === (string) $description && is_singular( array( 'field_report', 'playbook' ) ) ) {
 			return wp_trim_words( (string) get_the_excerpt( get_queried_object_id() ), 30 );
 		}
 
@@ -61,6 +61,10 @@ add_filter(
 $assemble_archive_title = static function ( $title ) {
 	if ( is_post_type_archive( 'field_report' ) ) {
 		return assemble_label( 'insights' ) . ' - ' . get_bloginfo( 'name' );
+	}
+
+	if ( is_post_type_archive( 'playbook' ) ) {
+		return assemble_label( 'playbooks' ) . ' - ' . get_bloginfo( 'name' );
 	}
 
 	if ( is_tax( 'field_report_community' ) ) {

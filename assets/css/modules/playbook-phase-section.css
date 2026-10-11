@@ -1,0 +1,56 @@
+/*
+ * Module: playbook-phase-section. Measured from the "5. Playbook" mockup at
+ * 1440: subsection headings and subtitles, and the callouts a writer embeds in
+ * the body (also inside intro chapters): pull-stat, guidance list, checklist
+ * card, checkpoint, manager note and the two-column table.
+ */
+
+.phase-section{margin:0 0 78px}
+.playbook-body h3{margin:42px 0 14px;font:500 1.5625rem/1.25 var(--font-text);letter-spacing:-.012em;color:var(--accent-ink)}
+.playbook-body .phase-kicker+h3{margin-top:0}
+.playbook-body .phase-subtitle{font:italic 400 1.25rem/1.7 var(--font-display)}
+
+.pull-stat{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;margin:36px 0;padding:6px 0 6px 24px;border-left:3px solid var(--accent)}
+.pull-stat .stat{font:400 2.625rem/1 var(--font-display);color:var(--accent-ink)}
+.playbook-body .pull-stat p{margin:0;font:500 1.25rem/1.45 var(--font-text);color:var(--ink-900)}
+
+.guidance-stack{margin:0 0 30px;padding:18px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.guidance-stack .meta-label{display:block;margin:0 0 10px;font:400 .75rem/1.7 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-700)}
+.playbook-body .guidance-stack ol{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.guidance-stack li{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:baseline;margin:0;font-size:.875rem;line-height:1.7}
+.guidance-stack li strong{font:500 1.25rem/1.7 var(--font-display);color:var(--ink-900)}
+
+.action-card{margin:38px 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.action-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.action-head strong{font:700 .75rem/1.7 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink)}
+.action-head span{font:400 .75rem/1.7 var(--font-label);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-700)}
+.playbook-body .checklist{margin:0;padding:4px 22px 8px;list-style:none}
+.playbook-body .checklist li{display:grid;grid-template-columns:20px 1fr;gap:12px;margin:0;padding:15px 0;border-bottom:1px solid var(--line);font-size:.875rem;line-height:1.6}
+.playbook-body .checklist li:last-child{border-bottom:0}
+.checklist .box{width:15px;height:15px;margin-top:4px;background:var(--bg);border:1px solid var(--ink-300);border-radius:2px}
+
+.checkpoint{margin:36px 0;padding:25px 27px;background:var(--accent-soft);border:1px solid rgba(38,37,31,.18);border-radius:var(--r-md)}
+.checkpoint .label{margin:0 0 9px;font:400 .75rem/1.7 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink)}
+.playbook-body .checkpoint p{margin:0;font:400 1.25rem/1.5 var(--font-display);color:var(--ink-900)}
+
+.manager-note{margin:18px 0 42px;padding:6px 0 6px 24px;border-left:3px solid var(--accent);font-size:1rem;line-height:1.65}
+.manager-note strong{font-weight:700;color:var(--ink-900)}
+
+.readiness-table{width:100%;margin:30px 0 38px;border:1px solid var(--line);border-radius:var(--r-md);border-spacing:0;border-collapse:separate;background:var(--surface);overflow:hidden;font-size:.875rem;line-height:1.55;text-align:left}
+.readiness-table th,.readiness-table td{padding:16px 18px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-700);font-weight:400}
+.readiness-table thead th{background:var(--surface-sunken);font:500 .75rem/1.55 var(--font-label);letter-spacing:.08em;text-transform:uppercase}
+.readiness-table th:first-child{width:210px;border-right:1px solid var(--line)}
+.readiness-table tbody th{font-weight:500;color:var(--ink-900)}
+.readiness-table tbody tr:last-child>*{border-bottom:0}
+
+@media (max-width:640px){
+	.guidance-stack li{grid-template-columns:1fr;gap:2px}
+	.pull-stat{grid-template-columns:1fr}
+	.readiness-table thead{display:none}
+	.readiness-table,.readiness-table tbody,.readiness-table tr,.readiness-table th,.readiness-table td{display:block;width:auto}
+	.readiness-table th:first-child{width:auto;border-right:0}
+	.readiness-table tbody tr{border-bottom:1px solid var(--line)}
+	.readiness-table tbody tr:last-child{border-bottom:0}
+	.readiness-table tbody th{border-bottom:1px solid var(--line)}
+	.readiness-table tbody td{border-bottom:0}
+}

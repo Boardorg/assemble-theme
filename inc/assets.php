@@ -113,6 +113,39 @@ add_action(
 			);
 		}
 
+		// Playbooks (single-playbook.php, Phase 8).
+		if ( is_singular( 'playbook' ) ) {
+			foreach ( array( 'playbook-hero', 'playbook-toc', 'playbook-intro-block', 'playbook-phase-section', 'playbook-continuing-cards', 'article-author-bio', 'account-cta', 'report-gate' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+
+			// The free-read meter for a playbook ticked Public, signed-out only (as on Field Reports).
+			if ( ! is_user_logged_in() ) {
+				wp_enqueue_script(
+					'assemble-report-meter',
+					get_template_directory_uri() . '/assets/js/report-meter.js',
+					array(),
+					assemble_asset_version( 'assets/js/report-meter.js' ),
+					array(
+						'strategy'  => 'defer',
+						'in_footer' => true,
+					)
+				);
+			}
+
+			// The share row's "Copy link".
+			wp_enqueue_script(
+				'assemble-article-hero',
+				get_template_directory_uri() . '/assets/js/article-hero.js',
+				array(),
+				assemble_asset_version( 'assets/js/article-hero.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
 		// Account pages (Phase 7): Sign in, Create account, Account.
 		if ( assemble_is_account_page() ) {
 			foreach ( array( 'account-header', 'account-details-form', 'interest-area-grid' ) as $assemble_module ) {
@@ -132,8 +165,8 @@ add_action(
 			assemble_enqueue_module_style( 'search-results' );
 		}
 
-		// Insights index and Community archives.
-		if ( is_post_type_archive( 'field_report' ) || is_tax( 'field_report_community' ) ) {
+		// Insights index, Community archives and the playbooks index.
+		if ( is_post_type_archive( array( 'field_report', 'playbook' ) ) || is_tax( 'field_report_community' ) ) {
 			foreach ( array( 'article-hero', 'related-peer-intelligence', 'report-archive' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}

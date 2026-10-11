@@ -13,7 +13,10 @@
  * Metered: the free-read meter's prompt for a Public report (Phase 7, no
  * wireframe): the opening paragraphs, then Create free account and Sign in.
  *
- * @var array $args { report: view model, area: data-area key, metered?: bool }
+ * Playbooks (kind 'playbook') use the same gate with playbook wording; their
+ * public view prints the first chapter itself, so it has no `setup` here.
+ *
+ * @var array $args { report: view model, area: data-area key, metered?: bool, kind?: 'report'|'playbook' }
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -22,6 +25,7 @@ $assemble_report = (array) ( $args['report'] ?? array() );
 $assemble_s      = (array) ( $assemble_report['sections'] ?? array() );
 $assemble_public = 'public' === ( $assemble_report['view'] ?? '' );
 $assemble_metered = ! empty( $args['metered'] );
+$assemble_book   = 'playbook' === ( $args['kind'] ?? 'report' );
 $assemble_join   = (array) ( $assemble_s['join'] ?? array() );
 $assemble_gate   = (array) ( $assemble_s['gate'] ?? array() );
 $assemble_bypass = $assemble_public ? ( $assemble_join['bypass'] ?? null ) : ( $assemble_gate['bypass'] ?? null );
@@ -48,17 +52,22 @@ $assemble_member = is_user_logged_in() ? assemble_url( (string) assemble_setting
 
 		<?php if ( $assemble_metered ) : ?>
 			<h2 id="report-gate-title"><?php esc_html_e( 'Keep reading with a free account', 'assemble' ); ?></h2>
-			<p><?php esc_html_e( 'You’ve read your free Field Reports for now. Create a free account to keep reading, or sign in.', 'assemble' ); ?></p>
+			<p><?php $assemble_book ? esc_html_e( 'You’ve read your free Insights for now. Create a free account to keep reading this playbook, or sign in.', 'assemble' ) : esc_html_e( 'You’ve read your free Field Reports for now. Create a free account to keep reading, or sign in.', 'assemble' ); ?></p>
 		<?php elseif ( $assemble_public ) : ?>
-			<h2 id="report-gate-title"><?php esc_html_e( 'Read the full Field Report', 'assemble' ); ?></h2>
+			<h2 id="report-gate-title"><?php $assemble_book ? esc_html_e( 'Read the full playbook', 'assemble' ) : esc_html_e( 'Read the full Field Report', 'assemble' ); ?></h2>
 			<p>
 				<?php
-				/* translators: %s: Community name, with "the" where it reads naturally. */
-				printf( esc_html__( 'Join the Assemble network to read this report in full, and the rest of our peer intelligence from %s.', 'assemble' ), esc_html( (string) ( $assemble_join['community'] ?? '' ) ) );
+				if ( $assemble_book ) {
+					/* translators: %s: Community name, with "the" where it reads naturally. */
+					printf( esc_html__( 'Join the Assemble network to read this playbook in full, and the rest of our peer intelligence from %s.', 'assemble' ), esc_html( (string) ( $assemble_join['community'] ?? '' ) ) );
+				} else {
+					/* translators: %s: Community name, with "the" where it reads naturally. */
+					printf( esc_html__( 'Join the Assemble network to read this report in full, and the rest of our peer intelligence from %s.', 'assemble' ), esc_html( (string) ( $assemble_join['community'] ?? '' ) ) );
+				}
 				?>
 			</p>
 		<?php else : ?>
-			<h2 id="report-gate-title"><?php esc_html_e( 'This Field Report is for Assemble members', 'assemble' ); ?></h2>
+			<h2 id="report-gate-title"><?php $assemble_book ? esc_html_e( 'This playbook is for Assemble members', 'assemble' ) : esc_html_e( 'This Field Report is for Assemble members', 'assemble' ); ?></h2>
 			<p><?php esc_html_e( 'It is available to specific member audiences.', 'assemble' ); ?></p>
 			<?php if ( isset( $assemble_s['source_line'] ) ) : ?>
 				<p class="meta"><?php echo esc_html( $assemble_s['source_line'] ); ?></p>
@@ -83,7 +92,7 @@ $assemble_member = is_user_logged_in() ? assemble_url( (string) assemble_setting
 		</div>
 
 		<?php if ( $assemble_bypass ) : ?>
-			<p class="meta"><?php esc_html_e( 'Reviewing this site before launch? The last button shows you the complete report.', 'assemble' ); ?></p>
+			<p class="meta"><?php $assemble_book ? esc_html_e( 'Reviewing this site before launch? The last button shows you the complete playbook.', 'assemble' ) : esc_html_e( 'Reviewing this site before launch? The last button shows you the complete report.', 'assemble' ); ?></p>
 		<?php endif; ?>
 	</section>
 </div>
