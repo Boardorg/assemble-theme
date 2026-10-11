@@ -8,7 +8,11 @@ Which version of the design the theme last matched. Update this at the end of an
 2. Compare `assemble-site-v2-manifest.json` with the hashes below. A changed page hash means that page's modules changed; a changed guide CSS hash means tokens or shared components changed.
 3. If `web-style-guide.html`'s draft number changed, re-diff its `:root` against `assets/css/tokens.css` first.
 
-## Last synced: 2026-10-11 (Draft 0.4; Phase 6 standard pages)
+## Last synced: 2026-10-11 (Draft 0.4; Phase 7 accounts)
+
+2026-10-11 (Phase 7) check: `--check` reports the rollup current; built rollup `fb0025c6…`, guide CSS, components and builder hashes unchanged. Ported "6. Create Account" (source `c51eaf4da36b…`) from the rollup's `wireframeData`: `account-header`, `account-details-form`, `interest-area-grid`, measured at 1440. Newsletter toggles and topic tags left out (Cale: later phase); the Communities drill-down added on-system.
+
+## Previous: 2026-10-11 (Draft 0.4; Phase 6 standard pages)
 
 2026-10-11 check: `--check` reports the rollup current; built rollup `fb0025c6…` and the guide CSS and components hashes identical to 2026-10-09. Standard pages, search and 404 have no wireframe or gallery module, so nothing was ported: they're built on-system from `base.css` and flagged for design. `theme.json`'s Meta and Compact font sizes raised to 14px (Draft 0.4's floor).
 
@@ -47,6 +51,9 @@ Which version of the design the theme last matched. Update this at the end of an
 | `related-peer-intelligence` (+ `report-card`) | article mockup | 1440: grid 1120, cards 361, thumb 323×182, h3 20/25 identical. The same card fills the Insights archives |
 | `account-cta` | article mockup | Ported from the mockup's rules (logged-out only, so not measured in the admin session) |
 | `report-gate`, `report-archive` | — | No wireframe: on-system, flagged in the handoff |
+| `account-header` (+ the account shell: 760px column, white widgets, action row) | Create Account mockup (rollup) | 1440: main padding 56/96, column 760 (680 inside), h1 42/48.3, widget 680 with 40px padding and r-md shadow, section title 30/34.5 with the rule, all identical. Sign in, reset and the Account page's extras: on-system |
+| `account-details-form` | Create Account mockup | 1440: rows 24 apart, labels 14/19.6 500, inputs 600×55 (13/16 padding, `--bg` fill, `--line` border, r-sm), the company/title pair 2×288 with a 24 gap, identical. One column at ≤640 |
+| `interest-area-grid` | Create Account mockup | 1440: intro (−14/28 margins), rows with the 3px area rule and 20px inset, titles Text 20/25 in accent ink, one-liners 16/27.2, Follow toggle 97×46 (accent fill when following), identical. Newsletter toggle and topic tags not ported; Community chips (44px pills, accent-soft when on) on-system |
 | `summits-hero` | Summits mockup (rollup) | 1440: grid 690/558, kicker, h1 (531×206, 70/.98, −.02em), intro (653) and 16:9 image (558×314) identical; 56px below the masthead as in the mockup. Stacks at ≤1100 |
 | `summits-selector` | Summits mockup + `content-explorer` pills | 1440: section rules, heading 30/34.5, pills 44 tall with 16px padding, rows 18 apart. About 10px shorter than the mockup (its row wrapper has extra space) |
 | `summits-practice-detail` (+ `event-card`, `free-account-cta`) | Summits mockup | 1440: intro card (min 254, 44 padding, h2 42), Featured Summits head (25/30), event cards 420×270 with centred button, free-account CTA 1296×109 identical. The "Source of peer intelligence" panel, Summit talks and Leaders to follow aren't built (no data source) |
