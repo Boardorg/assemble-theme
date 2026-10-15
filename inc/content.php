@@ -357,12 +357,23 @@ function assemble_related_stories( int $post_id, string $community_slug, int $co
 	return array_map( 'assemble_story', array_slice( array_values( $posts ), 0, $count ) );
 }
 
-/** Twelve cards a page on the Insights index and Community archives (a 3-up grid). */
+/** Twelve cards a page on the Community archives (a 3-up grid). */
 add_action(
 	'pre_get_posts',
 	static function ( WP_Query $query ): void {
-		if ( ! is_admin() && $query->is_main_query() && ( $query->is_post_type_archive( 'field_report' ) || $query->is_tax( 'field_report_community' ) ) ) {
+		if ( ! is_admin() && $query->is_main_query() && $query->is_tax( 'field_report_community' ) ) {
 			$query->set( 'posts_per_page', 12 );
+		}
+	}
+);
+
+/** The Insights index is the explorer, one page: send old paged URLs to it. */
+add_action(
+	'template_redirect',
+	static function (): void {
+		if ( is_post_type_archive( 'field_report' ) && is_paged() ) {
+			wp_safe_redirect( assemble_insights_url(), 301 );
+			exit;
 		}
 	}
 );

@@ -1,7 +1,7 @@
 <?php
 /**
- * The Insights index (/field-reports/) and Community archives
- * (/field-reports/community/<slug>/): a page head and a grid of report cards
+ * Community archives (/field-reports/community/<slug>/) and the playbooks
+ * index: a page head and a grid of report cards
  * from the main query, with pagination. No wireframe: on-system, flagged.
  *
  * @var array $args { title, intro, area, crumbs: [ { label, url } ] }

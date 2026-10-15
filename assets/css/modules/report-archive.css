@@ -23,3 +23,7 @@
 @media (max-width:640px){
 	.archive-grid{grid-template-columns:1fr}
 }
+
+/* The Insights index: the page head sits directly above the explorer. */
+.insights-index{padding-bottom:0}
+.insights-index .archive-head{margin-bottom:0}

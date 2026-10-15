@@ -46,9 +46,17 @@ add_action(
 		assemble_enqueue_module_style( 'public-footer' );
 
 		// Homepage modules (a draft preview is served from the home URL but isn't the homepage).
-		if ( is_front_page() && ! assemble_is_report_preview() ) {
-			foreach ( array( 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
+		// The Insights index reuses the explorer and its learn-more band.
+		if ( is_post_type_archive( 'field_report' ) ) {
+			foreach ( array( 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
+		if ( ( is_front_page() && ! assemble_is_report_preview() ) || is_post_type_archive( 'field_report' ) ) {
+			if ( is_front_page() ) {
+				foreach ( array( 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
+					assemble_enqueue_module_style( $assemble_module );
+				}
 			}
 
 			wp_enqueue_script(
