@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $assemble_term      = get_queried_object();
-$assemble_community = ( $assemble_term instanceof WP_Term && class_exists( 'AFR_Communities' ) ) ? AFR_Communities::get( $assemble_term->slug ) : null;
+$assemble_community = ( $assemble_term instanceof WP_Term && class_exists( 'AC_Communities' ) ) ? AC_Communities::get( $assemble_term->slug ) : null;
 $assemble_kicker    = array(
 	'name'          => $assemble_term instanceof WP_Term ? $assemble_term->name : '',
 	'short_name'    => (string) ( $assemble_community['short_name'] ?? '' ),

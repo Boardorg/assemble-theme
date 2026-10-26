@@ -3,7 +3,7 @@
  * A playbook (wireframe "5. Playbook"), rendered from the feed's view model.
  *
  * The plugin decides the view (standard, public or denied) and hands over only
- * the sections that view may show (AFR_Playbook::view_model()); the modules
+ * the sections that view may show (AC_Playbook_Renderer::view_model()); the modules
  * print whatever is present and never decide access themselves. Without the
  * feed, the page shows the title and the teaser.
  */

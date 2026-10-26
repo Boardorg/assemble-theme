@@ -1,7 +1,7 @@
 <?php
 /**
  * The body of a Field Report page, from a view model: shared by the live page
- * (single-field_report.php) and the draft preview (afr_render_preview).
+ * (single-field_report.php) and the draft preview (ac_render_preview).
  *
  * @var array $args { report: view model, post_id: int (0 in a draft preview), url: permalink or '' }
  */
@@ -36,7 +36,7 @@ $assemble_classes   = array( 'report', 'report--' . $assemble_report['view'] );
 			$assemble_view = (string) $assemble_report['view'];
 
 			if ( 'public' === $assemble_view && ! empty( $assemble_report['full_text'] ) ) {
-				// A Public report in full (the feed's afr_public_full_text, from assemble-core).
+				// A Public report in full (the feed's ac_public_full_text, from assemble-core).
 				// Signed out, the free-read meter (assets/js/report-meter.js) may swap it for
 				// the create-account prompt after a few reads; without JavaScript it stays open.
 				$assemble_metered = ! is_user_logged_in() && $assemble_post_id;
