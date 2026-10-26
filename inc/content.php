@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 /** Is the Assemble Content feed active, at 1.2.0 or later (topics and community queries)? */
 function assemble_has_feed(): bool {
-	return class_exists( 'AFR_Renderer' ) && method_exists( 'AFR_Query', 'topics' ) && method_exists( 'AFR_Query', 'in_community' );
+	return class_exists( 'AC_Field_Report_Renderer' ) && method_exists( 'AC_Query', 'topics' ) && method_exists( 'AC_Query', 'in_community' );
 }
 
 /**
@@ -43,12 +43,12 @@ function assemble_area( string $area ): string {
  * @return array<int,array{slug:string,name:string,label:string,area:string,description:string}>
  */
 function assemble_area_communities( string $area ): array {
-	if ( ! class_exists( 'AFR_Communities' ) ) {
+	if ( ! class_exists( 'AC_Communities' ) ) {
 		return array();
 	}
 
 	$communities = array();
-	foreach ( AFR_Communities::in_area( $area ) as $community ) {
+	foreach ( AC_Communities::in_area( $area ) as $community ) {
 		$name          = (string) $community['name'];
 		$communities[] = array(
 			'slug'        => (string) $community['slug'],
@@ -85,9 +85,9 @@ function assemble_first_sentence( string $text ): string {
  * @return array{id:int,title:string,url:string,excerpt:string,date:string,area:string,topic:?array{name:string,slug:string},image:?array,locked:bool,format:string}
  */
 function assemble_story( WP_Post $post ): array {
-	$entry  = AFR_Renderer::data( $post->ID );
-	$topics = AFR_Query::topics( $post->ID );
-	$image  = AFR_Contentful::field( $entry, 'featuredImage' );
+	$entry  = AC_Field_Report_Renderer::data( $post->ID );
+	$topics = AC_Query::topics( $post->ID );
+	$image  = AC_Contentful::field( $entry, 'featuredImage' );
 
 	return array(
 		'id'      => (int) $post->ID,
@@ -95,10 +95,10 @@ function assemble_story( WP_Post $post ): array {
 		'url'     => (string) get_permalink( $post ),
 		'excerpt' => (string) get_the_excerpt( $post ),
 		'date'    => (string) get_the_date( '', $post ),
-		'area'    => assemble_area( class_exists( 'AFR_Communities' ) ? AFR_Communities::practice_area_for_post( $post->ID ) : '' ),
+		'area'    => assemble_area( class_exists( 'AC_Communities' ) ? AC_Communities::practice_area_for_post( $post->ID ) : '' ),
 		'topic'   => $topics[0] ?? null,
 		'image'   => is_array( $image ) ? $image : null,
-		'locked'  => class_exists( 'AFR_Audience' ) && 'denied' === AFR_Audience::view_for( $post->ID ),
+		'locked'  => class_exists( 'AC_Audience' ) && 'denied' === AC_Audience::view_for( $post->ID ),
 		// A content-type tag for anything that isn't a Field Report ("Playbook").
 		'format'  => 'playbook' === $post->post_type ? assemble_label( 'playbook' ) : '',
 	);
@@ -110,7 +110,7 @@ function assemble_story( WP_Post $post ): array {
  * @return array<int,array> Cards from assemble_story().
  */
 function assemble_top_stories( int $count = 4 ): array {
-	return assemble_has_feed() ? array_map( 'assemble_story', AFR_Query::stream( $count ) ) : array();
+	return assemble_has_feed() ? array_map( 'assemble_story', AC_Query::stream( $count ) ) : array();
 }
 
 /**
@@ -119,7 +119,7 @@ function assemble_top_stories( int $count = 4 ): array {
  * @return array<int,array> Cards from assemble_story().
  */
 function assemble_community_stories( string $community_slug, int $count = 3 ): array {
-	return assemble_has_feed() ? array_map( 'assemble_story', AFR_Query::in_community( $community_slug, $count ) ) : array();
+	return assemble_has_feed() ? array_map( 'assemble_story', AC_Query::in_community( $community_slug, $count ) ) : array();
 }
 
 /**
@@ -136,7 +136,7 @@ function assemble_search_stories( string $terms, int $count = 9 ): array {
 
 	$query = new WP_Query(
 		array(
-			'post_type'           => AFR_CPT::POST_TYPE,
+			'post_type'           => AC_Field_Report_Type::POST_TYPE,
 			'post_status'         => 'publish',
 			's'                   => $terms,
 			'search_columns'      => array( 'post_title', 'post_excerpt' ),
@@ -153,8 +153,8 @@ function assemble_search_stories( string $terms, int $count = 9 ): array {
 
 /** Where a community's full list of Insights lives. */
 function assemble_community_url( string $community_slug ): string {
-	if ( class_exists( 'AFR_CPT' ) ) {
-		$link = get_term_link( $community_slug, AFR_CPT::TAXONOMY );
+	if ( class_exists( 'AC_Field_Report_Type' ) ) {
+		$link = get_term_link( $community_slug, AC_Field_Report_Type::TAXONOMY );
 		if ( ! is_wp_error( $link ) ) {
 			return $link;
 		}
@@ -177,7 +177,7 @@ function assemble_insights_url(): string {
  * @return array<string,mixed>|null
  */
 function assemble_homepage_feature(): ?array {
-	return class_exists( 'AFR_Features' ) ? AFR_Features::homepage_hero() : null;
+	return class_exists( 'AC_Site_Features' ) ? AC_Site_Features::homepage_hero() : null;
 }
 
 /**
@@ -185,12 +185,12 @@ function assemble_homepage_feature(): ?array {
  * Contentful resizes and serves it from its CDN, so nothing is stored here
  * (BUILD-INSTRUCTIONS §6.2 change #4). '' when there is no image.
  *
- * @param array|null $asset Contentful asset payload from _afr_data.
+ * @param array|null $asset Contentful asset payload from _ac_data.
  * @param string     $ratio "16:9" (L slots) or "1:1" (S slots).
  * @param string     $sizes The `sizes` attribute.
  */
 function assemble_cf_image( ?array $asset, string $ratio = '16:9', string $sizes = '100vw', string $class = '', string $loading = 'lazy' ): string {
-	$url = class_exists( 'AFR_Contentful' ) ? AFR_Contentful::asset_url( $asset ) : '';
+	$url = class_exists( 'AC_Contentful' ) ? AC_Contentful::asset_url( $asset ) : '';
 	if ( '' === $url ) {
 		return '';
 	}
@@ -224,12 +224,12 @@ function assemble_cf_image( ?array $asset, string $ratio = '16:9', string $sizes
 
 /** Does the feed expose the view model (assemble-content 1.3.0 or later)? */
 function assemble_has_report_view(): bool {
-	return class_exists( 'AFR_Renderer' ) && method_exists( 'AFR_Renderer', 'view_model' );
+	return class_exists( 'AC_Field_Report_Renderer' ) && method_exists( 'AC_Field_Report_Renderer', 'view_model' );
 }
 
 /**
  * The view model for one report, for the current visitor: `view` plus only the
- * sections that view may show (see AFR_Renderer::view_model()). Null when the
+ * sections that view may show (see AC_Field_Report_Renderer::view_model()). Null when the
  * feed is too old or the report has no data, and the template falls back to
  * the_content().
  *
@@ -240,32 +240,20 @@ function assemble_report_view( int $post_id ): ?array {
 		return null;
 	}
 
-	$view = AFR_Renderer::view_model( $post_id );
+	$view = AC_Field_Report_Renderer::view_model( $post_id );
 
 	return '' === $view['view'] ? null : $view;
 }
 
 /*
  * The theme renders single reports itself, so the feed's the_content document
- * and its styles are switched off there. Listings and feeds still get the
- * feed's teaser.
+ * is switched off there. Listings and feeds still get the feed's teaser.
  */
 add_filter(
-	'afr_filter_the_content',
+	'ac_filter_the_content',
 	static function ( bool $filter ): bool {
 		return is_singular( 'field_report' ) && assemble_has_report_view() ? false : $filter;
 	}
-);
-
-add_action(
-	'wp_enqueue_scripts',
-	static function (): void {
-		if ( ( is_singular( 'field_report' ) && assemble_has_report_view() ) || is_post_type_archive( 'field_report' ) || is_tax( 'field_report_community' ) ) {
-			wp_dequeue_style( 'afr-field-report' );
-			wp_dequeue_style( 'afr-fonts' );
-		}
-	},
-	20
 );
 
 /** Reading time in minutes at about 230 words a minute; 0 when there is nothing to read. */
@@ -346,12 +334,12 @@ function assemble_related_stories( int $post_id, string $community_slug, int $co
 		return array();
 	}
 
-	$posts = '' !== $community_slug ? AFR_Query::in_community( $community_slug, $count + 1 ) : array();
+	$posts = '' !== $community_slug ? AC_Query::in_community( $community_slug, $count + 1 ) : array();
 	$posts = array_filter( $posts, static fn( $post ) => (int) $post->ID !== $post_id );
 
 	if ( count( $posts ) < $count ) {
 		$exclude = array_merge( array( $post_id ), wp_list_pluck( $posts, 'ID' ) );
-		$posts   = array_merge( $posts, AFR_Query::rest_of_stream( $exclude, $count - count( $posts ) ) );
+		$posts   = array_merge( $posts, AC_Query::rest_of_stream( $exclude, $count - count( $posts ) ) );
 	}
 
 	return array_map( 'assemble_story', array_slice( array_values( $posts ), 0, $count ) );
@@ -381,14 +369,14 @@ add_action(
 /*
  * ---------------------------------------------------------------------------
  * Playbooks (Phase 8). Rendered from the feed's own view model
- * (AFR_Playbook::view_model(), assemble-content 1.8.0): the plugin decides the
+ * (AC_Playbook_Renderer::view_model(), assemble-content 1.8.0): the plugin decides the
  * view and hands over only what it allows. On a playbook, the_content is
  * always the feed's teaser, so nothing here prints the stored body.
  */
 
 /** Does the feed carry playbooks (assemble-content 1.8.0 or later)? */
 function assemble_has_playbooks(): bool {
-	return class_exists( 'AFR_Playbook' ) && post_type_exists( 'playbook' );
+	return class_exists( 'AC_Playbook_Renderer' ) && post_type_exists( 'playbook' );
 }
 
 /**
@@ -402,7 +390,7 @@ function assemble_playbook_view( int $post_id ): ?array {
 		return null;
 	}
 
-	$view = AFR_Playbook::view_model( $post_id );
+	$view = AC_Playbook_Renderer::view_model( $post_id );
 
 	return '' === $view['view'] ? null : $view;
 }
@@ -438,7 +426,7 @@ add_action(
 
 /** Is this request a draft preview (assemble-content 1.4.0 or later)? */
 function assemble_is_report_preview(): bool {
-	return class_exists( 'AFR_Preview' ) && null !== AFR_Preview::current();
+	return class_exists( 'AC_Preview' ) && null !== AC_Preview::current();
 }
 
 /*
@@ -446,7 +434,7 @@ function assemble_is_report_preview(): bool {
  * plugin has already checked who may see the draft and chosen the view.
  */
 add_action(
-	'afr_render_preview',
+	'ac_render_preview',
 	static function ( array $report ): void {
 		get_header();
 		get_template_part(

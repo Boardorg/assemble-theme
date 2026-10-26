@@ -21,7 +21,7 @@ if ( ! $assemble_community || '' === (string) $assemble_community['slug'] ) {
 }
 
 $assemble_short     = assemble_community_label( $assemble_community );
-$assemble_directory = class_exists( 'AFR_Communities' ) ? (array) AFR_Communities::get( (string) $assemble_community['slug'] ) : array();
+$assemble_directory = class_exists( 'AC_Communities' ) ? (array) AC_Communities::get( (string) $assemble_community['slug'] ) : array();
 $assemble_about     = trim( (string) ( $assemble_directory['boilerplate'] ?? '' ) );
 $assemble_summit    = assemble_playbook_summit( $assemble_community );
 ?>

@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 /** A Contentful image URL cropped to the 1200×630 share size, or ''. */
 function assemble_share_image_url( ?array $asset ): string {
-	$url = class_exists( 'AFR_Contentful' ) ? AFR_Contentful::asset_url( $asset ) : '';
+	$url = class_exists( 'AC_Contentful' ) ? AC_Contentful::asset_url( $asset ) : '';
 
 	return '' === $url ? '' : add_query_arg(
 		array(
@@ -69,7 +69,7 @@ $assemble_archive_title = static function ( $title ) {
 
 	if ( is_tax( 'field_report_community' ) ) {
 		$term      = get_queried_object();
-		$community = ( $term instanceof WP_Term && class_exists( 'AFR_Communities' ) ) ? (array) AFR_Communities::get( $term->slug ) : array();
+		$community = ( $term instanceof WP_Term && class_exists( 'AC_Communities' ) ) ? (array) AC_Communities::get( $term->slug ) : array();
 		$label     = assemble_community_label(
 			array(
 				'name'       => $term instanceof WP_Term ? $term->name : '',
@@ -91,7 +91,7 @@ $assemble_preview_title = static function ( $title ) {
 		return $title;
 	}
 
-	$headline = (string) ( AFR_Preview::current()['sections']['headline'] ?? '' );
+	$headline = (string) ( AC_Preview::current()['sections']['headline'] ?? '' );
 
 	/* translators: %s: draft headline. */
 	return sprintf( __( 'Draft preview: %s', 'assemble' ), $headline ) . ' - ' . get_bloginfo( 'name' );

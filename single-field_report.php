@@ -6,7 +6,7 @@
  * hands over only the sections that view may show; the modules print whatever
  * is present and never decide access themselves. If the feed is too old to
  * have a view model, the plugin's own document is used instead. Draft previews
- * render the same template part (inc/content.php, afr_render_preview).
+ * render the same template part (inc/content.php, ac_render_preview).
  */
 
 defined( 'ABSPATH' ) || exit;

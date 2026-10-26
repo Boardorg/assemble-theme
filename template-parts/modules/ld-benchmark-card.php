@@ -6,13 +6,13 @@
  * Decision Intelligence Benchmark). Badge, headline, blurb, one pill action,
  * and "See all benchmarks" below.
  *
- * @var array $args { feature: array from AFR_Features::homepage_hero() }
+ * @var array $args { feature: array from AC_Site_Features::homepage_hero() }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $assemble_feature = (array) ( $args['feature'] ?? array() );
-$assemble_cta_url = class_exists( 'AFR_Features' ) ? AFR_Features::url( (string) ( $assemble_feature['cta_url'] ?? '' ) ) : '';
+$assemble_cta_url = class_exists( 'AC_Site_Features' ) ? AC_Site_Features::url( (string) ( $assemble_feature['cta_url'] ?? '' ) ) : '';
 ?>
 <div class="ld-card ld-benchmark-card">
 	<div class="ld-card-header">
