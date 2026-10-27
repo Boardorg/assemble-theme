@@ -5,7 +5,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ASSEMBLE_THEME_VERSION', '0.8.1' );
+define( 'ASSEMBLE_THEME_VERSION', '0.9.0' );
 
 require_once get_template_directory() . '/inc/labels.php';
 require_once get_template_directory() . '/inc/template-tags.php';
@@ -15,3 +15,4 @@ require_once get_template_directory() . '/inc/setup.php';
 require_once get_template_directory() . '/inc/assets.php';
 require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/pages.php';
+require_once get_template_directory() . '/inc/communities.php';

@@ -17,18 +17,19 @@ function assemble_has_feed(): bool {
 }
 
 /**
- * The five public practice areas, in selector order. Keys are the shared
- * `data-area` / Contentful `community.practiceArea` keys (BUILD-INSTRUCTIONS §6.5).
+ * The five public practice areas, in selector order, by their official names
+ * (Cale, 2026-10-26). Keys are the shared `data-area` / Contentful
+ * `community.practiceArea` keys (BUILD-INSTRUCTIONS §6.5).
  *
  * @return array<string,string> area key => public label.
  */
 function assemble_practice_areas(): array {
 	return array(
-		'human-resources' => __( 'Human Capital', 'assemble' ),
-		'manufacturing'   => __( 'Supply Chain', 'assemble' ),
-		'marketing'       => __( 'Marketing & Comms', 'assemble' ),
-		'technology'      => __( 'Technology', 'assemble' ),
-		'finance'         => __( 'Finance', 'assemble' ),
+		'human-resources' => __( 'Human Resources', 'assemble' ),
+		'manufacturing'   => __( 'Supply Chain & Manufacturing', 'assemble' ),
+		'marketing'       => __( 'Marketing and Communications', 'assemble' ),
+		'technology'      => __( 'Data and Technology', 'assemble' ),
+		'finance'         => __( 'Finance and Legal', 'assemble' ),
 	);
 }
 
