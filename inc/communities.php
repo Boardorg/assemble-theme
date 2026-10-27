@@ -17,7 +17,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * Shape: kind (board, council, area, index), name, field, a_field,
  * community_slug, area, logo, hero, members, problem, challenges, sessions,
- * impact, included, fit, company, closing. Copy may hold {board}, {field} and
+ * impact, included, fit, company, closing; the index adds board, points and
+ * finder. Copy may hold {board}, {field} and
  * {a_field}, filled in by assemble_community_text().
  */
 function assemble_community_page( WP_Post $post ): ?array {
@@ -50,19 +51,36 @@ function assemble_current_community_page(): ?array {
 	return $page;
 }
 
-/** True on a Board or Council sales page (the layouts built so far). */
-function assemble_is_community_sales_page(): bool {
-	$page = assemble_current_community_page();
+/**
+ * The current Community page's layout (a template part in template-parts/community/):
+ * "board" for Board and Council pages, "index" for /communities/, or "" when
+ * there's no layout for it yet (practice-area pages) and page.php renders it.
+ */
+function assemble_community_layout(): string {
+	$kind = (string) ( assemble_current_community_page()['kind'] ?? '' );
 
-	return $page && in_array( $page['kind'] ?? 'board', array( 'board', 'council' ), true );
+	return array( 'board' => 'board', 'council' => 'board', 'index' => 'index' )[ $kind ] ?? '';
 }
 
-/** Fill a shared line with this Board's names: {board}, {field}, {a_field}. */
+/** True on a Board or Council sales page. */
+function assemble_is_community_sales_page(): bool {
+	return 'board' === assemble_community_layout();
+}
+
+/** True on the Communities index (/communities/). */
+function assemble_is_community_index(): bool {
+	return 'index' === assemble_community_layout();
+}
+
+/**
+ * Fill a shared line with this Board's names: {board}, {field}, {a_field}. The
+ * index names no Board, so its view model supplies its own `board`.
+ */
 function assemble_community_text( string $text, array $page ): string {
 	return strtr(
 		$text,
 		array(
-			'{board}'    => (string) $page['name'],
+			'{board}'    => (string) ( $page['board'] ?? $page['name'] ),
 			'{field}'    => (string) ( $page['field'] ?? $page['name'] ),
 			'{a_field}'  => (string) ( $page['a_field'] ?? $page['name'] ),
 		)

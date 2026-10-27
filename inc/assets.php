@@ -168,8 +168,25 @@ add_action(
 			}
 		}
 
+		// The Communities index: its filter shares the explorer's pills, panel cards and script.
+		if ( assemble_is_community_index() ) {
+			foreach ( array( 'content-explorer', 'community-page' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+			wp_enqueue_script(
+				'assemble-content-explorer',
+				get_template_directory_uri() . '/assets/js/content-explorer.js',
+				array(),
+				assemble_asset_version( 'assets/js/content-explorer.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
 		// Standard pages, team bios, search and 404 (Phase 6). The homepage and Summits page have their own modules.
-		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() && ! assemble_is_community_sales_page() ) || is_singular( 'team' ) || is_search() || is_404() ) {
+		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() && '' === assemble_community_layout() ) || is_singular( 'team' ) || is_search() || is_404() ) {
 			assemble_enqueue_module_style( 'page-content' );
 		}
 		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {

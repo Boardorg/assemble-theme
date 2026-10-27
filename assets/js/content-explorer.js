@@ -41,5 +41,27 @@
 				openPanel( button.getAttribute( 'data-explorer-target' ) );
 			} );
 		} );
+
+		// Deep links, only where the root asks for them: #aeo opens panel <prefix>aeo
+		// (the Communities index; data-explorer-hash="find-").
+		var prefix = root.getAttribute( 'data-explorer-hash' );
+		function openFromHash() {
+			var slug = window.location.hash.slice( 1 );
+			var panel = slug && document.getElementById( prefix + slug );
+			if ( ! panel || ! root.contains( panel ) || ! panel.classList.contains( 'tab-panel' ) ) {
+				return;
+			}
+			var area = panel.getAttribute( 'data-area' );
+			var areaButton = root.querySelector( '[data-explorer-area="' + area + '"]' );
+			if ( areaButton ) {
+				areaButton.click();
+			}
+			openPanel( panel.id );
+			root.scrollIntoView();
+		}
+		if ( prefix ) {
+			openFromHash();
+			window.addEventListener( 'hashchange', openFromHash );
+		}
 	} );
 }() );
