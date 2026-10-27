@@ -46,9 +46,9 @@ add_action(
 		assemble_enqueue_module_style( 'public-footer' );
 
 		// Homepage modules (a draft preview is served from the home URL but isn't the homepage).
-		// The Insights index reuses the explorer and its learn-more band.
+		// The Insights index reuses the explorer and its learn-more band, under the shared page hero.
 		if ( is_post_type_archive( 'field_report' ) ) {
-			foreach ( array( 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
+			foreach ( array( 'page-hero', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
 		}
@@ -73,7 +73,7 @@ add_action(
 
 		// The Summits page (page-summits.php): the selector shares the explorer's pills and script.
 		if ( is_page( 'summits' ) ) {
-			foreach ( array( 'content-explorer', 'summits-hero', 'summits-selector', 'summits-practice-detail', 'summits-matrix' ) as $assemble_module ) {
+			foreach ( array( 'page-hero', 'content-explorer', 'summits-hero', 'summits-selector', 'summits-practice-detail', 'summits-matrix' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
 
@@ -170,7 +170,7 @@ add_action(
 
 		// The Communities index: its filter shares the explorer's pills, panel cards and script.
 		if ( assemble_is_community_index() ) {
-			foreach ( array( 'content-explorer', 'community-page' ) as $assemble_module ) {
+			foreach ( array( 'page-hero', 'content-explorer', 'community-page' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
 			wp_enqueue_script(
