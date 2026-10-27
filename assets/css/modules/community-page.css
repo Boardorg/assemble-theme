@@ -9,7 +9,8 @@
  * member-count row is a white band, as marketing's proof band.
  */
 
-.community-page .wrap{max-width:1216px}
+/* Board pages are narrower; the index uses the site container, as the Summits and Insights indexes. */
+.community-page:not(.community-index) .wrap{max-width:1216px}
 .community-band{padding-block:72px}
 .community-band.is-sunken{background:var(--surface-sunken)}
 .community-band-hero{padding-block:56px 64px}
@@ -151,9 +152,8 @@
  * (content-explorer.css). Rules here are scoped to .community-index and
  * .community-explorer so the homepage explorer is untouched.
  */
-.community-index .community-hero:not(:has(.community-art)){grid-template-columns:minmax(0,1fr)}
-.community-index .community-hero:not(:has(.community-art)) h1{max-width:22ch}
-.community-index .community-hero .content-head{padding-top:var(--s-5)}
+/* The hero is the shared page-hero (page-hero.css), spaced as the Summits page's. */
+.community-index .community-band-hero{padding-block:56px 0}
 .community-proof.is-copy-only{grid-template-columns:1fr}
 .community-proof-stats{display:flex;flex-wrap:wrap;gap:var(--s-5) var(--s-8);margin:0}
 .community-proof-stats>div{min-width:0}
@@ -195,6 +195,7 @@
 }
 
 @media (max-width:640px){
+	.community-index .community-band-hero{padding-top:var(--s-5)}
 	.community-panel-logo{height:52px}
 	.community-points h3{font-size:1.25rem}
 }

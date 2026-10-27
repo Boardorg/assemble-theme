@@ -9,7 +9,8 @@
  *
  * All copy is the page's own fields (Pages → Communities, "Index page" tab and
  * the hero, members and closing tabs) or Site Settings → Community defaults.
- * No breadcrumbs: it's the top level. Any band without data is left out.
+ * No breadcrumbs: it's the top level. The hero is the shared page-hero (as
+ * the Summits and Insights indexes). Any band without data is left out.
  * No wireframe: on-system, flag for design.
  *
  * @var array $args { page: the view model from assemble_current_community_page() }
@@ -36,24 +37,22 @@ $assemble_stats = array(
 
 	<div class="community-band community-band-hero">
 		<div class="wrap">
-			<section class="community-hero" aria-labelledby="community-title">
-				<div class="community-hero-copy">
-					<header class="content-head">
-						<p class="eyebrow"><?php esc_html_e( 'Assemble Communities', 'assemble' ); ?></p>
-						<h1 id="community-title"><?php echo esc_html( $assemble_t( (string) ( $assemble_hero['headline'] ?? '' ) ?: (string) $assemble_page['name'] ) ); ?></h1>
-						<?php if ( ! empty( $assemble_hero['dek'] ) ) : ?>
-							<p class="body-lead"><?php echo esc_html( $assemble_t( (string) $assemble_hero['dek'] ) ); ?></p>
+			<section class="page-hero<?php echo empty( $assemble_hero['image']['url'] ) ? ' is-copy-only' : ''; ?>" aria-labelledby="community-title">
+				<div class="page-hero-copy">
+					<div class="eyebrow"><?php esc_html_e( 'Assemble Communities', 'assemble' ); ?></div>
+					<h1 class="type-hero" id="community-title"><?php echo esc_html( $assemble_t( (string) ( $assemble_hero['headline'] ?? '' ) ?: (string) $assemble_page['name'] ) ); ?></h1>
+					<?php if ( ! empty( $assemble_hero['dek'] ) ) : ?>
+						<p><?php echo esc_html( $assemble_t( (string) $assemble_hero['dek'] ) ); ?></p>
+					<?php endif; ?>
+					<div class="page-hero-actions">
+						<a class="btn-solid" href="#find"><?php echo esc_html( $assemble_find ); ?></a>
+						<?php if ( ! empty( $assemble_included['items'] ) ) : ?>
+							<a class="link-arrow" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
 						<?php endif; ?>
-						<div class="community-cta-row">
-							<a class="btn-solid" href="#find"><?php echo esc_html( $assemble_find ); ?></a>
-							<?php if ( ! empty( $assemble_included['items'] ) ) : ?>
-								<a class="link-arrow" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
-							<?php endif; ?>
-						</div>
-					</header>
+					</div>
 				</div>
 				<?php if ( ! empty( $assemble_hero['image']['url'] ) ) : ?>
-					<div class="media-frame community-art">
+					<div class="media-frame media-landscape page-hero-image is-illustration">
 						<img src="<?php echo esc_url( $assemble_hero['image']['url'] ); ?>" alt="<?php echo esc_attr( (string) ( $assemble_hero['image']['alt'] ?? '' ) ); ?>" loading="eager" decoding="async">
 					</div>
 				<?php endif; ?>

@@ -1,0 +1,26 @@
+/*
+ * Module: page-hero, the top of a section index: the Summits page (wireframe
+ * 2), the Communities index and the Insights index. Measured from the rollup's
+ * Summits hero at 1440: kicker, display headline, intro and a 16:9 image side
+ * by side (1.05fr / .85fr, 48 gap), stacked at ≤1100. Without an image the copy
+ * runs alone. No accent bar: that's the article and Board pages' content head.
+ */
+
+.page-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.85fr);gap:var(--s-7);align-items:center;margin-bottom:44px}
+.page-hero.is-copy-only{grid-template-columns:minmax(0,1fr)}
+.page-hero .eyebrow{margin:0;color:var(--ink-700)}
+.page-hero h1{max-width:13ch;margin:12px 0 18px;letter-spacing:-.02em}
+.page-hero.is-copy-only h1{max-width:20ch}
+.page-hero p{max-width:66ch;margin:0;color:var(--ink-700);line-height:1.7}
+.page-hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6);margin-top:28px}
+.page-hero-image{border-radius:var(--r-md)}
+/* Illustrations (not photos) sit whole inside the frame. */
+.page-hero-image.is-illustration>img{object-fit:contain;padding:5%}
+
+@media (max-width:1100px){
+	.page-hero{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.page-hero{gap:var(--s-5);margin-bottom:var(--s-6)}
+}

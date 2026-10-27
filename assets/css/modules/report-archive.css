@@ -24,6 +24,10 @@
 	.archive-grid{grid-template-columns:1fr}
 }
 
-/* The Insights index: the page head sits directly above the explorer. */
-.insights-index{padding-bottom:0}
-.insights-index .archive-head{margin-bottom:0}
+/* The Insights index: the shared page hero (page-hero.css), spaced as the Summits page's, directly above the explorer. */
+.insights-index{padding-top:56px}
+.insights-index .page-hero{margin-bottom:0}
+
+@media (max-width:640px){
+	.insights-index{padding-top:var(--s-5)}
+}
