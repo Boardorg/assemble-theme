@@ -143,3 +143,58 @@
 	.community-logos{grid-template-columns:repeat(2,minmax(0,1fr))}
 	.community-apply{padding:28px 22px}
 }
+
+/*
+ * Communities index (/communities/), 2026-10-26. The same bands; the proof
+ * band adds the directory counts, the value points sit in a numbered row, and
+ * "Find your Community" reuses the homepage explorer's pills and cards
+ * (content-explorer.css). Rules here are scoped to .community-index and
+ * .community-explorer so the homepage explorer is untouched.
+ */
+.community-index .community-hero:not(:has(.community-art)){grid-template-columns:minmax(0,1fr)}
+.community-index .community-hero:not(:has(.community-art)) h1{max-width:22ch}
+.community-index .community-hero .content-head{padding-top:var(--s-5)}
+.community-proof.is-copy-only{grid-template-columns:1fr}
+.community-proof-stats{display:flex;flex-wrap:wrap;gap:var(--s-5) var(--s-8);margin:0}
+.community-proof-stats>div{min-width:0}
+.community-proof-stats dt{margin-bottom:var(--s-2)}
+.community-proof-stats dd{margin:0;max-width:22ch}
+
+/* The value points: numbered like the challenges, three (or four) across. */
+.community-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-6) var(--s-7);margin:0;padding:0;list-style:none;counter-reset:point}
+.community-points.has-four{grid-template-columns:repeat(2,minmax(0,1fr))}
+.community-points li{counter-increment:point;padding-top:var(--s-5);border-top:1px solid var(--line)}
+.community-points li::before{content:counter(point,decimal-leading-zero);display:block;margin-bottom:var(--s-4);font:500 1.875rem/1 var(--font-display);color:var(--accent-ink)}
+.community-points h3{margin:0 0 var(--s-3);font-size:1.375rem;line-height:1.3}
+.community-points p{margin:0;line-height:1.65}
+
+/* Find your Community: the explorer's pills, a Community panel beside its cards. */
+.community-explorer-head{margin-bottom:var(--s-5)}
+.community-explorer-head .stories-section-heading{margin-bottom:var(--s-3)}
+.community-explorer-head .body-lead{max-width:60ch;margin:0}
+.community-explorer .two-row-topic-nav{margin-bottom:var(--s-5)}
+/* The band is sunken, so the practice pills sit on white. */
+.community-explorer .tab-btn-primary:not([aria-pressed="true"]){background:var(--surface)}
+.community-explorer .community-panel-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:stretch}
+.community-explorer .community-panel-intro{justify-content:flex-start}
+.community-explorer .community-panel-intro p+p{margin-top:var(--s-3)}
+.community-explorer .community-panel-intro .eyebrow{margin:0 0 var(--s-2);color:var(--accent-ink)}
+.community-panel-logo{display:block;width:auto;height:64px;max-width:200px;margin-bottom:var(--s-5);object-fit:contain;object-position:left center}
+.community-panel-for{font-size:.9375rem;color:var(--ink-700)}
+.community-panel-count{display:flex;align-items:baseline;gap:8px;font:500 .875rem/1.4 var(--font-label);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-700)}
+.community-panel-stat{font:500 2rem/1 var(--font-display);letter-spacing:-.01em;text-transform:none;color:var(--accent-ink)}
+.community-explorer .community-cta-row{margin-top:var(--s-6)}
+.community-explorer .community-cta-row .link-arrow{margin-top:0}
+.community-panel-intro.is-empty{max-width:760px}
+.community-session-card .session-card{padding:0;border:0;background:none}
+.community-session-card h5{margin:0 0 8px;font:500 1.125rem/1.35 var(--font-text)}
+
+@media (max-width:980px){
+	.community-points,.community-points.has-four{grid-template-columns:1fr;gap:var(--s-5)}
+	.community-explorer .community-panel-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+	.community-panel-logo{height:52px}
+	.community-points h3{font-size:1.25rem}
+}
