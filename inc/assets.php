@@ -161,8 +161,15 @@ add_action(
 			}
 		}
 
+		// Community sales pages: report cards and Summit cards come from their own modules.
+		if ( assemble_is_community_sales_page() ) {
+			foreach ( array( 'related-peer-intelligence', 'summits-practice-detail', 'community-page' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
+
 		// Standard pages, team bios, search and 404 (Phase 6). The homepage and Summits page have their own modules.
-		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() ) || is_singular( 'team' ) || is_search() || is_404() ) {
+		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() && ! assemble_is_community_sales_page() ) || is_singular( 'team' ) || is_search() || is_404() ) {
 			assemble_enqueue_module_style( 'page-content' );
 		}
 		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {
