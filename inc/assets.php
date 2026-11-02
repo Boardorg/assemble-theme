@@ -119,6 +119,18 @@ add_action(
 					'in_footer' => true,
 				)
 			);
+
+			// The "Poll results" switcher for reports with three or more charts.
+			wp_enqueue_script(
+				'assemble-report-charts',
+				get_template_directory_uri() . '/assets/js/report-charts.js',
+				array(),
+				assemble_asset_version( 'assets/js/report-charts.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
 		}
 
 		// Playbooks (single-playbook.php, Phase 8).

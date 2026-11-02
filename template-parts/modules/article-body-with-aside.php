@@ -5,7 +5,8 @@
  * The body maps the Field Report's sections onto the article layout: the
  * Story in Brief as attributed lead quotes, Picking Up the Story and Focus of
  * the Discussion as h2 sections (label as eyebrow, authored subhead as the
- * heading), the pullquote as the blockquote, charts as captioned figures, Key
+ * heading), the pullquote as the blockquote, charts as a "Poll results" set
+ * (stacked; three or more become a switcher, assets/js/report-charts.js), Key
  * Takeaways as a numbered list, and the Community boilerplate last. The council
  * view leads with the takeaways at a glance and puts the full report behind an
  * expander (no wireframe: on-system). The aside carries the source line, a link
@@ -58,16 +59,35 @@ foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'com
 			break;
 
 		case 'charts':
-			foreach ( $assemble_section as $assemble_chart ) :
-				?>
-				<figure class="report-chart">
-					<img class="article-inline-image media-natural" src="<?php echo esc_url( add_query_arg( array( 'w' => 1440, 'fm' => 'webp', 'q' => 85 ), $assemble_chart['url'] ) ); ?>" alt="<?php echo esc_attr( $assemble_chart['alt'] ); ?>" loading="lazy" decoding="async">
-					<?php if ( '' !== $assemble_chart['caption'] ) : ?>
-						<figcaption class="image-caption"><?php echo esc_html( $assemble_chart['caption'] ); ?></figcaption>
-					<?php endif; ?>
-				</figure>
-				<?php
-			endforeach;
+			// The chart image carries its own title, so the caption is for screen
+			// readers only. Three or more charts get a switcher; the server renders
+			// them all stacked, which is also the no-script and print view.
+			$assemble_charts = array_values( (array) $assemble_section );
+			if ( ! $assemble_charts ) {
+				break;
+			}
+			$assemble_switch = count( $assemble_charts ) >= 3;
+			$assemble_chart_id = static fn( int $i ): string => 'report-chart-' . ( $i + 1 );
+			?>
+			<section class="report-charts"<?php echo $assemble_switch ? ' data-chart-switcher' : ''; ?>>
+				<p class="eyebrow report-label"><?php esc_html_e( 'Poll results', 'assemble' ); ?></p>
+				<?php if ( $assemble_switch ) : ?>
+					<div class="chart-tabs" role="group" aria-label="<?php esc_attr_e( 'Choose a chart', 'assemble' ); ?>" hidden>
+						<?php foreach ( $assemble_charts as $assemble_i => $assemble_chart ) : ?>
+							<button class="chart-tab" type="button" aria-pressed="<?php echo 0 === $assemble_i ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $assemble_chart_id( $assemble_i ) ); ?>" data-chart-target="<?php echo esc_attr( $assemble_chart_id( $assemble_i ) ); ?>"><?php echo esc_html( '' !== $assemble_chart['caption'] ? $assemble_chart['caption'] : sprintf( /* translators: %d: chart number */ __( 'Chart %d', 'assemble' ), $assemble_i + 1 ) ); ?></button>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+				<?php foreach ( $assemble_charts as $assemble_i => $assemble_chart ) : ?>
+					<figure class="report-chart" id="<?php echo esc_attr( $assemble_chart_id( $assemble_i ) ); ?>">
+						<img class="media-natural" src="<?php echo esc_url( add_query_arg( array( 'w' => 1440, 'fm' => 'webp', 'q' => 85 ), $assemble_chart['url'] ) ); ?>" alt="<?php echo esc_attr( $assemble_chart['alt'] ); ?>" loading="lazy" decoding="async">
+						<?php if ( '' !== $assemble_chart['caption'] ) : ?>
+							<figcaption class="screen-reader-text"><?php echo esc_html( $assemble_chart['caption'] ); ?></figcaption>
+						<?php endif; ?>
+					</figure>
+				<?php endforeach; ?>
+			</section>
+			<?php
 			break;
 
 		case 'takeaways':

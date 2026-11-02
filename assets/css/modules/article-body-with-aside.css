@@ -20,7 +20,20 @@
 .article-body a{color:var(--ink-900)}
 .article-inline-image{margin:42px 0 12px}
 .article-body .image-caption{margin:0 0 34px;text-transform:uppercase;letter-spacing:.04em}
+/* Poll results: charts stacked; three or more get a pill switcher (report-charts.js). */
+.report-charts{margin:44px 0}
+.article-body .report-charts > .report-label{margin:0 0 14px}
+.chart-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chart-tabs[hidden]{display:none}
+.chart-tab{min-height:44px;padding:9px 18px;border:1px solid var(--line);border-radius:var(--r-pill);background:transparent;color:var(--ink-700);font:500 .875rem/1.5 var(--font-body);text-align:left;cursor:pointer;transition:background var(--motion),border-color var(--motion)}
+.chart-tab:hover{border-color:var(--ink-300);color:var(--ink-900)}
+.chart-tab[aria-pressed="true"]{background:var(--ink-900);border-color:var(--ink-900);color:var(--surface)}
+.chart-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .report-chart{margin:0}
+.report-chart + .report-chart{margin-top:28px}
+.report-chart[hidden]{display:none}
+.report-chart img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r-sm)}
+@media print{.chart-tabs{display:none!important}.report-chart[hidden]{display:block!important}}
 
 /* Section labels ("Picking Up the Story") sit above the authored subhead. */
 .article-body .report-label{margin:0 0 10px;color:var(--accent-ink)}
@@ -73,4 +86,8 @@
 	.article-body h2{font-size:1.6875rem}
 	.article-body .lead,.article-body .report-take blockquote{font-size:1.125rem}
 	.article-body blockquote{font-size:1.5rem}
+	/* Chart pills: one row that swipes, running to the screen edges. */
+	.chart-tabs{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:2px var(--gutter);scrollbar-width:none}
+	.chart-tabs::-webkit-scrollbar{display:none}
+	.chart-tab{flex:none;white-space:nowrap}
 }
