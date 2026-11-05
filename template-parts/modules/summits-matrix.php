@@ -4,7 +4,7 @@
  * upcoming summit, soonest first. Practice-area eyebrow and title, the full
  * date range and place (wireframe edits B.2: no period after the state, larger
  * text), the one-line description and "Reserve your seat". Rows take their
- * colour from the summit's practice area; Life Sciences stays neutral.
+ * colour from the summit's practice area; a summit with no area stays neutral.
  *
  * @var array $args { summits: array from assemble_upcoming_summits() }
  */
