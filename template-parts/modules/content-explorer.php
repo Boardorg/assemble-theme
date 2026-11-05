@@ -13,8 +13,8 @@
  * Community, from executiveplatforms.com through assemble-core (Phase 5a).
  * With a Next Summit the side column runs about twice as tall, so the Insights
  * card lists seven stories instead of three to fill the space beside it. A
- * Community with fewer is topped up from its sister Communities in the same
- * practice area, newest first, under a "More from <area>" label.
+ * Community with fewer (or none yet) is topped up from its sister Communities in
+ * the same practice area, newest first, under a "More from <area>" label.
  *
  * Not built yet, because nothing feeds them: the source-branding card
  * (topic-intro-source-card), Upcoming Working Sessions and Leaders to follow.
@@ -125,7 +125,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 						$assemble_community['stories'] = array_slice( $assemble_community['stories'], 0, $assemble_slots );
 						$assemble_community['more']    = array();
 						$assemble_need                 = $assemble_slots - count( $assemble_community['stories'] );
-						if ( $assemble_community['stories'] && $assemble_need > 0 ) {
+						if ( $assemble_summit && $assemble_need > 0 ) {
 							$assemble_seen = array_column( $assemble_community['stories'], 'id' );
 							foreach ( $assemble_area['communities'] as $assemble_sister ) {
 								foreach ( $assemble_sister['stories'] as $assemble_story ) {
