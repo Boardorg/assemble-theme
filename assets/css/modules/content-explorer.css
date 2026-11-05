@@ -24,7 +24,7 @@
 .ld-topic-intro .link-arrow{margin-top:16px;font-size:.875rem}
 
 .ld-card-grid{display:grid;grid-template-columns:1.5fr 1fr .95fr;gap:18px;align-items:start}
-.ld-card-grid--two{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.ld-card-grid--two{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:stretch}
 .ld-card-grid--one{grid-template-columns:1fr}
 .ld-card{min-width:0;padding:24px 24px 20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
 .ld-card-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 18px}
@@ -33,7 +33,12 @@
 .ld-card-footer .link-arrow{font-size:.875rem}
 .ld-card .empty-state{margin:0;font-size:.875rem;line-height:1.6}
 
-/* ld-insights-card */
+/* ld-insights-card. Stretches to the side column's height, footer pinned to the bottom. */
+.ld-insights-card{display:flex;flex-direction:column}
+.ld-insights-card .ld-card-footer{margin-top:auto}
+.ld-insights-card .ld-insight-list{margin-bottom:14px}
+.ld-insights-card .ld-insight-list:has(+.ld-more-label){margin-bottom:0}
+.ld-more-label{margin:0;padding:15px 0 4px;border-top:1px solid var(--line);font-weight:500}
 .ld-insight-list{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
 .ld-insight-item{display:grid;grid-template-columns:160px minmax(0,1fr);gap:18px;align-items:center;padding:15px 0;border-top:1px solid var(--line)}
 .ld-insight-item:first-child{padding-top:4px;border-top:0}
@@ -68,6 +73,7 @@
 
 @media (max-width:1180px){
 	.ld-card-grid,.ld-card-grid--two,.ld-topic-intro-row{grid-template-columns:1fr}
+	.ld-insight-item:nth-child(n+4),.ld-more-label,.ld-more-label+.ld-insight-list{display:none}
 }
 
 @media (max-width:640px){

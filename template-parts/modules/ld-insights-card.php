@@ -2,19 +2,46 @@
 /**
  * Module: ld-insights-card (web-style-guide.html → Web modules → Peer intelligence).
  *
- * Up to three Insights from one Community: thumbnail, topic tag, headline and
+ * Up to three Insights from one Community (seven beside a Next Summit card): thumbnail, topic tag, headline and
  * date, then one "Explore all" link below the list. The mockup's attribution
  * line (a member's name, title and company) has no data source yet, so the
- * report date stands in for it.
+ * report date stands in for it. 'more' (optional) tops the list up with stories
+ * from sister Communities, under a "More from <practice area>" label.
  *
- * @var array $args { community: array from assemble_area_communities() plus 'stories' }
+ * @var array $args { community: array from assemble_area_communities() plus 'stories', 'more', 'more_label' }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $assemble_community = (array) ( $args['community'] ?? array() );
 $assemble_stories   = (array) ( $assemble_community['stories'] ?? array() );
+$assemble_more      = (array) ( $assemble_community['more'] ?? array() );
 $assemble_label     = (string) ( $assemble_community['label'] ?? '' );
+
+/** One list of story rows. */
+$assemble_list = static function ( array $stories ): void {
+	?>
+	<ul class="ld-insight-list">
+		<?php foreach ( $stories as $assemble_story ) : ?>
+			<li class="ld-insight-item">
+				<a class="hedcut-thumb media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
+					<?php
+					$assemble_img = assemble_cf_image( $assemble_story['image'], '16:9', '160px' );
+					echo $assemble_img ? $assemble_img : '<span class="img-x"></span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image().
+					?>
+				</a>
+				<div>
+					<?php if ( $assemble_story['topic'] ) : ?>
+						<span class="tag tag-topic" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
+					<?php endif; ?>
+					<h5><a href="<?php echo esc_url( $assemble_story['url'] ); ?>"><?php echo esc_html( $assemble_story['title'] ); ?></a></h5>
+					<p class="ld-person meta"><?php echo esc_html( $assemble_story['date'] ); ?></p>
+				</div>
+			</li>
+		<?php endforeach; ?>
+	</ul>
+	<?php
+};
 ?>
 <div class="ld-card ld-insights-card">
 	<div class="ld-card-header">
@@ -27,25 +54,16 @@ $assemble_label     = (string) ( $assemble_community['label'] ?? '' );
 	</div>
 
 	<?php if ( $assemble_stories ) : ?>
-		<ul class="ld-insight-list">
-			<?php foreach ( $assemble_stories as $assemble_story ) : ?>
-				<li class="ld-insight-item">
-					<a class="hedcut-thumb media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
-						<?php
-						$assemble_img = assemble_cf_image( $assemble_story['image'], '16:9', '160px' );
-						echo $assemble_img ? $assemble_img : '<span class="img-x"></span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image().
-						?>
-					</a>
-					<div>
-						<?php if ( $assemble_story['topic'] ) : ?>
-							<span class="tag tag-topic" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
-						<?php endif; ?>
-						<h5><a href="<?php echo esc_url( $assemble_story['url'] ); ?>"><?php echo esc_html( $assemble_story['title'] ); ?></a></h5>
-						<p class="ld-person meta"><?php echo esc_html( $assemble_story['date'] ); ?></p>
-					</div>
-				</li>
-			<?php endforeach; ?>
-		</ul>
+		<?php $assemble_list( $assemble_stories ); ?>
+		<?php if ( $assemble_more ) : ?>
+			<p class="ld-more-label meta">
+				<?php
+				/* translators: %s: practice area, e.g. "Marketing". */
+				printf( esc_html__( 'More from %s', 'assemble' ), esc_html( (string) ( $assemble_community['more_label'] ?? '' ) ) );
+				?>
+			</p>
+			<?php $assemble_list( $assemble_more ); ?>
+		<?php endif; ?>
 		<div class="ld-card-footer">
 			<a class="link-arrow" href="<?php echo esc_url( assemble_community_url( (string) $assemble_community['slug'] ) ); ?>">
 				<?php

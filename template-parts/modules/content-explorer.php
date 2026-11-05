@@ -11,6 +11,10 @@
  *
  * Next Summit (ld-summit-card) is the soonest summit featured for the
  * Community, from executiveplatforms.com through assemble-core (Phase 5a).
+ * With a Next Summit the side column runs about twice as tall, so the Insights
+ * card lists seven stories instead of three to fill the space beside it. A
+ * Community with fewer is topped up from its sister Communities in the same
+ * practice area, newest first, under a "More from <area>" label.
  *
  * Not built yet, because nothing feeds them: the source-branding card
  * (topic-intro-source-card), Upcoming Working Sessions and Leaders to follow.
@@ -26,7 +30,7 @@ $assemble_opening = '';
 foreach ( assemble_practice_areas() as $assemble_key => $assemble_label ) {
 	$assemble_communities = assemble_area_communities( $assemble_key );
 	foreach ( $assemble_communities as $assemble_i => $assemble_community ) {
-		$assemble_communities[ $assemble_i ]['stories'] = assemble_community_stories( $assemble_community['slug'], 3 );
+		$assemble_communities[ $assemble_i ]['stories'] = assemble_community_stories( $assemble_community['slug'], 7 );
 
 		// Open on the first Community that has something to show.
 		if ( '' === $assemble_opening && $assemble_communities[ $assemble_i ]['stories'] ) {
@@ -115,7 +119,27 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 							</div>
 						</div>
 
-						<?php $assemble_summit = assemble_next_summit( $assemble_key, $assemble_community['slug'] ); ?>
+						<?php
+						$assemble_summit               = assemble_next_summit( $assemble_key, $assemble_community['slug'] );
+						$assemble_slots                = $assemble_summit ? 7 : 3;
+						$assemble_community['stories'] = array_slice( $assemble_community['stories'], 0, $assemble_slots );
+						$assemble_community['more']    = array();
+						$assemble_need                 = $assemble_slots - count( $assemble_community['stories'] );
+						if ( $assemble_community['stories'] && $assemble_need > 0 ) {
+							$assemble_seen = array_column( $assemble_community['stories'], 'id' );
+							foreach ( $assemble_area['communities'] as $assemble_sister ) {
+								foreach ( $assemble_sister['stories'] as $assemble_story ) {
+									if ( ! in_array( $assemble_story['id'], $assemble_seen, true ) ) {
+										$assemble_seen[]                = $assemble_story['id'];
+										$assemble_community['more'][] = $assemble_story;
+									}
+								}
+							}
+							usort( $assemble_community['more'], static fn ( $a, $b ) => get_post_timestamp( $b['id'] ) <=> get_post_timestamp( $a['id'] ) );
+							$assemble_community['more']       = array_slice( $assemble_community['more'], 0, $assemble_need );
+							$assemble_community['more_label'] = $assemble_area['label'];
+						}
+						?>
 						<div class="ld-card-grid<?php echo $assemble_feature || $assemble_summit ? ' ld-card-grid--two' : ' ld-card-grid--one'; ?>">
 							<?php
 							get_template_part(
