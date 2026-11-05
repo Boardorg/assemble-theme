@@ -79,6 +79,15 @@ $assemble_list = static function ( array $stories ): void {
 			printf( esc_html__( 'The first %2$s from the %1$s are on their way.', 'assemble' ), esc_html( (string) ( $assemble_community['name'] ?? '' ) ), esc_html( assemble_label( 'insights' ) ) );
 			?>
 		</p>
+		<?php if ( $assemble_more ) : ?>
+			<p class="ld-more-label meta">
+				<?php
+				/* translators: %s: practice area, e.g. "Marketing". */
+				printf( esc_html__( 'More from %s', 'assemble' ), esc_html( (string) ( $assemble_community['more_label'] ?? '' ) ) );
+				?>
+			</p>
+			<?php $assemble_list( $assemble_more ); ?>
+		<?php endif; ?>
 		<div class="ld-card-footer">
 			<a class="link-arrow" href="<?php echo esc_url( assemble_insights_url() ); ?>">
 				<?php
