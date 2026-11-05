@@ -1,9 +1,10 @@
 /*
  * Module: home-top-stories. Card and lead story measured from the logged-out
  * home mockup at 1440 (rollup, guide Draft 0.4): lead 2fr / side list 1fr,
- * lead title 25px Text. Refined 2026-11-05 (Cale): side stories are
- * headline-only with a 128×72 thumbnail on the right, spread down the lead's
- * height with rules between, and "See more" moves to the heading row.
+ * lead title 25px Text. Refined 2026-11-05 (Cale): two side stories as
+ * photo-on-top cards at full column width. The photos flex to fill the lead's
+ * height (about 16:9 at 1440), so both columns always end together, whatever
+ * the headline lengths; "See more" sits on the heading row.
  */
 
 .home-top-stories{padding-block:56px 72px}
@@ -16,26 +17,24 @@
 .featured-main .featured-image{aspect-ratio:16/9;margin-bottom:28px}
 .featured-headline{margin:0 0 18px;font:500 1.5625rem/1.2 var(--font-text);letter-spacing:-.012em}
 .featured-excerpt{max-width:46em;margin:0;font-size:1rem;line-height:1.75;color:var(--ink-700)}
-.featured-side-list{display:flex;flex-direction:column;justify-content:space-between;gap:20px;min-width:0}
-.featured-rule{width:100%;margin:0;border:0;border-top:1px solid var(--line)}
-.featured-side-list .feed-card{display:grid;grid-template-columns:minmax(0,1fr) 128px;grid-template-rows:auto 1fr;column-gap:20px;align-content:start}
-.featured-side-list .featured-image{grid-column:2;grid-row:1/span 2;width:128px;height:72px}
-.feed-card>:not(.featured-image){grid-column:1}
-.feed-card .tag{grid-row:1;justify-self:start}
-.feed-card h2{grid-row:2;margin:0;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
+.featured-side-list{display:flex;flex-direction:column;gap:24px;min-width:0}
+.featured-side-list .feed-card{display:flex;flex:1 1 0;flex-direction:column}
+.featured-side-list .featured-image{flex:1 1 0;min-height:150px;margin-bottom:16px}
+.feed-card .tag{align-self:flex-start}
+.feed-card h2{margin:0;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
 .home-top-stories .tag{margin-bottom:10px}
 .home-top-stories h2 a{color:inherit;text-decoration:none}
 .home-top-stories h2 a:hover{text-decoration:underline;text-decoration-thickness:1px}
 
 @media (max-width:980px){
 	.featured-split-grid{grid-template-columns:1fr}
-	.featured-side-list{justify-content:flex-start;padding-top:24px;border-top:1px solid var(--line)}
+	.featured-side-list{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);padding-top:24px;border-top:1px solid var(--line)}
+	.featured-side-list .featured-image{flex:none;min-height:0;aspect-ratio:16/9}
 }
 
 @media (max-width:640px){
 	.home-top-stories{padding-block:32px 48px}
 	.home-top-stories .widget{padding:20px}
 	.feed-card h2{font-size:1.125rem}
-	.featured-side-list .feed-card{grid-template-columns:minmax(0,1fr) 96px;column-gap:16px}
-	.featured-side-list .featured-image{width:96px;height:54px}
+	.featured-side-list{grid-template-columns:1fr;gap:32px}
 }

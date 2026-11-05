@@ -2,15 +2,15 @@
 /**
  * Module: home-top-stories (web-style-guide.html → Web modules → Peer intelligence).
  *
- * One lead story and three supporting stories, from the feed: featured reports
+ * One lead story and two supporting stories, from the feed: featured reports
  * in their Contentful rank, then the newest. The section heading outranks the
  * story titles; "See more top stories" sits on the heading row. Supporting
- * stories are headline-only and spread down the lead's height, rules between.
+ * stories are photo-on-top cards; two of them match the lead's height.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$assemble_stories = assemble_top_stories( 4 );
+$assemble_stories = assemble_top_stories( 3 );
 $assemble_lead    = array_shift( $assemble_stories );
 ?>
 <section class="home-top-stories wrap" aria-labelledby="home-top-stories-title">
@@ -43,14 +43,11 @@ $assemble_lead    = array_shift( $assemble_stories );
 				</article>
 
 				<div class="featured-side-list">
-					<?php foreach ( $assemble_stories as $assemble_i => $assemble_story ) : ?>
-						<?php if ( $assemble_i ) : ?>
-							<hr class="featured-rule">
-						<?php endif; ?>
+					<?php foreach ( $assemble_stories as $assemble_story ) : ?>
 						<article class="feed-card" data-area="<?php echo esc_attr( $assemble_story['area'] ); ?>">
 							<a class="featured-image media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
 								<?php
-								$assemble_img = assemble_cf_image( $assemble_story['image'], '16:9', '128px' );
+								$assemble_img = assemble_cf_image( $assemble_story['image'], '16:9', '(max-width: 640px) 100vw, (max-width: 980px) 50vw, 400px' );
 								echo $assemble_img ? $assemble_img : '<span class="img-x"></span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image().
 								?>
 							</a>
