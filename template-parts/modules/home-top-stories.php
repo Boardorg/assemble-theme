@@ -34,7 +34,7 @@ $assemble_lead    = array_shift( $assemble_stories );
 						?>
 					</a>
 					<?php if ( $assemble_lead['topic'] ) : ?>
-						<span class="tag tag-topic" data-topic-slug="<?php echo esc_attr( $assemble_lead['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_lead['topic']['name'] ); ?></span>
+						<?php echo assemble_topic_tag( $assemble_lead['topic'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in assemble_topic_tag(). ?>
 					<?php endif; ?>
 					<h2 class="featured-headline type-feature-title"><a href="<?php echo esc_url( $assemble_lead['url'] ); ?>"><?php echo esc_html( $assemble_lead['title'] ); ?></a></h2>
 					<?php if ( $assemble_lead['excerpt'] ) : ?>
@@ -52,7 +52,7 @@ $assemble_lead    = array_shift( $assemble_stories );
 								?>
 							</a>
 							<?php if ( $assemble_story['topic'] ) : ?>
-								<span class="tag tag-topic" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
+								<?php echo assemble_topic_tag( $assemble_story['topic'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in assemble_topic_tag(). ?>
 							<?php endif; ?>
 							<h2 class="type-h4"><a href="<?php echo esc_url( $assemble_story['url'] ); ?>"><?php echo esc_html( $assemble_story['title'] ); ?></a></h2>
 						</article>

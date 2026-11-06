@@ -1,6 +1,6 @@
 <?php
 /**
- * A Community's Insights (/field-reports/community/<slug>/), in its practice
+ * A Community's Insights (/insights/community/<slug>/), in its practice
  * area's colour, with the Community's description from the feed's directory.
  */
 

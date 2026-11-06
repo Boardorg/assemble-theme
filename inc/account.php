@@ -73,6 +73,22 @@ function assemble_interest_areas(): array {
 }
 
 /**
+ * A Community as a topic on the Create account form: "AEO", "Social Media",
+ * "Digital Marketing & Communications", not the Board's own name.
+ *
+ * @param array{slug:string,name:string,label:string} $community From assemble_area_communities().
+ */
+function assemble_interest_topic_label( array $community ): string {
+	$names = array(
+		'socialmedia-org'        => __( 'Social Media', 'assemble' ),
+		'socialmedia-org-health' => __( 'Healthcare Social Media', 'assemble' ),
+		'hr-network'             => __( 'HR Leadership', 'assemble' ),
+	);
+
+	return $names[ $community['slug'] ] ?? (string) preg_replace( '/\s+(Board|Council|Network)$/', '', (string) $community['name'] );
+}
+
+/**
  * One labelled form field (the guide's .form-row), with its help and error
  * text tied to the input for screen readers.
  *

@@ -1,0 +1,21 @@
+/*
+ * The Benchmarks page (page-benchmark.php), on the banded pages' vocabulary
+ * (page-bands.css). No wireframe: on-system and flagged for design.
+ * Report cards are practice cards holding a list of report links.
+ */
+
+.benchmark-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.benchmark-cards .practice-card h3{min-height:0}
+.benchmark-links{display:flex!important;flex-direction:column;gap:10px!important}
+.benchmark-links li{padding:0!important;background:none!important}
+.benchmark-links .link-arrow{color:var(--ink-900);font-size:.9375rem}
+.benchmark-survey-body>p:first-child{margin-top:0}
+.benchmark-results{grid-template-columns:minmax(0,1fr)}
+
+@media (max-width:1100px){
+	.benchmark-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media (max-width:640px){
+	.benchmark-cards{grid-template-columns:1fr}
+}

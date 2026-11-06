@@ -168,7 +168,7 @@ function assemble_community_url( string $community_slug ): string {
 function assemble_insights_url(): string {
 	$link = post_type_exists( 'field_report' ) ? get_post_type_archive_link( 'field_report' ) : false;
 
-	return $link ? $link : home_url( '/field-reports/' );
+	return $link ? $link : home_url( '/insights/' );
 }
 
 /**
@@ -263,8 +263,8 @@ function assemble_read_minutes( int $words ): int {
 }
 
 /**
- * Where a practice area's Insights live. There is no per-area index yet, so
- * this is the Insights index (placeholder; see the theme handoff).
+ * Where a practice area's Insights live: its filtered page (/insights/area/…,
+ * from assemble-core), else the Insights index.
  */
 function assemble_area_url( string $area ): string {
 	/**
@@ -274,6 +274,38 @@ function assemble_area_url( string $area ): string {
 	 * @param string $area
 	 */
 	return (string) apply_filters( 'assemble/area_url', assemble_insights_url(), $area );
+}
+
+/**
+ * Where a topic's Insights live (/insights/topic/<slug>/, from assemble-core),
+ * or '' when nothing provides a topic page and the tag stays a plain label.
+ */
+function assemble_topic_url( string $slug ): string {
+	/**
+	 * Filter a topic's Insights URL.
+	 *
+	 * @param string $url
+	 * @param string $slug
+	 */
+	return (string) apply_filters( 'assemble/topic_url', '', $slug );
+}
+
+/**
+ * A topic tag: a link to the topic's Insights when there is a topic page,
+ * else a label.
+ *
+ * @param array{name:string,slug:string} $topic
+ */
+function assemble_topic_tag( array $topic, string $class = '' ): string {
+	$url   = assemble_topic_url( (string) $topic['slug'] );
+	$tag   = '' !== $url ? 'a' : 'span';
+	$attrs = sprintf( ' class="tag tag-topic%s" data-topic-slug="%s"', $class ? ' ' . esc_attr( $class ) : '', esc_attr( (string) $topic['slug'] ) );
+
+	if ( '' !== $url ) {
+		$attrs .= ' href="' . esc_url( $url ) . '"';
+	}
+
+	return sprintf( '<%1$s%2$s>%3$s</%1$s>', $tag, $attrs, esc_html( (string) $topic['name'] ) );
 }
 
 /** A Community's short label, e.g. "AEO" for the AEO Board. */
@@ -346,6 +378,40 @@ function assemble_related_stories( int $post_id, string $community_slug, int $co
 	return array_map( 'assemble_story', array_slice( array_values( $posts ), 0, $count ) );
 }
 
+/**
+ * The practice area or topic an Insights page is filtered to (assemble-core's
+ * /insights/area/… and /insights/topic/… pages), or null on the index.
+ *
+ * @return array{type:string,key:string,label:string}|null
+ */
+function assemble_insights_filter(): ?array {
+	if ( ! is_post_type_archive( 'field_report' ) ) {
+		return null;
+	}
+
+	if ( function_exists( 'assemble_insights_area' ) && '' !== assemble_insights_area() ) {
+		$area = assemble_insights_area();
+
+		return array(
+			'type'  => 'area',
+			'key'   => $area,
+			'label' => assemble_practice_areas()[ $area ] ?? '',
+		);
+	}
+
+	if ( function_exists( 'assemble_insights_topic' ) && '' !== assemble_insights_topic() ) {
+		$slug = assemble_insights_topic();
+
+		return array(
+			'type'  => 'topic',
+			'key'   => $slug,
+			'label' => assemble_insights_topic_name( $slug ),
+		);
+	}
+
+	return null;
+}
+
 /** Twelve cards a page on the Community archives (a 3-up grid). */
 add_action(
 	'pre_get_posts',
@@ -356,11 +422,11 @@ add_action(
 	}
 );
 
-/** The Insights index is the explorer, one page: send old paged URLs to it. */
+/** The Insights index is the explorer, one page: send old paged URLs to it. Area and topic pages page normally. */
 add_action(
 	'template_redirect',
 	static function (): void {
-		if ( is_post_type_archive( 'field_report' ) && is_paged() ) {
+		if ( is_post_type_archive( 'field_report' ) && is_paged() && ! assemble_insights_filter() ) {
 			wp_safe_redirect( assemble_insights_url(), 301 );
 			exit;
 		}

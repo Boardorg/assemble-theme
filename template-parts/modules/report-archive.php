@@ -1,6 +1,6 @@
 <?php
 /**
- * Community archives (/field-reports/community/<slug>/) and the playbooks
+ * Community archives (/insights/community/<slug>/) and the playbooks
  * index: a page head and a grid of report cards
  * from the main query, with pagination. No wireframe: on-system, flagged.
  *
