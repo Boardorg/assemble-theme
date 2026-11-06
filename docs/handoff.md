@@ -226,3 +226,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
   - `/benchmark/` and `/register/` return 200.
   
   Open: the survey on `/benchmark/` is still the Q3 2026 Talent form (Cale to swap in the next round), and earlier benchmark editions aren't listed.
+- **2026-11-06 (theme 0.13.1):** Our Team hero drops the "The N people behind Assemble's Communities and Summits" lead (Cale: match production, which has the H1 alone). The H1 stays the page content ("Meet our team, with decades of experience…").
