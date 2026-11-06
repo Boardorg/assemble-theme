@@ -1,18 +1,22 @@
 /*
  * Our Team (/our-team/) and team bios (/our-team/<slug>/). No wireframe:
  * on-system and flagged for design. Square headshots (IMG S3/S4), name in
- * IvyOra Text, title as meta.
+ * IvyOra Text, title as meta. The headshot PNGs carry their own rounded,
+ * transparent corners, so the frame adds no fill or radius of its own.
  */
 
 .team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 24px;max-width:1120px;margin:48px auto 0;padding:0;list-style:none}
-.team-card__photo{margin-bottom:14px;border-radius:var(--r-sm)}
+.team-card__photo-link{display:block}
+.team-card__photo,.team-profile__photo{background:none;border-radius:0}
+.team-card__photo{margin-bottom:14px;transition:opacity .15s}
+.team-card__photo-link:hover .team-card__photo{opacity:.88}
+.team-card:has(.team-card__photo-link:hover) .team-card__name a{text-decoration:underline;text-underline-offset:3px}
 .team-card__name{margin:0 0 4px;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
 .team-card__name a{color:var(--ink-900);text-decoration:none}
 .team-card__name a:hover{text-decoration:underline;text-underline-offset:3px}
 .team-card__role{margin:0;font-size:.875rem;line-height:1.55;color:var(--ink-700)}
 
 .team-profile{display:grid;grid-template-columns:320px minmax(0,720px);gap:56px;align-items:start;max-width:1120px;margin:0 auto}
-.team-profile__photo{border-radius:var(--r-md)}
 .team-profile__bio{margin:0}
 
 @media (max-width:980px){
