@@ -60,7 +60,10 @@ add_filter(
 // "Insights" and "AEO Insights" instead of "Field Reports Archive" and "AEO Board Archives".
 $assemble_archive_title = static function ( $title ) {
 	if ( is_post_type_archive( 'field_report' ) ) {
-		return assemble_label( 'insights' ) . ' - ' . get_bloginfo( 'name' );
+		$filter = assemble_insights_filter();
+		$prefix = $filter ? $filter['label'] . ' ' : '';
+
+		return $prefix . assemble_label( 'insights' ) . ' - ' . get_bloginfo( 'name' );
 	}
 
 	if ( is_post_type_archive( 'playbook' ) ) {

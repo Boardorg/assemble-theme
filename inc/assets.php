@@ -205,6 +205,11 @@ add_action(
 			assemble_enqueue_module_style( 'page-bands' );
 			assemble_enqueue_module_style( 'team' );
 		}
+		if ( is_page( 'benchmark' ) ) {
+			foreach ( array( 'page-hero', 'page-bands', 'benchmark-page' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
 		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {
 			assemble_enqueue_module_style( 'team' );
 		}

@@ -32,7 +32,7 @@ $assemble_list = static function ( array $stories ): void {
 				</a>
 				<div>
 					<?php if ( $assemble_story['topic'] ) : ?>
-						<span class="tag tag-topic" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
+						<?php echo assemble_topic_tag( $assemble_story['topic'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in assemble_topic_tag(). ?>
 					<?php endif; ?>
 					<h5><a href="<?php echo esc_url( $assemble_story['url'] ); ?>"><?php echo esc_html( $assemble_story['title'] ); ?></a></h5>
 					<p class="ld-person meta"><?php echo esc_html( $assemble_story['date'] ); ?></p>

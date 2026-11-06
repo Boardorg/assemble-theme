@@ -36,6 +36,6 @@ $assemble_cta_url = class_exists( 'AC_Site_Features' ) ? AC_Site_Features::url( 
 		<?php endif; ?>
 	</div>
 	<div class="ld-card-footer">
-		<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'benchmark_url', '' ) ) ); ?>"><?php esc_html_e( 'See all benchmarks', 'assemble' ); ?></a>
+		<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'benchmark_page_url', '/benchmark/' ) ) ); ?>"><?php esc_html_e( 'See all benchmarks', 'assemble' ); ?></a>
 	</div>
 </div>

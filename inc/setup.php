@@ -45,11 +45,11 @@ function assemble_primary_nav_fallback(): array {
 	return array(
 		array(
 			'label' => assemble_label( 'insights' ),
-			'url'   => home_url( '/field-reports/' ),
+			'url'   => assemble_insights_url(),
 		),
 		array(
 			'label' => assemble_label( 'communities' ),
-			'url'   => home_url( '/field-reports/' ), // Placeholder until a communities index exists.
+			'url'   => assemble_url( (string) assemble_setting( 'communities_url', '/communities/' ) ),
 		),
 		array(
 			'label' => assemble_label( 'summits' ),

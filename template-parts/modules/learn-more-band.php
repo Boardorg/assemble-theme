@@ -16,7 +16,7 @@ $assemble_cards = array(
 		'text'    => sprintf( __( 'Join trusted %s built for candid discussion, practical problem-solving, and ongoing exchange with senior leaders in your field.', 'assemble' ), assemble_label( 'communities' ) ),
 		/* translators: %s: "Communities" (or its replacement label). */
 		'link'    => sprintf( __( 'Explore %s', 'assemble' ), assemble_label( 'communities' ) ),
-		'url'     => assemble_url( (string) assemble_setting( 'communities_url', '/field-reports/' ) ),
+		'url'     => assemble_url( (string) assemble_setting( 'communities_url', '/communities/' ) ),
 	),
 	array(
 		'eyebrow' => assemble_label( 'summits' ),

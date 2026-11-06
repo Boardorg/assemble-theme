@@ -13,12 +13,17 @@
 .tab-btn-primary{background:var(--surface-sunken)}
 .tab-btn:hover{border-color:var(--ink-300);color:var(--ink-900)}
 .tab-btn[aria-pressed="true"]{background:var(--ink-900);border-color:var(--ink-900);color:var(--surface)}
+/* Practice-area pills in their area's colour; the Community row follows its area. */
+.tab-btn-primary[data-area]{background:color-mix(in srgb,var(--accent-soft) 42%,#fff);border-color:var(--accent-mid);color:var(--accent-ink)}
+.tab-btn-primary[data-area]:hover{background:color-mix(in srgb,var(--accent-soft) 75%,#fff);border-color:var(--accent);color:var(--accent-ink)}
+.tab-btn-primary[data-area][aria-pressed="true"],.topic-row-secondary[data-area] .tab-btn[aria-pressed="true"]{background:var(--accent-ink);border-color:var(--accent-ink);color:var(--surface)}
 .tab-panel[hidden]{display:none}
 
 .ld-topic-shell{display:flex;flex-direction:column;gap:18px}
 .ld-topic-intro-row{display:grid;grid-template-columns:1.05fr 1.35fr;gap:24px;align-items:stretch}
 .ld-topic-intro-row.is-single{grid-template-columns:1fr}
 .ld-topic-intro{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:28px 28px 26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.ld-topic-logo{display:block;width:auto;max-width:200px;height:auto;max-height:56px;margin:0 0 16px;object-fit:contain}
 .ld-topic-intro h3{margin:0 0 12px}
 .ld-topic-intro p{max-width:60ch;margin:0;line-height:1.65}
 .ld-topic-intro .link-arrow{margin-top:16px;font-size:.875rem}

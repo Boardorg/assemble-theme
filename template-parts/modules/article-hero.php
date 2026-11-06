@@ -41,7 +41,7 @@ if ( $assemble_mins ) {
 
 <header class="article-hero content-head" data-area="<?php echo esc_attr( $assemble_area ); ?>">
 	<?php if ( $assemble_topic ) : ?>
-		<span class="tag tag-topic article-category" data-topic-slug="<?php echo esc_attr( $assemble_topic['slug'] ); ?>"><?php echo esc_html( $assemble_topic['name'] ); ?></span>
+		<?php echo assemble_topic_tag( $assemble_topic, 'article-category' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in assemble_topic_tag(). ?>
 	<?php endif; ?>
 
 	<h1 class="article-title"><?php echo esc_html( $assemble_title ); ?></h1>

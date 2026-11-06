@@ -29,7 +29,7 @@ if ( ! $assemble_story ) {
 				<span class="tag tag-format"><?php echo esc_html( $assemble_story['format'] ); ?></span>
 			<?php endif; ?>
 			<?php if ( $assemble_story['topic'] ) : ?>
-				<span class="tag tag-topic kicker" data-topic-slug="<?php echo esc_attr( $assemble_story['topic']['slug'] ); ?>"><?php echo esc_html( $assemble_story['topic']['name'] ); ?></span>
+				<?php echo assemble_topic_tag( $assemble_story['topic'], 'kicker' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in assemble_topic_tag(). ?>
 			<?php endif; ?>
 			<?php if ( ! empty( $assemble_story['locked'] ) ) : ?>
 				<span class="tag tag-access"><?php echo assemble_icon( 'lock' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?><?php echo esc_html( assemble_label( 'members_only' ) ); ?></span>

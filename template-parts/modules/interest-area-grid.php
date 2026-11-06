@@ -2,7 +2,9 @@
 /**
  * Module: interest-area-grid (wireframe "6. Create Account", "Your interest
  * areas"). One row per practice area with a Follow toggle; a followed area
- * opens its Communities, each switchable (Cale, 2026-10-11). The mockup's
+ * opens its Communities, each switchable (Cale, 2026-10-11). They're shown as
+ * "Topics to follow", by topic name rather than Board name (Kristen's review,
+ * Cale 2026-11-06); the values are still Community slugs. The mockup's
  * newsletter toggles and topic tags are held for a later phase.
  *
  * The toggles are real checkboxes, so the form works without JavaScript; CSS
@@ -22,8 +24,7 @@ $assemble_communities = (array) ( $args['communities'] ?? array() );
 	<h2 class="account-section-title"><?php esc_html_e( 'Your interest areas', 'assemble' ); ?></h2>
 	<p class="interests-intro">
 		<?php
-		/* translators: %s: "Communities" (or the label that replaces it). */
-		printf( esc_html__( 'Follow the practice areas you want reflected across your Assemble experience, then choose the %s within each.', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
+		esc_html_e( 'Follow the practice areas you want reflected across your Assemble experience, then choose the topics within each.', 'assemble' );
 		?>
 	</p>
 
@@ -41,18 +42,13 @@ $assemble_communities = (array) ( $args['communities'] ?? array() );
 
 					<?php if ( $assemble_area['communities'] ) : ?>
 						<fieldset class="interest-communities">
-							<legend>
-								<?php
-								/* translators: %s: "Communities" (or the label that replaces it). */
-								printf( esc_html__( '%s to follow', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
-								?>
-							</legend>
+							<legend><?php esc_html_e( 'Topics to follow', 'assemble' ); ?></legend>
 							<div class="community-options">
 								<?php foreach ( $assemble_area['communities'] as $assemble_community ) : ?>
 									<?php $assemble_checked = ! $assemble_is_on || in_array( $assemble_community['slug'], $assemble_communities, true ); ?>
 									<label class="community-option">
 										<input type="checkbox" name="communities[]" value="<?php echo esc_attr( $assemble_community['slug'] ); ?>"<?php checked( $assemble_checked ); ?>>
-										<span><?php echo esc_html( $assemble_community['label'] ); ?></span>
+										<span><?php echo esc_html( assemble_interest_topic_label( $assemble_community ) ); ?></span>
 									</label>
 								<?php endforeach; ?>
 							</div>

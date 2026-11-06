@@ -25,6 +25,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Practice-area pills take their area's colour; each panel shows its Board's
+// logo from the shared image library (Kristen's review, Cale 2026-11-06).
+
 // What the sorter leaves out or renames (Cale, 2026-11-05): no Finance and
 // Legal area, no Councils, no HR Network, and shorter social media pills.
 $assemble_hidden_areas       = array( 'finance' );
@@ -83,7 +86,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 					$assemble_first   = $assemble_area['communities'][0]['slug'] ?? 'area-' . $assemble_key;
 					$assemble_pressed = $assemble_first === $assemble_opening || in_array( $assemble_opening, array_column( $assemble_area['communities'], 'slug' ), true );
 					?>
-					<button class="tab-btn tab-btn-primary" type="button" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_first ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
+					<button class="tab-btn tab-btn-primary" type="button" data-area="<?php echo esc_attr( $assemble_key ); ?>" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_first ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
 				<?php endforeach; ?>
 			</div>
 			<div class="topic-row-secondary-wrap">
@@ -94,7 +97,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 					}
 					$assemble_open_row = in_array( $assemble_opening, array_column( $assemble_area['communities'], 'slug' ), true );
 					?>
-					<div class="topic-row topic-row-secondary" role="group" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
+					<div class="topic-row topic-row-secondary" role="group" data-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
 						<?php foreach ( $assemble_area['communities'] as $assemble_community ) : ?>
 							<button class="tab-btn" type="button" aria-pressed="<?php echo $assemble_community['slug'] === $assemble_opening ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>"><?php echo esc_html( $assemble_community['label'] ); ?></button>
 						<?php endforeach; ?>
@@ -127,6 +130,12 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 					<div class="ld-topic-shell">
 						<div class="ld-topic-intro-row is-single">
 							<div class="ld-topic-intro">
+								<?php
+								$assemble_logo = function_exists( 'assemble_community_logo' ) && class_exists( 'AC_Communities' ) ? assemble_community_logo( (array) AC_Communities::get( $assemble_community['slug'] ) ) : null;
+								if ( $assemble_logo ) :
+									?>
+									<img class="ld-topic-logo" src="<?php echo esc_url( $assemble_logo['url'] ); ?>" alt="<?php echo esc_attr( (string) $assemble_logo['alt'] ); ?>" loading="lazy" decoding="async">
+								<?php endif; ?>
 								<h3 class="type-practice-masthead"><?php echo esc_html( $assemble_community['label'] ); ?></h3>
 								<?php if ( $assemble_community['description'] ) : ?>
 									<p><?php echo esc_html( $assemble_community['description'] ); ?></p>
