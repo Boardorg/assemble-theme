@@ -227,3 +227,4 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
   
   Open: the survey on `/benchmark/` is still the Q3 2026 Talent form (Cale to swap in the next round), and earlier benchmark editions aren't listed.
 - **2026-11-06 (theme 0.13.1):** Our Team hero drops the "The N people behind Assemble's Communities and Summits" lead (Cale: match production, which has the H1 alone). The H1 stays the page content ("Meet our team, with decades of experience…").
+- **2026-11-06 (theme 0.13.2):** Explorer panels drop the Board logo (Cale: it didn't work). Removed the `<img class="ld-topic-logo">` from `content-explorer.php` and its CSS rule; the practice-area pill colours stay. The Communities index panel (`community-explorer.php`) keeps its logo. `assemble_community_logo()` in core is untouched (other templates use it).

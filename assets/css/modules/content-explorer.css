@@ -23,7 +23,6 @@
 .ld-topic-intro-row{display:grid;grid-template-columns:1.05fr 1.35fr;gap:24px;align-items:stretch}
 .ld-topic-intro-row.is-single{grid-template-columns:1fr}
 .ld-topic-intro{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:28px 28px 26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
-.ld-topic-logo{display:block;width:auto;max-width:200px;height:auto;max-height:56px;margin:0 0 16px;object-fit:contain}
 .ld-topic-intro h3{margin:0 0 12px}
 .ld-topic-intro p{max-width:60ch;margin:0;line-height:1.65}
 .ld-topic-intro .link-arrow{margin-top:16px;font-size:.875rem}
