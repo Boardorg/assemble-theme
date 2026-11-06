@@ -71,6 +71,10 @@ function assemble_utility_nav_fallback(): array {
 			'url'   => home_url( '/about-us/' ),
 		),
 		array(
+			'label' => __( 'Our product', 'assemble' ),
+			'url'   => home_url( '/our-product/' ),
+		),
+		array(
 			'label' => __( 'Our team', 'assemble' ),
 			'url'   => home_url( '/our-team/' ),
 		),
