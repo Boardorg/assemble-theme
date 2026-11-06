@@ -13,7 +13,7 @@ add_action(
 		add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets' ) );
 		add_theme_support( 'responsive-embeds' );
 		add_theme_support( 'editor-styles' );
-		add_editor_style( array( 'assets/css/tokens.css', 'assets/css/base.css', 'assets/css/modules/page-content.css' ) );
+		add_editor_style( array( 'assets/css/tokens.css', 'assets/css/base.css', 'assets/css/modules/page-content.css', 'assets/css/modules/page-bands.css' ) );
 
 		// The footer reads Site Settings → Footer columns, so the masthead is the only menu.
 		register_nav_menus(

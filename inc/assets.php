@@ -201,6 +201,10 @@ add_action(
 		if ( ( is_page() && ! is_front_page() && ! is_page( 'summits' ) && ! assemble_is_account_page() && '' === assemble_community_layout() ) || is_singular( 'team' ) || is_search() || is_404() ) {
 			assemble_enqueue_module_style( 'page-content' );
 		}
+		if ( is_page( 'our-team' ) || ( is_page() && assemble_page_has_bands( get_queried_object() instanceof WP_Post ? get_queried_object() : null ) ) ) {
+			assemble_enqueue_module_style( 'page-bands' );
+			assemble_enqueue_module_style( 'team' );
+		}
 		if ( is_page( 'our-team' ) || is_singular( 'team' ) ) {
 			assemble_enqueue_module_style( 'team' );
 		}

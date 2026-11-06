@@ -141,3 +141,99 @@ add_action(
 		);
 	}
 );
+
+/*
+ * Banded pages (About, Careers, Contact): full-width sections built from core
+ * blocks with Assemble class names, styled in assets/css/modules/page-bands.css.
+ * A page whose content has a top-level "page-band" group drops page.php's plain
+ * content head and 720px column; its first band carries the H1.
+ */
+
+/** Does this page's content use full-width bands? */
+function assemble_page_has_bands( ?WP_Post $post = null ): bool {
+	$post = $post ?? get_post();
+	if ( ! $post instanceof WP_Post || 'page' !== $post->post_type || ! has_blocks( $post ) ) {
+		return false;
+	}
+
+	foreach ( parse_blocks( $post->post_content ) as $block ) {
+		if ( 'core/group' === $block['blockName'] && preg_match( '/(^|\s)page-band(\s|$)/', (string) ( $block['attrs']['className'] ?? '' ) ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/*
+ * Practice colours on page blocks. Editors pick a practice by adding the class
+ * "area-<key>" (e.g. area-marketing) to a group or column; this turns it into the
+ * data-area attribute, so the ramps stay in tokens.css and editors never set a colour.
+ */
+add_filter(
+	'render_block',
+	static function ( string $html, array $block ): string {
+		if ( ! in_array( $block['blockName'], array( 'core/group', 'core/column' ), true ) ) {
+			return $html;
+		}
+		if ( ! preg_match( '/(?:^|\s)area-([a-z-]+)/', (string) ( $block['attrs']['className'] ?? '' ), $m ) || 'neutral' === assemble_area( $m[1] ) ) {
+			return $html;
+		}
+
+		$tags = new WP_HTML_Tag_Processor( $html );
+		if ( $tags->next_tag() ) {
+			$tags->set_attribute( 'data-area', $m[1] );
+		}
+
+		return $tags->get_updated_html();
+	},
+	10,
+	2
+);
+
+/*
+ * [assemble_team_strip count="6"]: the first people on Our Team (by their Order
+ * field), headshot, name and title, for a page band. Links to Our Team.
+ */
+add_shortcode(
+	'assemble_team_strip',
+	static function ( $atts ): string {
+		$atts   = shortcode_atts( array( 'count' => 6 ), (array) $atts );
+		$people = array_slice( array_filter( assemble_team(), static fn ( array $p ): bool => (bool) $p['image_id'] ), 0, max( 1, (int) $atts['count'] ) );
+
+		if ( ! $people ) {
+			return '';
+		}
+
+		ob_start();
+		?>
+		<ul class="team-strip" role="list">
+			<?php foreach ( $people as $person ) : ?>
+				<li class="team-strip__person">
+					<a href="<?php echo esc_url( '' !== $person['bio'] ? $person['url'] : assemble_team_url() ); ?>">
+						<span class="team-strip__photo media-frame media-square">
+							<?php
+							echo wp_get_attachment_image(
+								$person['image_id'],
+								'assemble-s3',
+								false,
+								array(
+									'sizes'   => '(max-width: 640px) 33vw, 180px',
+									'alt'     => '',
+									'loading' => 'lazy',
+								)
+							);
+							?>
+						</span>
+						<span class="team-strip__name"><?php echo esc_html( $person['name'] ); ?></span>
+					</a>
+					<?php if ( '' !== $person['position'] ) : ?>
+						<span class="team-strip__role"><?php echo esc_html( $person['position'] ); ?></span>
+					<?php endif; ?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+		<?php
+		return (string) ob_get_clean();
+	}
+);
