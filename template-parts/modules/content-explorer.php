@@ -25,8 +25,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Practice-area pills take their area's colour; each panel shows its Board's
-// logo from the shared image library (Kristen's review, Cale 2026-11-06).
+// Practice-area pills take their area's colour (Kristen's review, Cale
+// 2026-11-06). Board logos in the panels were tried and dropped (Cale, same day).
 
 // What the sorter leaves out or renames (Cale, 2026-11-05): no Finance and
 // Legal area, no Councils, no HR Network, and shorter social media pills.
@@ -130,12 +130,6 @@ $assemble_panel_id = static fn ( string $slug ): string => 'explore-' . sanitize
 					<div class="ld-topic-shell">
 						<div class="ld-topic-intro-row is-single">
 							<div class="ld-topic-intro">
-								<?php
-								$assemble_logo = function_exists( 'assemble_community_logo' ) && class_exists( 'AC_Communities' ) ? assemble_community_logo( (array) AC_Communities::get( $assemble_community['slug'] ) ) : null;
-								if ( $assemble_logo ) :
-									?>
-									<img class="ld-topic-logo" src="<?php echo esc_url( $assemble_logo['url'] ); ?>" alt="<?php echo esc_attr( (string) $assemble_logo['alt'] ); ?>" loading="lazy" decoding="async">
-								<?php endif; ?>
 								<h3 class="type-practice-masthead"><?php echo esc_html( $assemble_community['label'] ); ?></h3>
 								<?php if ( $assemble_community['description'] ) : ?>
 									<p><?php echo esc_html( $assemble_community['description'] ); ?></p>
