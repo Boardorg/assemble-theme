@@ -15,10 +15,11 @@ add_action(
 		add_theme_support( 'editor-styles' );
 		add_editor_style( array( 'assets/css/tokens.css', 'assets/css/base.css', 'assets/css/modules/page-content.css', 'assets/css/modules/page-bands.css' ) );
 
-		// The footer reads Site Settings → Footer columns, so the masthead is the only menu.
+		// The footer reads Site Settings → Footer columns, so the header holds the only menus.
 		register_nav_menus(
 			array(
 				'primary' => __( 'Primary (masthead row)', 'assemble' ),
+				'utility' => __( 'Utility (bar above the masthead)', 'assemble' ),
 			)
 		);
 
@@ -58,16 +59,46 @@ function assemble_primary_nav_fallback(): array {
 }
 
 /**
- * Masthead navigation items: the menu assigned to "primary", else the fallback.
+ * Utility bar navigation when no menu is assigned to "utility" (`wp assemble
+ * setup` creates and assigns the "Utility" menu): the company pages.
  *
+ * @return array<int,array{label:string,url:string}>
+ */
+function assemble_utility_nav_fallback(): array {
+	return array(
+		array(
+			'label' => __( 'About', 'assemble' ),
+			'url'   => home_url( '/about-us/' ),
+		),
+		array(
+			'label' => __( 'Our team', 'assemble' ),
+			'url'   => home_url( '/our-team/' ),
+		),
+		array(
+			'label' => __( 'Careers', 'assemble' ),
+			'url'   => home_url( '/careers/' ),
+		),
+		array(
+			'label' => __( 'Contact', 'assemble' ),
+			'url'   => home_url( '/contact-us/' ),
+		),
+	);
+}
+
+/**
+ * Top-level items of the menu assigned to a location, else the fallback, with
+ * the first item matching this URL marked current.
+ *
+ * @param string                                   $location Theme location.
+ * @param array<int,array{label:string,url:string}> $fallback Used when the location has no menu or it's empty.
  * @return array<int,array{label:string,url:string,current:bool}>
  */
-function assemble_primary_nav_items(): array {
+function assemble_nav_items( string $location, array $fallback ): array {
 	$items     = array();
 	$locations = get_nav_menu_locations();
 
-	if ( ! empty( $locations['primary'] ) ) {
-		foreach ( (array) wp_get_nav_menu_items( $locations['primary'] ) as $item ) {
+	if ( ! empty( $locations[ $location ] ) ) {
+		foreach ( (array) wp_get_nav_menu_items( $locations[ $location ] ) as $item ) {
 			if ( (int) $item->menu_item_parent === 0 ) {
 				$items[] = array(
 					'label' => (string) $item->title,
@@ -78,7 +109,7 @@ function assemble_primary_nav_items(): array {
 	}
 
 	if ( ! $items ) {
-		$items = assemble_primary_nav_fallback();
+		$items = $fallback;
 	}
 
 	// Mark the first item that matches this URL; placeholders may share a URL.
@@ -90,4 +121,22 @@ function assemble_primary_nav_items(): array {
 	}
 
 	return $items;
+}
+
+/**
+ * Masthead navigation items: the menu assigned to "primary", else the fallback.
+ *
+ * @return array<int,array{label:string,url:string,current:bool}>
+ */
+function assemble_primary_nav_items(): array {
+	return assemble_nav_items( 'primary', assemble_primary_nav_fallback() );
+}
+
+/**
+ * Utility bar items: the menu assigned to "utility", else the fallback.
+ *
+ * @return array<int,array{label:string,url:string,current:bool}>
+ */
+function assemble_utility_nav_items(): array {
+	return assemble_nav_items( 'utility', assemble_utility_nav_fallback() );
 }

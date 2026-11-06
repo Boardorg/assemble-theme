@@ -6,11 +6,16 @@
  * actions and the main navigation row. Below 980px the account actions and nav
  * row move into a drawer; the drawer has no wireframe yet, so it is a plain,
  * on-system version flagged for design.
+ *
+ * The utility bar above the masthead (company pages, menu location "utility")
+ * has no wireframe either: on-system, flagged for design. It moves into the
+ * drawer too, under the main navigation.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$assemble_nav = assemble_primary_nav_items();
+$assemble_nav     = assemble_primary_nav_items();
+$assemble_utility = assemble_utility_nav_items();
 
 // Signed in: one Account button in the masthead; the drawer adds Sign out.
 // The signed-in state has no wireframe: on-system, flagged for design.
@@ -58,6 +63,15 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 	</div>
 <?php endif; ?>
 <header class="site-header" data-area="neutral">
+	<?php if ( $assemble_utility ) : ?>
+		<nav class="utility-bar" aria-label="<?php esc_attr_e( 'Company', 'assemble' ); ?>">
+			<div class="wrap utility-bar__row">
+				<?php foreach ( $assemble_utility as $assemble_item ) : ?>
+					<a href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo $assemble_item['current'] ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $assemble_item['label'] ); ?></a>
+				<?php endforeach; ?>
+			</div>
+		</nav>
+	<?php endif; ?>
 	<div class="wrap header-row-1">
 		<div class="left">
 			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-drawer">
@@ -96,6 +110,15 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 					<?php endforeach; ?>
 				</ul>
 			</nav>
+			<?php if ( $assemble_utility ) : ?>
+				<nav aria-label="<?php esc_attr_e( 'Company', 'assemble' ); ?>">
+					<ul class="site-drawer__utility">
+						<?php foreach ( $assemble_utility as $assemble_item ) : ?>
+							<li><a href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo $assemble_item['current'] ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $assemble_item['label'] ); ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</nav>
+			<?php endif; ?>
 			<div class="site-drawer__actions">
 				<?php foreach ( $assemble_drawer_actions as $assemble_action ) : ?>
 					<a class="<?php echo esc_attr( $assemble_action['class'] ); ?>" href="<?php echo esc_url( $assemble_action['url'] ); ?>"><?php echo esc_html( $assemble_action['label'] ); ?></a>
