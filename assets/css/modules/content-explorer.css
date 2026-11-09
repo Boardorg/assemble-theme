@@ -49,6 +49,8 @@
 .ld-insight-item:first-child{padding-top:4px;border-top:0}
 .ld-insight-item:last-child{padding-bottom:6px}
 .hedcut-thumb{width:160px;height:90px;border:1px solid var(--line)}
+/* A chart hero is unreadable this small: zoom into its top left, where the question and the top number sit (IMAGE-STYLE-SPEC §1). */
+.hedcut-thumb>img.is-chart{object-position:left top;transform:scale(1.3);transform-origin:6% 0}
 .ld-insight-item .tag{margin-bottom:10px}
 .ld-insight-item h5{margin:0 0 10px;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
 .ld-insight-item h5 a{color:inherit;text-decoration:none}

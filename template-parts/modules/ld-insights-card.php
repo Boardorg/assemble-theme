@@ -26,8 +26,7 @@ $assemble_list = static function ( array $stories ): void {
 			<li class="ld-insight-item">
 				<a class="hedcut-thumb media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
 					<?php
-					$assemble_img = assemble_cf_image( $assemble_story['image'], '16:9', '160px' );
-					echo $assemble_img ? $assemble_img : '<span class="img-x"></span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image().
+					echo assemble_card_image( $assemble_story['image'], '160px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image().
 					?>
 				</a>
 				<div>

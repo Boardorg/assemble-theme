@@ -10,22 +10,31 @@
 
 .article-hero{max-width:1120px;margin:0 auto}
 .article-hero .article-category{margin-bottom:12px}
-.article-title{max-width:26ch;margin:0 0 22px;font:500 2.625rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
+.article-title{max-width:940px;text-wrap:balance;margin:0 0 22px;font:500 2.625rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
 .article-dek{max-width:48em;margin:0 0 18px;font:400 1.25rem/1.65 var(--font-body);color:var(--ink-700)}
 .article-date{margin:4px 0 16px}
 .article-hero .share-row{margin:0 0 18px -8px}
 .article-meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
 .author-inline{display:flex;align-items:center;gap:12px}
-.author-avatar{width:40px;height:40px;flex:0 0 40px}
+.author-avatar{width:44px;height:44px;flex:0 0 44px}
 .article-meta-copy strong{display:block;font-size:.875rem;font-weight:700;line-height:1.7;color:var(--ink-900)}
 .article-meta-copy span{font-size:.875rem;line-height:1.7;color:var(--ink-700)}
 
-/* Hero image: 16:9, at most 560px (L1 slot) or 65vh tall. Empty sunken frame without an image. */
-.hero-image{width:100%;max-width:1120px;aspect-ratio:16/9;max-height:min(560px,65vh);margin:28px auto 0}
+/* Hero image: always 16:9 at the full article width, so a photo or chart hero is never cropped
+   (IMAGE-STYLE-SPEC §2; the 2400×1350 bake). Empty sunken frame without an image. */
+.hero-figure{max-width:1120px;margin:28px auto 0}
+.hero-image{width:100%;aspect-ratio:16/9}
+
+/* "About this photo": the featured image's caption and source line, at the image's full width (§3). */
+.image-note{margin-top:12px}
+.image-note p{margin:0}
+.image-note-story{font:400 .9375rem/1.5 var(--font-text);color:var(--ink-700);text-wrap:pretty}
+.image-note-label{margin-right:4px;font:600 .65625rem/1 var(--font-label);letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink)}
+.image-note-source{margin-top:6px!important;font:400 .75rem/1.5 var(--font-body);color:var(--ink-600)}
+.image-note-source span{font-weight:600}
 
 @media (max-width:640px){
 	.article-shell{padding-top:36px}
 	.article-title{font-size:2.125rem}
 	.article-dek{font-size:1.125rem}
-	.hero-image{max-height:none}
 }

@@ -54,7 +54,7 @@ foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'com
 
 		case 'pullquote':
 			?>
-			<blockquote><?php echo esc_html( $assemble_quoted( $assemble_section ) ); ?></blockquote>
+			<blockquote class="pull-quote"><p><?php echo esc_html( $assemble_quoted( $assemble_section ) ); ?></p></blockquote>
 			<?php
 			break;
 
@@ -132,7 +132,7 @@ $assemble_full = (string) ob_get_clean();
 							<?php $assemble_speaker = $assemble_take['speaker']; ?>
 							<figcaption class="author-inline">
 								<span class="author-avatar media-frame media-avatar">
-									<?php echo assemble_cf_image( $assemble_speaker['image'], '1:1', '40px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
+									<?php echo assemble_person_avatar( $assemble_speaker, '44px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
 								</span>
 								<span class="article-meta-copy">
 									<strong><?php echo esc_html( $assemble_speaker['name'] ); ?></strong>

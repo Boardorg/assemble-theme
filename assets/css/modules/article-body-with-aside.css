@@ -12,6 +12,11 @@
 .article-body .lead{font-size:1.25rem;line-height:1.65}
 .article-body h2{margin:54px 0 18px;font:500 1.875rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--accent-ink)}
 .article-body h3{margin:42px 0 14px;font:500 1.5625rem/1.25 var(--font-text);letter-spacing:-.012em;color:var(--accent-ink)}
+/* Pull quote (the report's `pullquote`): display serif, roman, a short accent rule above and a
+   hanging opening quote mark; no box, so it never reads as a Story in Brief take (IMAGE-STYLE-SPEC §5). */
+.article-body .pull-quote{margin:48px 0;padding:22px 0 0;border:0;border-radius:0;background:none;position:relative}
+.article-body .pull-quote::before{content:"";position:absolute;top:0;left:0;width:48px;height:3px;background:var(--accent)}
+.article-body .pull-quote p{margin:0;font:400 1.875rem/1.28 var(--font-display);color:var(--ink-900);text-indent:-.42em;text-wrap:balance}
 .article-body blockquote{margin:44px 0;padding:18px 24px;border-left:4px solid var(--accent);border-radius:0 var(--r-sm) var(--r-sm) 0;background:var(--accent-soft);font:500 1.75rem/1.45 var(--font-text);color:var(--ink-900)}
 .article-body ul,.article-body ol{margin:0 0 30px;padding-left:20px}
 .article-body li{margin-bottom:12px}
@@ -86,6 +91,8 @@
 	.article-body h2{font-size:1.6875rem}
 	.article-body .lead,.article-body .report-take blockquote{font-size:1.125rem}
 	.article-body blockquote{font-size:1.5rem}
+	.article-body .pull-quote{margin:36px 0}
+	.article-body .pull-quote p{font-size:1.4375rem}
 	/* Chart pills: one row that swipes, running to the screen edges. */
 	.chart-tabs{flex-wrap:nowrap;overflow-x:auto;margin-inline:calc(var(--gutter) * -1);padding:2px var(--gutter);scrollbar-width:none}
 	.chart-tabs::-webkit-scrollbar{display:none}

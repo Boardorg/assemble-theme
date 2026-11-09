@@ -21,7 +21,7 @@ if ( ! $assemble_story ) {
 ?>
 <article class="related-card" data-area="<?php echo esc_attr( $assemble_story['area'] ); ?>">
 	<a class="thumb media-frame" href="<?php echo esc_url( $assemble_story['url'] ); ?>" tabindex="-1" aria-hidden="true">
-		<?php echo assemble_cf_image( $assemble_story['image'], '16:9', '(max-width: 980px) 100vw, 360px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
+		<?php echo assemble_card_image( $assemble_story['image'], '(max-width: 980px) 100vw, 360px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
 	</a>
 	<?php if ( $assemble_story['topic'] || ! empty( $assemble_story['locked'] ) || ! empty( $assemble_story['format'] ) ) : ?>
 		<div class="card-tags">

@@ -4,7 +4,9 @@
  *
  * Breadcrumbs (Insights › practice area › Community), then the content head:
  * topic tag, title, dek, date and read time under the dek, the share row, and
- * the inline author. Then the hero image. Every part prints only if the view
+ * the inline author (hedcut, assemble_person_avatar()). Then the hero image at
+ * 16:9 with its "About this photo" caption and source line at the image's full
+ * width (IMAGE-STYLE-SPEC §2–4). Every part prints only if the view
  * model has it: the public and denied views have no byline, for example.
  *
  * @var array $args { report: view model, area: data-area key, url: permalink ('' in a draft preview: no share row) }
@@ -21,6 +23,8 @@ $assemble_title  = (string) ( $assemble_s['headline'] ?? '' );
 $assemble_url    = (string) ( $args['url'] ?? '' );
 $assemble_crumbs = assemble_report_crumbs( $assemble_s['kicker'] ?? null );
 $assemble_mins   = assemble_read_minutes( (int) ( $assemble_report['words'] ?? 0 ) );
+// The featured image's "About this photo" caption and source credit (feed 2.1.0+), only with an image.
+$assemble_note   = isset( $assemble_s['image'] ) ? ( $assemble_s['image_note'] ?? null ) : null;
 
 $assemble_when = array();
 if ( isset( $assemble_s['date'] ) ) {
@@ -72,7 +76,7 @@ if ( $assemble_mins ) {
 		<div class="article-meta-row">
 			<div class="author-inline">
 				<span class="author-avatar media-frame media-avatar">
-					<?php echo assemble_cf_image( $assemble_author['image'], '1:1', '40px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
+					<?php echo assemble_person_avatar( $assemble_author, '44px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
 				</span>
 				<div class="article-meta-copy">
 					<strong><?php echo esc_html( $assemble_author['name'] ); ?></strong>
@@ -85,6 +89,18 @@ if ( $assemble_mins ) {
 	<?php endif; ?>
 </header>
 
-<div class="hero-image media-frame">
-	<?php echo assemble_cf_image( $assemble_s['image'] ?? null, '16:9', '(max-width: 1200px) 100vw, 1120px', '', 'eager' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
-</div>
+<figure class="hero-figure" data-area="<?php echo esc_attr( $assemble_area ); ?>">
+	<div class="hero-image media-frame">
+		<?php echo assemble_cf_image( $assemble_s['image'] ?? null, '16:9', '(max-width: 1200px) 100vw, 1120px', '', 'eager' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
+	</div>
+	<?php if ( $assemble_note ) : ?>
+		<figcaption class="image-note">
+			<?php if ( '' !== $assemble_note['caption'] ) : ?>
+				<p class="image-note-story"><span class="image-note-label"><?php esc_html_e( 'About this photo', 'assemble' ); ?></span> <?php echo esc_html( $assemble_note['caption'] ); ?></p>
+			<?php endif; ?>
+			<?php if ( '' !== $assemble_note['credit'] ) : ?>
+				<p class="image-note-source"><span><?php esc_html_e( 'Source:', 'assemble' ); ?></span> <?php echo esc_html( $assemble_note['credit'] ); ?></p>
+			<?php endif; ?>
+		</figcaption>
+	<?php endif; ?>
+</figure>

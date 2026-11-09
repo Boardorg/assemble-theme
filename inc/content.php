@@ -216,6 +216,72 @@ function assemble_cf_image( ?array $asset, string $ratio = '16:9', string $sizes
 	);
 }
 
+/**
+ * Is this featured image a chart hero from the assemble-charts kit (asset IDs
+ * `hero-…` and `chart-…`)? Small cards zoom into a chart's top left so the
+ * question and headline number stay readable (IMAGE-STYLE-SPEC §1).
+ *
+ * @param array|null $asset Contentful asset payload.
+ */
+function assemble_is_chart_image( ?array $asset ): bool {
+	$id = (string) ( $asset['sys']['id'] ?? '' );
+	if ( '' === $id ) {
+		// Images API URLs carry the asset ID: //images.ctfassets.net/<space>/<asset id>/<hash>/<file>.
+		$path = (string) wp_parse_url( (string) ( $asset['fields']['file']['url'] ?? '' ), PHP_URL_PATH );
+		$id   = (string) ( explode( '/', trim( $path, '/' ) )[1] ?? '' );
+	}
+
+	return str_starts_with( $id, 'hero-' ) || str_starts_with( $id, 'chart-' );
+}
+
+/**
+ * A card thumbnail: assemble_cf_image() with the `is-chart` class on chart
+ * heroes, or the empty frame's placeholder.
+ */
+function assemble_card_image( ?array $asset, string $sizes, string $loading = 'lazy' ): string {
+	$img = assemble_cf_image( $asset, '16:9', $sizes, assemble_is_chart_image( $asset ) ? 'is-chart' : '', $loading );
+
+	return '' !== $img ? $img : '<span class="img-x"></span>';
+}
+
+/**
+ * A person's round avatar (byline, Story in Brief speaker, author bio): the
+ * feed's image (hedcut, else headshot), else the shared library's web hedcut
+ * at wp-content/assets/headshots/<name-slug>-hedcut.jpg when that file is on
+ * this server, else the initials. Never an empty frame.
+ *
+ * The library fallback covers people whose hedcut isn't in Contentful yet; it
+ * goes quiet wherever the files aren't synced (production today).
+ *
+ * @param array|null $person The feed's person: { name, image, … }.
+ * @param string     $sizes  The `sizes` attribute, e.g. "44px".
+ */
+function assemble_person_avatar( ?array $person, string $sizes ): string {
+	if ( ! $person ) {
+		return '';
+	}
+
+	$img = assemble_cf_image( $person['image'] ?? null, '1:1', $sizes );
+	if ( '' !== $img ) {
+		return $img;
+	}
+
+	$name = (string) ( $person['name'] ?? '' );
+	$slug = sanitize_title( remove_accents( str_replace( array( "'", '’' ), '', $name ) ) );
+	$file = 'headshots/' . $slug . '-hedcut.jpg';
+	if ( '' !== $slug && file_exists( WP_CONTENT_DIR . '/assets/' . $file ) ) {
+		return sprintf( '<img src="%s" alt="" loading="lazy" decoding="async">', esc_url( content_url( 'assets/' . $file ) ) );
+	}
+
+	$words    = preg_split( '/\s+/u', trim( $name ), -1, PREG_SPLIT_NO_EMPTY ) ?: array();
+	$initials = '';
+	foreach ( array_slice( $words, 0, 2 ) as $word ) {
+		$initials .= mb_strtoupper( mb_substr( $word, 0, 1 ) );
+	}
+
+	return '' !== $initials ? '<span class="avatar-initials" aria-hidden="true">' . esc_html( $initials ) . '</span>' : '';
+}
+
 /*
  * ---------------------------------------------------------------------------
  * Field Report pages (Phase 4). The plugin decides what a visitor may see and

@@ -17,7 +17,7 @@ if ( ! $assemble_author ) {
 ?>
 <section class="author-bio" aria-labelledby="author-bio-name">
 	<div class="portrait media-frame">
-		<?php echo assemble_cf_image( $assemble_author['image'], '1:1', '110px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_cf_image(). ?>
+		<?php echo assemble_person_avatar( $assemble_author, '110px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
 	</div>
 	<div>
 		<div class="eyebrow"><?php esc_html_e( 'About the author', 'assemble' ); ?></div>
