@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 $assemble_nav     = assemble_primary_nav_items();
 $assemble_utility = assemble_utility_nav_items();
 
-// Signed in: For you and Account in the masthead; the drawer adds Sign out.
+// Signed in: My Page and Account Settings in the masthead; the drawer adds Sign out.
 // The signed-in state has no wireframe: on-system, flagged for design.
 $assemble_account = is_user_logged_in()
 	? array(

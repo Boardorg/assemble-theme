@@ -15,8 +15,8 @@ function assemble_label( string $key ): string {
 		'working_sessions' => __( 'Working Sessions', 'assemble' ),
 		'sign_in'          => __( 'Sign in', 'assemble' ),
 		'create'           => __( 'Create free account', 'assemble' ),
-		'account'          => __( 'Account', 'assemble' ),
-		'for_you'          => __( 'For you', 'assemble' ), // The signed-in feed (wireframe 8).
+		'account'          => __( 'Account Settings', 'assemble' ), // Masthead, signed in (Cale, 2026-11-10).
+		'for_you'          => __( 'My Page', 'assemble' ), // The signed-in feed (wireframe 8), in the masthead (Cale, 2026-11-10).
 		'sign_out'         => __( 'Sign out', 'assemble' ),
 		'search'           => __( 'Search', 'assemble' ),
 		'members_only'     => __( 'Board Members only', 'assemble' ), // The gated label, everywhere (wireframe edits A).

@@ -56,6 +56,11 @@ header.site-header{background:var(--bg);position:relative}
 .site-drawer__utility a:hover,.site-drawer__utility a[aria-current="page"]{color:var(--ink-900);text-decoration:underline;text-underline-offset:4px}
 .site-drawer__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:var(--s-5)}
 
+/* Signed in, "My Page" and "Account Settings" are wider than the logged-out pair: keep them clear of the centred logo. */
+@media (max-width:1180px){
+	.header-account-action{padding-inline:14px}
+}
+
 @media (max-width:980px){
 	.menu-toggle{display:inline-flex}
 	.header-row-1{padding-top:20px;padding-bottom:16px}

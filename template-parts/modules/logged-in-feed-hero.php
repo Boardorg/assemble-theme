@@ -2,7 +2,8 @@
 /**
  * Module: logged-in-feed-hero (web-style-guide.html → Web modules; wireframe
  * "8. Index (logged in)"). The greeting, the strip naming the interests that
- * shape the feed, the narrowing chips and the "All for you" hint. Someone who
+ * shape the feed and the narrowing chips (the intro line and "All for you"
+ * hint removed, Cale 2026-11-10). Someone who
  * follows nothing gets a "Choose what you follow" panel instead (no wireframe:
  * on-system, flagged for design).
  *
@@ -30,7 +31,6 @@ $assemble_name = (string) ( $assemble_view['name'] ?? '' );
 			);
 			?>
 		</h1>
-		<p><?php esc_html_e( 'New peer intelligence from the Communities and practice areas you follow.', 'assemble' ); ?></p>
 	</div>
 
 	<?php if ( ! empty( $assemble_view['notice'] ) ) : ?>
@@ -65,6 +65,5 @@ $assemble_name = (string) ( $assemble_view['name'] ?? '' );
 				<a class="feed-filter" href="<?php echo esc_url( $assemble_chip['url'] ); ?>"<?php echo $assemble_key === $assemble_view['current'] ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $assemble_chip['label'] ); ?></a>
 			<?php endforeach; ?>
 		</nav>
-		<p class="filter-hint"><?php esc_html_e( '“All for you” shows everything from the topics and areas you follow. Choose one to narrow the feed.', 'assemble' ); ?></p>
 	<?php endif; ?>
 </div>
