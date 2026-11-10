@@ -13,6 +13,14 @@ function assemble_is_for_you_page(): bool {
 	return function_exists( 'assemble_account_page_kind' ) && 'for_you' === assemble_account_page_kind();
 }
 
+/** The signed-in person's first name, else the first word of their display name, else ''. */
+function assemble_for_you_first_name(): string {
+	$user = wp_get_current_user();
+	$name = trim( (string) $user->first_name );
+
+	return '' !== $name ? $name : trim( (string) strtok( (string) $user->display_name, ' ' ) );
+}
+
 /** A chip's or reason's visible label: the topic name for a Community, the area name for an area. */
 function assemble_for_you_label( array $chip ): string {
 	if ( 'community' === ( $chip['type'] ?? '' ) ) {
@@ -70,11 +78,7 @@ function assemble_for_you_list( array $names ): string {
  */
 function assemble_for_you_view(): array {
 	$user_id = get_current_user_id();
-	$user    = wp_get_current_user();
-	$name    = trim( (string) $user->first_name );
-	if ( '' === $name ) {
-		$name = trim( (string) strtok( (string) $user->display_name, ' ' ) );
-	}
+	$name    = assemble_for_you_first_name();
 
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only display state.
 	$for    = isset( $_GET['for'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['for'] ) ) : '';
