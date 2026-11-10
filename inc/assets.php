@@ -91,7 +91,7 @@ add_action(
 
 		// Field Report pages (single-field_report.php) and draft previews.
 		if ( is_singular( 'field_report' ) || assemble_is_report_preview() ) {
-			foreach ( array( 'article-hero', 'article-body-with-aside', 'article-author-bio', 'related-peer-intelligence', 'account-cta', 'report-gate' ) as $assemble_module ) {
+			foreach ( array( 'article-hero', 'article-body', 'article-author-bio', 'related-peer-intelligence', 'account-cta', 'report-gate' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
 

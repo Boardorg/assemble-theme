@@ -15,10 +15,11 @@
 .article-date{margin:4px 0 16px}
 .article-hero .share-row{margin:0 0 18px -8px}
 .article-meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:22px}
-.author-inline{display:flex;align-items:center;gap:12px}
-.author-avatar{width:44px;height:44px;flex:0 0 44px}
-.article-meta-copy strong{display:block;font-size:.875rem;font-weight:700;line-height:1.7;color:var(--ink-900)}
-.article-meta-copy span{font-size:.875rem;line-height:1.7;color:var(--ink-700)}
+/* Byline: a 72px hedcut (2026-11-10, up from 44px; the author bio's 110px portrait stays the largest). */
+.author-inline{display:flex;align-items:center;gap:16px}
+.author-avatar{width:72px;height:72px;flex:0 0 72px;font-size:1.375rem}
+.article-meta-copy strong{display:block;font-size:1rem;font-weight:700;line-height:1.5;color:var(--ink-900)}
+.article-meta-copy span{font-size:.9375rem;line-height:1.5;color:var(--ink-700)}
 
 /* Hero image: always 16:9 at the full article width, so a photo or chart hero is never cropped
    (IMAGE-STYLE-SPEC §2; the 2400×1350 bake). Empty sunken frame without an image. */
@@ -37,4 +38,5 @@
 	.article-shell{padding-top:36px}
 	.article-title{font-size:2.125rem}
 	.article-dek{font-size:1.125rem}
+	.author-avatar{width:56px;height:56px;flex-basis:56px;font-size:1.125rem}
 }

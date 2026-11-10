@@ -76,7 +76,7 @@ if ( $assemble_mins ) {
 		<div class="article-meta-row">
 			<div class="author-inline">
 				<span class="author-avatar media-frame media-avatar">
-					<?php echo assemble_person_avatar( $assemble_author, '44px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
+					<?php echo assemble_person_avatar( $assemble_author, '(max-width: 640px) 56px, 72px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
 				</span>
 				<div class="article-meta-copy">
 					<strong><?php echo esc_html( $assemble_author['name'] ); ?></strong>
