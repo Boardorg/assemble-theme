@@ -9,8 +9,9 @@
 .pi-headline{max-width:14ch;margin:0 0 18px}
 .pi-text{max-width:60ch;margin:0;font-size:1.125rem;line-height:1.65}
 .pi-link{display:inline-block;margin-top:16px;font-size:.875rem;color:var(--ink-900)}
-/* The mockup has no art for this slot yet: an empty on-system frame (guide .peer-intelligence-splash__media). */
-.pi-placeholder{aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+/* The mockup has no art for this slot: a white on-system frame (guide .peer-intelligence-splash__media) holding the speech-bubbles illustration. */
+.pi-figure{display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;margin:0;padding:6% 0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.pi-figure img{width:auto;height:100%;max-width:100%;object-fit:contain}
 .free-account-cta{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:42px;padding:28px 30px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-card)}
 .free-account-cta h3{margin:0 0 7px;font:500 1.5625rem/1.2 var(--font-text)}
 .free-account-cta p{margin:0;font-size:.875rem;line-height:1.6}
