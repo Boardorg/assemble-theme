@@ -44,7 +44,7 @@ $assemble_classes   = array( 'report', 'report--' . $assemble_report['view'] );
 					$assemble_free = function_exists( 'assemble_free_reads' ) ? assemble_free_reads() : (int) assemble_setting( 'free_reads', 2 );
 					printf( '<div class="report-meter" data-report-meter data-report-id="%d" data-free-reads="%d">', (int) $assemble_post_id, (int) $assemble_free );
 				}
-				get_template_part( 'template-parts/modules/article-body-with-aside', null, $assemble_args );
+				get_template_part( 'template-parts/modules/article-body', null, $assemble_args );
 				get_template_part( 'template-parts/modules/article-author-bio', null, $assemble_args );
 				if ( $assemble_metered ) {
 					echo '</div><div class="report-meter-prompt" data-report-meter-prompt hidden>';
@@ -54,7 +54,7 @@ $assemble_classes   = array( 'report', 'report--' . $assemble_report['view'] );
 			} elseif ( 'public' === $assemble_view || 'denied' === $assemble_view ) {
 				get_template_part( 'template-parts/modules/report-gate', null, $assemble_args );
 			} else {
-				get_template_part( 'template-parts/modules/article-body-with-aside', null, $assemble_args );
+				get_template_part( 'template-parts/modules/article-body', null, $assemble_args );
 				get_template_part( 'template-parts/modules/article-author-bio', null, $assemble_args );
 			}
 

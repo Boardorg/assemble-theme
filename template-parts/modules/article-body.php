@@ -1,16 +1,19 @@
 <?php
 /**
- * Module: article-body-with-aside (wireframe "4. Article"), for the member views.
+ * Module: article-body (wireframe "4. Article"), for the member views.
  *
  * The body maps the Field Report's sections onto the article layout: the
- * Story in Brief as attributed lead quotes, Picking Up the Story and Focus of
- * the Discussion as h2 sections (label as eyebrow, authored subhead as the
- * heading), the pullquote as the blockquote, charts as a "Poll results" set
- * (stacked; three or more become a switcher, assets/js/report-charts.js), Key
- * Takeaways as a numbered list, and the Community boilerplate last. The council
- * view leads with the takeaways at a glance and puts the full report behind an
- * expander (no wireframe: on-system). The aside carries the source line, a link
- * to the Community's Insights and the view's engagement actions.
+ * Story in Brief as quotes with the speaker's headshot beside each one,
+ * Picking Up the Story and Focus of the Discussion as h2 sections (label as
+ * eyebrow, authored subhead as the heading), the pullquote as the blockquote,
+ * charts as a "Poll results" set (stacked; three or more become a switcher,
+ * assets/js/report-charts.js), Key Takeaways as a numbered list, and the
+ * Community boilerplate last. The council view leads with the takeaways at a
+ * glance and puts the full report behind an expander (no wireframe: on-system).
+ *
+ * No aside (Cale, 2026-11-10): the body is a centered 720px reading column
+ * under the full-width hero, as in the signed-off image-style mockup
+ * (IMAGE-STYLE-SPEC option B). The pull quote steps out to 820px.
  *
  * Only sections present in the view model are printed.
  *
@@ -126,21 +129,25 @@ $assemble_full = (string) ob_get_clean();
 			<section class="report-brief" aria-label="<?php esc_attr_e( 'The Story in Brief', 'assemble' ); ?>">
 				<p class="eyebrow report-label"><?php esc_html_e( 'The Story in Brief', 'assemble' ); ?></p>
 				<?php foreach ( $assemble_s['story_in_brief'] as $assemble_take ) : ?>
-					<figure class="report-take">
+					<?php $assemble_speaker = $assemble_take['speaker'] ?? null; ?>
+					<figure class="report-take<?php echo $assemble_speaker ? ' report-take--speaker' : ''; ?>">
+						<?php if ( $assemble_speaker ) : ?>
+							<span class="report-take-face media-frame media-avatar" aria-hidden="true">
+								<?php echo assemble_person_avatar( $assemble_speaker, '(max-width: 640px) 64px, 104px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
+							</span>
+						<?php endif; ?>
 						<blockquote class="lead"><?php echo esc_html( $assemble_quoted( $assemble_take['quote'] ) ); ?></blockquote>
-						<?php if ( $assemble_take['speaker'] ) : ?>
-							<?php $assemble_speaker = $assemble_take['speaker']; ?>
-							<figcaption class="author-inline">
-								<span class="author-avatar media-frame media-avatar">
-									<?php echo assemble_person_avatar( $assemble_speaker, '44px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built and escaped in assemble_person_avatar(). ?>
-								</span>
-								<span class="article-meta-copy">
-									<strong><?php echo esc_html( $assemble_speaker['name'] ); ?></strong>
-									<?php $assemble_title = implode( ', ', array_filter( array( $assemble_speaker['role'], $assemble_speaker['organization'] ) ) ); ?>
-									<?php if ( '' !== $assemble_title ) : ?>
-										<span><?php echo esc_html( $assemble_title ); ?></span>
-									<?php endif; ?>
-								</span>
+						<?php if ( $assemble_speaker ) : ?>
+							<figcaption class="report-take-who">
+								<strong><?php echo esc_html( $assemble_speaker['name'] ); ?></strong>
+								<?php
+								// The role often already names the organization ("Membership Director, Learning & Development Board").
+								$assemble_org   = (string) $assemble_speaker['organization'];
+								$assemble_title = implode( ', ', array_filter( array( $assemble_speaker['role'], '' !== $assemble_org && false === stripos( (string) $assemble_speaker['role'], $assemble_org ) ? $assemble_org : '' ) ) );
+								?>
+								<?php if ( '' !== $assemble_title ) : ?>
+									<span><?php echo esc_html( $assemble_title ); ?></span>
+								<?php endif; ?>
 							</figcaption>
 						<?php endif; ?>
 					</figure>
@@ -170,8 +177,4 @@ $assemble_full = (string) ob_get_clean();
 			<?php echo $assemble_full; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?>
 		<?php endif; ?>
 	</div>
-
-	<aside class="article-aside">
-		<?php get_template_part( 'template-parts/modules/report-aside', null, $args ); ?>
-	</aside>
 </div>
