@@ -18,11 +18,11 @@ function assemble_is_account_page(): bool {
 		return '' !== assemble_account_page_kind();
 	}
 
-	return is_page( array( 'login', 'register', 'account' ) );
+	return is_page( array( 'login', 'register', 'account', 'for-you' ) );
 }
 
 /**
- * An account URL: login, register, account, lostpassword or logout.
+ * An account URL: login, register, account, for_you, lostpassword or logout.
  */
 function assemble_account_link( string $which, string $redirect = '' ): string {
 	if ( function_exists( 'assemble_account_url' ) ) {
@@ -38,6 +38,7 @@ function assemble_account_link( string $which, string $redirect = '' ): string {
 		'lostpassword' => array( 'sign_in_url', '/login/' ),
 		'register'     => array( 'create_account_url', '/register/' ),
 		'account'      => array( 'account_url', '/account/' ),
+		'for_you'      => array( 'for_you_url', '/for-you/' ),
 	);
 	list( $key, $fallback ) = $defaults[ $which ] ?? $defaults['account'];
 

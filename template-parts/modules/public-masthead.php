@@ -17,14 +17,21 @@ defined( 'ABSPATH' ) || exit;
 $assemble_nav     = assemble_primary_nav_items();
 $assemble_utility = assemble_utility_nav_items();
 
-// Signed in: one Account button in the masthead; the drawer adds Sign out.
+// Signed in: For you and Account in the masthead; the drawer adds Sign out.
 // The signed-in state has no wireframe: on-system, flagged for design.
 $assemble_account = is_user_logged_in()
 	? array(
 		array(
-			'label' => assemble_label( 'account' ),
-			'url'   => assemble_account_link( 'account' ),
-			'class' => 'btn-outline',
+			'label'   => assemble_label( 'for_you' ),
+			'url'     => assemble_account_link( 'for_you' ),
+			'class'   => 'btn-solid',
+			'current' => assemble_is_for_you_page(),
+		),
+		array(
+			'label'   => assemble_label( 'account' ),
+			'url'     => assemble_account_link( 'account' ),
+			'class'   => 'btn-outline',
+			'current' => function_exists( 'assemble_account_page_kind' ) && 'account' === assemble_account_page_kind(),
 		),
 	)
 	: array(
@@ -89,7 +96,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 			</a>
 			<?php foreach ( $assemble_account as $assemble_action ) : ?>
-				<a class="<?php echo esc_attr( $assemble_action['class'] ); ?> header-account-action" href="<?php echo esc_url( $assemble_action['url'] ); ?>"><?php echo esc_html( $assemble_action['label'] ); ?></a>
+				<a class="<?php echo esc_attr( $assemble_action['class'] ); ?> header-account-action" href="<?php echo esc_url( $assemble_action['url'] ); ?>"<?php echo ! empty( $assemble_action['current'] ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $assemble_action['label'] ); ?></a>
 			<?php endforeach; ?>
 		</div>
 	</div>
@@ -121,7 +128,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 			<?php endif; ?>
 			<div class="site-drawer__actions">
 				<?php foreach ( $assemble_drawer_actions as $assemble_action ) : ?>
-					<a class="<?php echo esc_attr( $assemble_action['class'] ); ?>" href="<?php echo esc_url( $assemble_action['url'] ); ?>"><?php echo esc_html( $assemble_action['label'] ); ?></a>
+					<a class="<?php echo esc_attr( $assemble_action['class'] ); ?>" href="<?php echo esc_url( $assemble_action['url'] ); ?>"<?php echo ! empty( $assemble_action['current'] ) ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $assemble_action['label'] ); ?></a>
 				<?php endforeach; ?>
 			</div>
 		</div>

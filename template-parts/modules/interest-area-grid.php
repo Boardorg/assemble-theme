@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 $assemble_followed    = (array) ( $args['areas'] ?? array() );
 $assemble_communities = (array) ( $args['communities'] ?? array() );
 ?>
-<div class="account-widget interest-area-grid">
+<div class="account-widget interest-area-grid" id="interests">
 	<h2 class="account-section-title"><?php esc_html_e( 'Your interest areas', 'assemble' ); ?></h2>
 	<p class="interests-intro">
 		<?php

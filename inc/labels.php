@@ -16,6 +16,7 @@ function assemble_label( string $key ): string {
 		'sign_in'          => __( 'Sign in', 'assemble' ),
 		'create'           => __( 'Create free account', 'assemble' ),
 		'account'          => __( 'Account', 'assemble' ),
+		'for_you'          => __( 'For you', 'assemble' ), // The signed-in feed (wireframe 8).
 		'sign_out'         => __( 'Sign out', 'assemble' ),
 		'search'           => __( 'Search', 'assemble' ),
 		'members_only'     => __( 'Board Members only', 'assemble' ), // The gated label, everywhere (wireframe edits A).
@@ -24,6 +25,7 @@ function assemble_label( string $key ): string {
 		'summit_details'   => __( 'View Summit details', 'assemble' ), // Homepage Next Summit card (wireframe 1).
 		'all_summits'      => __( 'See all Summits', 'assemble' ),
 		'playbook'         => __( 'Playbook', 'assemble' ), // Content-type tag (wireframe 5).
+		'field_report'     => __( 'Field Report', 'assemble' ), // Content type on For You cards (wireframe 8).
 		'playbooks'        => __( 'Playbooks', 'assemble' ),
 		'guidance_layers'  => __( 'How the guidance layers', 'assemble' ), // Default heading of a Layers callout (wireframe 5).
 		'phase'            => __( 'Phase %d', 'assemble' ), // TOC caption of a phase chapter; %d is its number.

@@ -166,6 +166,13 @@ add_action(
 			);
 		}
 
+		// For You (wireframe 8): the signed-in feed. account-header carries the notice style.
+		if ( assemble_is_for_you_page() ) {
+			foreach ( array( 'logged-in-feed-hero', 'featured-intelligence-grid', 'personalized-feed-rows', 'feed-discovery-prompt' ) as $assemble_module ) {
+				assemble_enqueue_module_style( $assemble_module );
+			}
+		}
+
 		// Account pages (Phase 7): Sign in, Create account, Account.
 		if ( assemble_is_account_page() ) {
 			foreach ( array( 'account-header', 'account-details-form', 'interest-area-grid' ) as $assemble_module ) {
