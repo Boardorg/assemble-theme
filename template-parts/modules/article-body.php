@@ -13,7 +13,8 @@
  *
  * No aside (Cale, 2026-11-10): the body is a centered 720px reading column
  * under the full-width hero, as in the signed-off image-style mockup
- * (IMAGE-STYLE-SPEC option B). The pull quote steps out to 820px.
+ * (IMAGE-STYLE-SPEC option B). The pull quote runs the full
+ * article width, as wide as the hero image.
  *
  * Only sections present in the view model are printed.
  *
