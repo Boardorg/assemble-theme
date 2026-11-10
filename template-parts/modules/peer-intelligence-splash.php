@@ -18,8 +18,8 @@ defined( 'ABSPATH' ) || exit;
 				<a class="pi-link link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'how_it_works_url', '/about-us/' ) ) ); ?>"><?php esc_html_e( 'How Assemble creates peer intelligence', 'assemble' ); ?></a>
 			</div>
 			<div class="pi-art" aria-hidden="true">
-				<?php // Placeholder art: the mockup has no image for this slot yet. ?>
-				<div class="img-x pi-placeholder"></div>
+				<?php // The mockup has no art for this slot; the shared library's speech-bubbles illustration (Cale, 2026-11-10). ?>
+				<figure class="pi-figure"><img src="<?php echo esc_url( content_url( 'assets/illustrations/speech-bubbles-1.png' ) ); ?>" alt="" width="1600" height="1600" loading="lazy" decoding="async"></figure>
 			</div>
 		</div>
 
