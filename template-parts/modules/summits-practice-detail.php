@@ -42,7 +42,7 @@ $assemble_heading   = $assemble_community ? $assemble_community['label'] : (stri
 		<div class="event-card-grid">
 			<?php foreach ( $assemble_summits as $assemble_summit ) : ?>
 				<article class="event-card">
-					<h4><?php echo esc_html( $assemble_summit['title'] ); ?></h4>
+					<h4><a href="<?php echo esc_url( assemble_summit_url( $assemble_summit ) ); ?>"><?php echo esc_html( $assemble_summit['title'] ); ?></a></h4>
 					<p class="event-when">
 						<span><?php echo esc_html( assemble_summit_dates( $assemble_summit, 'short' ) ); ?></span>
 						<?php if ( '' !== assemble_summit_place( $assemble_summit ) ) : ?>
@@ -75,7 +75,7 @@ $assemble_heading   = $assemble_community ? $assemble_community['label'] : (stri
 				<p>
 					<?php
 					/* translators: %s: "Communities". */
-					printf( esc_html__( 'Follow the %s that matter to you and get new insights from Assemble delivered as they publish.', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
+					printf( esc_html__( 'Follow the %s that matter to you and get new insights from Assemble delivered as they’re published.', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
 					?>
 				</p>
 			</div>

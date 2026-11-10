@@ -15,6 +15,8 @@
 .event-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .event-card{display:flex;flex-direction:column;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
 .event-card h4{margin:0 0 9px;font:500 1.25rem/1.25 var(--font-text)}
+.event-card h4 a{color:inherit;text-decoration:none}
+.event-card h4 a:hover,.event-card h4 a:focus-visible{text-decoration:underline;text-underline-offset:3px}
 .event-card p{margin:0 0 14px;color:var(--ink-700);font-size:.875rem;line-height:1.58}
 .event-card .event-when{display:flex;flex-wrap:wrap;gap:4px 8px;margin:0 0 4px;color:var(--ink-900);font:500 1rem/1.5 var(--font-body)}
 .event-card .event-when span[aria-hidden]{color:var(--ink-500)}

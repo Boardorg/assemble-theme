@@ -13,7 +13,7 @@ get_template_part(
 	null,
 	array(
 		'title'  => assemble_label( 'playbooks' ),
-		'intro'  => __( 'Field-tested guides built from what senior leaders in Assemble’s Communities have tried, measured and learned.', 'assemble' ),
+		'intro'  => __( 'Field-tested guides built from what senior leaders in Assemble’s Communities have tried, measured, and learned.', 'assemble' ),
 		'area'   => 'neutral',
 		'crumbs' => array(
 			array(

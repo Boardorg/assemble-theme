@@ -27,9 +27,9 @@ function assemble_practice_areas(): array {
 	return array(
 		'human-resources' => __( 'Human Resources', 'assemble' ),
 		'manufacturing'   => __( 'Supply Chain & Manufacturing', 'assemble' ),
-		'marketing'       => __( 'Marketing and Communications', 'assemble' ),
-		'technology'      => __( 'Data and Technology', 'assemble' ),
-		'finance'         => __( 'Finance and Legal', 'assemble' ),
+		'marketing'       => __( 'Marketing & Communications', 'assemble' ),
+		'technology'      => __( 'Data & Technology', 'assemble' ),
+		'finance'         => __( 'Finance & Legal', 'assemble' ),
 	);
 }
 
@@ -50,7 +50,12 @@ function assemble_area_communities( string $area ): array {
 
 	$communities = array();
 	foreach ( AC_Communities::in_area( $area ) as $community ) {
-		$name          = (string) $community['name'];
+		$name = (string) $community['name'];
+		// A Network ("HR Network") is a whole Practice, not a Board: it's left
+		// off every public list (Kristen's review, Cale 2026-11-10).
+		if ( preg_match( '/\bNetwork$/', $name ) ) {
+			continue;
+		}
 		$communities[] = array(
 			'slug'        => (string) $community['slug'],
 			'name'        => $name,
@@ -68,6 +73,23 @@ function assemble_area_communities( string $area ): array {
 	 * @param string $area
 	 */
 	return (array) apply_filters( 'assemble/area_communities', $communities, $area );
+}
+
+/**
+ * A Community's label in a pill row: "Social Media" for SocialMedia.org,
+ * "Healthcare Social Media" for SocialMedia.org Health, and no " Board" or
+ * " Council" ("Digital Marketing & Communications"). The homepage explorer and
+ * the Summits page share it, so the pills read the same everywhere.
+ *
+ * @param array{slug:string,name:string,label:string} $community From assemble_area_communities().
+ */
+function assemble_community_pill_label( array $community ): string {
+	$labels = array(
+		'socialmedia-org'        => __( 'Social Media', 'assemble' ),
+		'socialmedia-org-health' => __( 'Healthcare Social Media', 'assemble' ),
+	);
+
+	return $labels[ $community['slug'] ] ?? (string) preg_replace( '/\s+(Board|Council)$/', '', (string) $community['name'] );
 }
 
 /** The first sentence of a paragraph of text. */
@@ -374,11 +396,15 @@ function assemble_topic_tag( array $topic, string $class = '' ): string {
 	return sprintf( '<%1$s%2$s>%3$s</%1$s>', $tag, $attrs, esc_html( (string) $topic['name'] ) );
 }
 
-/** A Community's short label, e.g. "AEO" for the AEO Board. */
+/**
+ * A Community's label in titles and breadcrumbs: its name without " Board"
+ * ("Culture & Experience", "AEO"), never the internal acronym ("CEB"; Kristen's
+ * review, 2026-11-09). Falls back to the short name when the name is missing.
+ */
 function assemble_community_label( array $community ): string {
-	$short = trim( (string) ( $community['short_name'] ?? '' ) );
+	$name = trim( (string) preg_replace( '/\s+Board$/', '', (string) ( $community['name'] ?? '' ) ) );
 
-	return '' !== $short ? $short : (string) preg_replace( '/\s+Board$/', '', (string) ( $community['name'] ?? '' ) );
+	return '' !== $name ? $name : trim( (string) ( $community['short_name'] ?? '' ) );
 }
 
 /** "AEO Board" reads as "the AEO Board" in a sentence; brand names like "SocialMedia.org" take no article. */

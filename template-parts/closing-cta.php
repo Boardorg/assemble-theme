@@ -20,7 +20,7 @@ if ( '' === $assemble_contact ) {
 		<div class="wp-block-columns band-cta">
 			<div class="wp-block-column">
 				<h2><?php echo esc_html( (string) ( $args['heading'] ?? __( 'Looking to learn more about Assemble?', 'assemble' ) ) ); ?></h2>
-				<p><?php echo esc_html( (string) ( $args['text'] ?? __( 'Interested in joining a Community, attending a Summit or becoming a sponsor? We’d love to connect.', 'assemble' ) ) ); ?></p>
+				<p><?php echo esc_html( (string) ( $args['text'] ?? __( 'Interested in joining a Community, attending a Summit, or becoming a sponsor? We’d love to connect.', 'assemble' ) ) ); ?></p>
 				<div class="wp-block-buttons">
 					<div class="wp-block-button"><a class="wp-block-button__link" href="<?php echo esc_url( $assemble_contact ); ?>"><?php esc_html_e( 'Contact us', 'assemble' ); ?></a></div>
 					<?php if ( '' !== assemble_page_url( 'careers' ) ) : ?>

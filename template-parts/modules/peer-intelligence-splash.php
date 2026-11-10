@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
 					<p>
 						<?php
 						/* translators: %s: "Communities" (or its replacement label). */
-						printf( esc_html__( 'Follow the %s that matter to you and get new insights from Assemble delivered as they publish.', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
+						printf( esc_html__( 'Follow the %s that matter to you and get new insights from Assemble delivered as they’re published.', 'assemble' ), esc_html( assemble_label( 'communities' ) ) );
 						?>
 					</p>
 				</div>

@@ -28,14 +28,10 @@ defined( 'ABSPATH' ) || exit;
 // Practice-area pills take their area's colour (Kristen's review, Cale
 // 2026-11-06). Board logos in the panels were tried and dropped (Cale, same day).
 
-// What the sorter leaves out or renames (Cale, 2026-11-05): no Finance and
-// Legal area, no Councils, no HR Network, and shorter social media pills.
-$assemble_hidden_areas       = array( 'finance' );
-$assemble_hidden_communities = array( 'hr-network' );
-$assemble_pill_labels        = array(
-	'socialmedia-org'        => __( 'Social Media', 'assemble' ),
-	'socialmedia-org-health' => __( 'Healthcare Social Media', 'assemble' ),
-);
+// What the sorter leaves out (Cale, 2026-11-05; held 2026-11-10): no Finance
+// & Legal area and no Councils. HR Network is left out by
+// assemble_area_communities(); pill labels come from assemble_community_pill_label().
+$assemble_hidden_areas = array( 'finance' );
 
 $assemble_areas   = array();
 $assemble_opening = '';
@@ -43,11 +39,11 @@ foreach ( array_diff_key( assemble_practice_areas(), array_flip( $assemble_hidde
 	$assemble_communities = array_values(
 		array_filter(
 			assemble_area_communities( $assemble_key ),
-			static fn ( array $c ): bool => ! in_array( $c['slug'], $assemble_hidden_communities, true ) && ! preg_match( '/\bCouncil$/', $c['name'] )
+			static fn ( array $c ): bool => ! preg_match( '/\bCouncil$/', $c['name'] )
 		)
 	);
 	foreach ( $assemble_communities as $assemble_i => $assemble_community ) {
-		$assemble_communities[ $assemble_i ]['label'] = $assemble_pill_labels[ $assemble_community['slug'] ] ?? $assemble_community['label'];
+		$assemble_communities[ $assemble_i ]['label'] = assemble_community_pill_label( $assemble_community );
 		$assemble_communities[ $assemble_i ]['stories'] = assemble_community_stories( $assemble_community['slug'], 7 );
 
 		// Open on the first Community that has something to show.

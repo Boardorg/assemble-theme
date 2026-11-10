@@ -53,11 +53,11 @@ function assemble_account_link( string $which, string $redirect = '' ): string {
  */
 function assemble_interest_areas(): array {
 	$blurbs = array(
-		'human-resources' => __( 'Peer conversations on talent, learning and culture.', 'assemble' ),
-		'manufacturing'   => __( 'Peer conversations on planning, sourcing and resilience.', 'assemble' ),
-		'marketing'       => __( 'Peer conversations on brand, content and AI-driven discovery.', 'assemble' ),
-		'technology'      => __( 'Peer conversations on AI, data and security.', 'assemble' ),
-		'finance'         => __( 'Peer conversations on planning, risk and strategy.', 'assemble' ),
+		'human-resources' => __( 'Peer conversations on talent, learning, and culture.', 'assemble' ),
+		'manufacturing'   => __( 'Peer conversations on planning, sourcing, and resilience.', 'assemble' ),
+		'marketing'       => __( 'Peer conversations on brand, content, and AI-driven discovery.', 'assemble' ),
+		'technology'      => __( 'Peer conversations on AI, data, and security.', 'assemble' ),
+		'finance'         => __( 'Peer conversations on planning, risk, and strategy.', 'assemble' ),
 	);
 
 	$areas = array();

@@ -18,12 +18,18 @@ foreach ( assemble_practice_areas() as $assemble_key => $assemble_label ) {
 	$assemble_communities = assemble_area_communities( $assemble_key );
 	$assemble_panels      = array();
 
+	// Same pill labels as the homepage explorer (Kristen's review, 2026-11-10).
+	foreach ( $assemble_communities as $assemble_i => $assemble_community ) {
+		$assemble_communities[ $assemble_i ]['label'] = assemble_community_pill_label( $assemble_community );
+	}
+
 	foreach ( $assemble_communities ? $assemble_communities : array( null ) as $assemble_community ) {
 		$assemble_id       = $assemble_community ? $assemble_community['slug'] : 'area-' . $assemble_key;
 		$assemble_panels[] = array(
 			'id'        => $assemble_id,
 			'community' => $assemble_community,
-			'summits'   => assemble_featured_summits( $assemble_community ? $assemble_community['slug'] : '', $assemble_key ),
+			// Up to two rows of cards, so a Community with many Summits (Manufacturing) shows them all.
+			'summits'   => assemble_featured_summits( $assemble_community ? $assemble_community['slug'] : '', $assemble_key, 6 ),
 		);
 		if ( '' === $assemble_opening && end( $assemble_panels )['summits'] ) {
 			$assemble_opening = $assemble_id;
@@ -54,7 +60,7 @@ $assemble_panel_id = static fn ( string $id ): string => 'summits-' . sanitize_h
 			<div class="topic-row topic-row-primary" role="group" aria-label="<?php esc_attr_e( 'Practice areas', 'assemble' ); ?>">
 				<?php foreach ( $assemble_areas as $assemble_key => $assemble_area ) : ?>
 					<?php $assemble_pressed = in_array( $assemble_opening, array_column( $assemble_area['panels'], 'id' ), true ); ?>
-					<button class="tab-btn tab-btn-primary" type="button" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_area['panels'][0]['id'] ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
+					<button class="tab-btn tab-btn-primary" type="button" data-area="<?php echo esc_attr( $assemble_key ); ?>" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_area['panels'][0]['id'] ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
 				<?php endforeach; ?>
 			</div>
 			<div class="topic-row-secondary-wrap">
@@ -65,7 +71,7 @@ $assemble_panel_id = static fn ( string $id ): string => 'summits-' . sanitize_h
 					}
 					$assemble_open_row = in_array( $assemble_opening, array_column( $assemble_area['communities'], 'slug' ), true );
 					?>
-					<div class="topic-row topic-row-secondary" role="group" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
+					<div class="topic-row topic-row-secondary" role="group" data-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
 						<?php foreach ( $assemble_area['communities'] as $assemble_community ) : ?>
 							<button class="tab-btn" type="button" aria-pressed="<?php echo $assemble_community['slug'] === $assemble_opening ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>"><?php echo esc_html( $assemble_community['label'] ); ?></button>
 						<?php endforeach; ?>
