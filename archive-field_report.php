@@ -56,7 +56,7 @@ if ( $assemble_filter ) {
 			<div class="page-hero-copy">
 				<div class="eyebrow"><?php echo esc_html( assemble_label( 'insights' ) ); ?></div>
 				<h1 class="type-hero" id="insights-title"><?php esc_html_e( 'Peer intelligence from the people doing the work.', 'assemble' ); ?></h1>
-				<p><?php esc_html_e( 'Peer intelligence from Assemble’s Communities: what senior leaders are deciding, measuring and changing.', 'assemble' ); ?></p>
+				<p><?php esc_html_e( 'Insights from Assemble’s Communities: what senior leaders are deciding, measuring, and changing.', 'assemble' ); ?></p>
 			</div>
 		</section>
 	</div>

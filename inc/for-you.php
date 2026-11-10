@@ -59,7 +59,7 @@ function assemble_for_you_card( WP_Post $post, ?array $reason = null ): array {
 	return $card;
 }
 
-/** A list of names as a sentence: "A", "A and B", "A, B and C". */
+/** A list of names as a sentence: "A", "A and B", "A, B, and C" (Oxford comma, 2026-11-10). */
 function assemble_for_you_list( array $names ): string {
 	$names = array_values( array_filter( $names ) );
 	if ( count( $names ) < 2 ) {
@@ -67,8 +67,13 @@ function assemble_for_you_list( array $names ): string {
 	}
 	$last = array_pop( $names );
 
-	/* translators: 1: a comma-separated list, 2: the last item. */
-	return sprintf( __( '%1$s and %2$s', 'assemble' ), implode( ', ', $names ), $last );
+	if ( count( $names ) > 1 ) {
+		/* translators: 1: a comma-separated list of two or more items, 2: the last item. */
+		return sprintf( __( '%1$s, and %2$s', 'assemble' ), implode( ', ', $names ), $last );
+	}
+
+	/* translators: 1: the first item, 2: the second item. */
+	return sprintf( __( '%1$s and %2$s', 'assemble' ), $names[0], $last );
 }
 
 /**

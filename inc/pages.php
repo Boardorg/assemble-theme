@@ -237,3 +237,60 @@ add_shortcode(
 		return (string) ob_get_clean();
 	}
 );
+
+/*
+ * [assemble_logo_strip type="summits|communities"]: a row of linked logos for a
+ * page band (Our Product, Kristen's review 2026-11-09). Summits: each upcoming
+ * Summit with a library logo, once per logo (Spring and Fall share one), linked
+ * to its event page. Communities: each Board or Council in the Community
+ * directory with a logo, linked to its page, else its panel on /communities/.
+ */
+add_shortcode(
+	'assemble_logo_strip',
+	static function ( $atts ): string {
+		$atts  = shortcode_atts( array( 'type' => 'summits' ), (array) $atts );
+		$items = array();
+
+		if ( 'communities' === $atts['type'] ) {
+			$directory = function_exists( 'assemble_community_directory' ) ? assemble_community_directory() : array();
+			foreach ( $directory as $communities ) {
+				foreach ( (array) $communities as $community ) {
+					if ( empty( $community['logo']['url'] ) ) {
+						continue;
+					}
+					$items[ $community['logo']['url'] ] = array(
+						'logo'  => $community['logo']['url'],
+						'label' => (string) $community['name'],
+						'url'   => ! empty( $community['page']['url'] ) ? $community['page']['url'] : assemble_url( '/communities/#' . $community['slug'] ),
+					);
+				}
+			}
+		} else {
+			foreach ( assemble_upcoming_summits() as $summit ) {
+				$logo = (string) ( $summit['logo'] ?? '' );
+				if ( '' === $logo || isset( $items[ $logo ] ) ) {
+					continue;
+				}
+				$items[ $logo ] = array(
+					'logo'  => $logo,
+					'label' => (string) $summit['title'],
+					'url'   => assemble_summit_url( $summit ),
+				);
+			}
+		}
+
+		if ( ! $items ) {
+			return '';
+		}
+
+		ob_start();
+		?>
+		<ul class="logo-strip logo-strip--<?php echo esc_attr( 'communities' === $atts['type'] ? 'communities' : 'summits' ); ?>" role="list">
+			<?php foreach ( $items as $item ) : ?>
+				<li><a href="<?php echo esc_url( $item['url'] ); ?>"<?php echo str_starts_with( $item['url'], home_url() ) ? '' : ' rel="noopener"'; ?>><img src="<?php echo esc_url( $item['logo'] ); ?>" alt="<?php echo esc_attr( $item['label'] ); ?>" loading="lazy" decoding="async"></a></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php
+		return (string) ob_get_clean();
+	}
+);

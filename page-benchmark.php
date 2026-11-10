@@ -30,7 +30,7 @@ while ( have_posts() ) :
 					<div class="page-hero-copy">
 						<div class="eyebrow"><?php esc_html_e( 'Benchmark', 'assemble' ); ?></div>
 						<h1 class="type-hero" id="benchmark-title"><?php the_title(); ?></h1>
-						<p><?php esc_html_e( 'See how senior leaders in your function are prioritizing, staffing and spending. Read the latest reports, add your own answers to the current survey, or get your personal results.', 'assemble' ); ?></p>
+						<p><?php esc_html_e( 'See how senior leaders in your function are prioritizing, staffing, and spending. Read the latest reports, add your own answers to the current survey, or get your personal results.', 'assemble' ); ?></p>
 						<div class="page-hero-actions">
 							<a class="btn-solid" href="#take-the-survey"><?php esc_html_e( 'Take the survey', 'assemble' ); ?></a>
 							<?php if ( $assemble_editions ) : ?>
@@ -65,7 +65,7 @@ while ( have_posts() ) :
 							<p class="is-style-lead">
 								<?php
 								/* translators: %s: edition date, e.g. "Q3 2026". */
-								printf( esc_html__( 'Released %s. Each report filters by role, revenue, team size, growth and industry.', 'assemble' ), esc_html( (string) $assemble_edition['date'] ) );
+								printf( esc_html__( 'Released %s. Each report filters by role, revenue, team size, growth, and industry.', 'assemble' ), esc_html( (string) $assemble_edition['date'] ) );
 								?>
 							</p>
 						</div>
