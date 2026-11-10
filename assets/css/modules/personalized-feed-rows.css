@@ -1,0 +1,13 @@
+/* personalized-feed-rows (wireframe 8, measured at 1440). */
+.feed-section-head{margin:46px 0 24px}
+.feed-section-head h2{margin:0;font:500 1.875rem/1.15 var(--font-display);letter-spacing:-.012em;color:var(--ink-900)}
+.feed-list{padding:0 28px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface)}
+.feed-row{display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:center;padding:24px 0}
+.feed-row+.feed-row{border-top:1px solid var(--line)}
+.feed-thumb{aspect-ratio:16/9;border-radius:8px}
+.feed-copy h3{margin:0 0 8px;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em;color:var(--ink-900)}
+.feed-copy .feed-excerpt{margin:0 0 10px;font-size:.875rem;line-height:1.6;color:var(--ink-700)}
+@media (max-width:640px){
+	.feed-list{padding:0 18px}
+	.feed-row{grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:start;padding:18px 0}
+}

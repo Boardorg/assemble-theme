@@ -1,0 +1,33 @@
+/* logged-in-feed-hero (wireframe 8, measured at 1440). Also the For You page shell. */
+.for-you-main{padding:52px 0 80px}
+.feed-head{margin:0 0 30px}
+.feed-head h1{margin:0 0 10px;font:500 2.625rem/1.15 var(--font-display);letter-spacing:-.02em;color:var(--ink-900)}
+.feed-head p{margin:0;font-size:1rem;line-height:1.7;color:var(--ink-700)}
+.feed-notice{margin:0 0 28px}
+.personalization-strip{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 28px;padding:20px 22px;border:1px solid rgba(38,37,31,.16);border-left:3px solid var(--ink-700);border-radius:var(--r-md)}
+.personalization-strip p{margin:0;font-size:.875rem;line-height:1.6;color:var(--ink-700)}
+.personalization-strip strong{font-weight:700;color:var(--ink-900)}
+.personalization-strip .manage{flex:none;white-space:nowrap}
+.personalization-strip--empty{margin-bottom:34px}
+.personalization-strip--empty .btn-solid{flex:none}
+.feed-filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 34px;padding:0 0 28px;border-bottom:1px solid var(--line)}
+.feed-filter{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 14px;border:1px solid var(--ink-300);border-radius:var(--r-pill);background:var(--surface);color:var(--ink-700);font:500 .875rem/1.7 var(--font-body);text-decoration:none;transition:background var(--motion),border-color var(--motion)}
+.feed-filter:hover{border-color:var(--ink-700);color:var(--ink-900);text-decoration:none}
+.feed-filter[aria-current]{background:var(--ink-900);border-color:var(--ink-900);color:var(--surface)}
+.filter-hint{margin:-8px 0 24px;font-size:.875rem;line-height:1.7;color:var(--ink-700)}
+.for-you-empty{margin:0 0 24px;font-size:1rem;line-height:1.7;color:var(--ink-700)}
+.for-you-empty .link-arrow{margin-left:.5em}
+.feed-pager{display:flex;justify-content:space-between;gap:24px;margin:24px 0 0}
+.feed-pager-older{margin-left:auto}
+/* Shared card bits (featured grid and feed rows). */
+.for-you-main .tag-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
+.for-you-main .reason{font-size:.875rem;line-height:1.55;color:var(--ink-700)}
+.for-you-main .story-meta{display:flex;align-items:center;gap:6px;margin:0;font-size:.875rem;line-height:1.55;color:var(--ink-700)}
+.for-you-main .story-meta .format-icon{flex:none;width:16px;height:16px}
+.for-you-main h2 a,.for-you-main h3 a{color:inherit;text-decoration:none}
+.for-you-main h2 a:hover,.for-you-main h3 a:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+@media (max-width:640px){
+	.for-you-main{padding:36px 0 56px}
+	.feed-head h1{font-size:2.125rem}
+	.personalization-strip{flex-direction:column;align-items:flex-start;gap:12px}
+}

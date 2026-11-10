@@ -3,8 +3,9 @@
  * One Field Report (or playbook) card: thumbnail, content-type tag for a playbook,
  * topic tag, title, excerpt, and an optional
  * "See more" link. Used by related-peer-intelligence and the Insights archives.
- * Gated reports are listed on purpose (sign-ups) and carry the "Board Members
- * only" tag when the feed says this visitor would be refused.
+ * Members-only pieces never reach a public list (assemble-core 0.14.0,
+ * inc/members-only.php), so the "Board Members only" tag shows only if a piece
+ * is listed to someone whose view of it is still denied.
  *
  * @var array $args { story: from assemble_story(), more: { url, label }|null, heading: 'h2'|'h3' }
  */
