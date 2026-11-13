@@ -109,8 +109,13 @@ function assemble_community_sessions( array $page ): array {
 }
 
 /**
- * Breadcrumbs: the practice by its official name, then the Board. The practice
- * links once its page (/communities/<area>/) exists; until then it prints as text.
+ * Breadcrumbs: Communities, then the practice by its official name, then the
+ * Board ("Communities › Marketing & Communications › AEO Board"). Communities
+ * links to /communities/. The practice links only once a practice-area page
+ * exists for it (a Community page whose Page type is "Practice area"); until
+ * then it prints as text. A Board page whose slug matches a practice key (the
+ * Manufacturing Board is /communities/manufacturing/) is not an area page, so
+ * it never becomes the practice's link.
  *
  * @return array<int,array{label:string,url:string}>
  */
@@ -118,11 +123,21 @@ function assemble_community_crumbs( array $page ): array {
 	$area   = assemble_area( (string) $page['area'] );
 	$name   = assemble_practice_areas()[ $area ] ?? '';
 	$crumbs = array();
+	$index  = get_page_by_path( 'communities' );
+
+	$crumbs[] = array(
+		'label' => assemble_label( 'communities' ),
+		'url'   => $index instanceof WP_Post && 'publish' === $index->post_status ? (string) get_permalink( $index ) : '',
+	);
 
 	if ( '' !== $name ) {
+		$area_page = get_page_by_path( 'communities/' . $area );
+		$is_area   = $area_page instanceof WP_Post && 'publish' === $area_page->post_status
+			&& 'area' === ( assemble_community_page( $area_page )['kind'] ?? '' );
+
 		$crumbs[] = array(
 			'label' => $name,
-			'url'   => assemble_page_url( 'communities/' . $area ),
+			'url'   => $is_area ? (string) get_permalink( $area_page ) : '',
 		);
 	}
 

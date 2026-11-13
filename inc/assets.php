@@ -185,6 +185,31 @@ add_action(
 			foreach ( array( 'related-peer-intelligence', 'summits-practice-detail', 'community-page' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
+
+			// The apply band embeds board.org's join form (HubSpot) and preselects the Board.
+			$assemble_join = (array) ( assemble_current_community_page()['join'] ?? array() );
+			if ( ! empty( $assemble_join['portal'] ) && ! empty( $assemble_join['form'] ) ) {
+				wp_enqueue_script(
+					'assemble-community-join',
+					get_template_directory_uri() . '/assets/js/community-join.js',
+					array(),
+					assemble_asset_version( 'assets/js/community-join.js' ),
+					array(
+						'strategy'  => 'defer',
+						'in_footer' => true,
+					)
+				);
+				wp_enqueue_script(
+					'assemble-hubspot-forms',
+					'https://js.hsforms.net/forms/embed/' . rawurlencode( (string) $assemble_join['portal'] ) . '.js',
+					array( 'assemble-community-join' ),
+					null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- HubSpot's own loader.
+					array(
+						'strategy'  => 'defer',
+						'in_footer' => true,
+					)
+				);
+			}
 		}
 
 		// The Communities index: its filter shares the explorer's pills, panel cards and script.

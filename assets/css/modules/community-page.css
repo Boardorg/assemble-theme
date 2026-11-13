@@ -16,12 +16,19 @@
 .community-band-hero{padding-block:56px 64px}
 .community-band-proof{padding-block:40px;background:var(--surface);border-block:1px solid var(--line)}
 .community-band-apply{padding-top:0}
+/* When a band in between has no data (e.g. no Working Sessions), two sunken
+   bands meet; a hairline keeps them apart ("Impact at three levels"). */
+.community-band.is-sunken+.community-band.is-sunken{border-top:1px solid var(--line)}
 
 /* Hero: copy beside the illustration, as the Summits hero (1.05fr / .85fr). */
 .community-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.85fr);gap:var(--s-7);align-items:center}
 .community-hero .content-head{padding-block:4px}
 /* The Board's own logo (the Contentful community logo), above the eyebrow. */
 .community-logo{display:block;width:auto;height:88px;max-width:220px;margin:var(--s-5) 0 var(--s-4);object-fit:contain;object-position:left center}
+/* Board logos show in black and white (Kristen, 2026-11-12). The library has
+   only colour Board files, so the colour file is greyed here; swap in black
+   files (boards/<code>-logo-black.png) if design makes them. */
+.community-logo,.community-panel-logo{filter:grayscale(1) contrast(1.15)}
 .community-hero .eyebrow{color:var(--accent-ink)}
 .community-hero h1{max-width:20ch;margin-bottom:var(--s-5)}
 .community-hero .body-lead{margin-bottom:var(--s-6)}
@@ -36,6 +43,7 @@
 .community-proof-copy .community-stat{margin-bottom:var(--s-2)}
 .community-stat{font:500 4.375rem/1 var(--font-display);letter-spacing:-.02em;color:var(--accent-ink)}
 .community-proof-line{max-width:28ch;font-size:1.125rem;line-height:1.5;color:var(--ink-900)}
+.community-proof .community-proof-functions{max-width:44ch;margin-top:var(--s-4);font-size:.9375rem;line-height:1.6;color:var(--ink-700)}
 
 .community-section{margin-top:var(--s-9)}
 .community-heading{max-width:28ch;margin-bottom:var(--s-6)}
@@ -75,7 +83,10 @@
 .included-intro h3{margin-bottom:var(--s-2)}
 .included-intro p{margin:0}
 .included-tags{display:flex;flex-wrap:wrap;align-items:center;gap:8px;align-content:flex-start}
-.included-tags .meta{flex-basis:100%;margin:0 0 4px}
+.included-tags .included-label{flex-basis:100%;margin:0 0 4px;font:500 1rem/1.4 var(--font-body);color:var(--ink-900)}
+.included-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-3) var(--s-5);flex-basis:100%;margin:0;padding:0;list-style:none}
+.included-checks li{position:relative;padding-left:28px;font-size:.9375rem;line-height:1.5;color:var(--ink-900)}
+.included-checks li::before{content:"";position:absolute;left:2px;top:.3em;width:14px;height:8px;border-left:2px solid var(--ink-900);border-bottom:2px solid var(--ink-900);transform:rotate(-45deg)}
 .included-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-4) var(--s-5);margin:0}
 .included-details dt,.fit-list dt{font:500 1rem/1.4 var(--font-body);color:var(--ink-900)}
 .included-details dd,.fit-list dd{margin:4px 0 0;font-size:.875rem;line-height:1.6;color:var(--ink-700)}
@@ -106,6 +117,11 @@
 .community-apply h2{max-width:24ch}
 .community-apply p{max-width:60ch;margin-bottom:var(--s-5)}
 .community-apply-art{width:100%;height:auto}
+.community-apply .eyebrow{margin-bottom:var(--s-3)}
+.community-apply.has-form{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}
+.community-apply.has-form .community-apply-copy{position:sticky;top:24px}
+.community-apply-form{min-width:0}
+.community-apply-form noscript .btn-solid{margin-top:var(--s-3)}
 
 @media (max-width:1100px){
 	.community-hero{grid-template-columns:1fr}
@@ -120,7 +136,8 @@
 	.community-impact{grid-template-columns:1fr}
 	.community-sessions{grid-template-columns:1fr}
 	.community-logos{grid-template-columns:repeat(3,minmax(0,1fr))}
-	.community-apply{grid-template-columns:1fr;padding:36px 32px}
+	.community-apply,.community-apply.has-form{grid-template-columns:1fr;padding:36px 32px}
+	.community-apply.has-form .community-apply-copy{position:static}
 	.community-apply-art{max-width:200px}
 }
 
@@ -134,7 +151,7 @@
 	.community-logo{height:64px}
 	.community-stat{font-size:3rem}
 	.community-proof-line{font-size:1.125rem}
-	.community-challenges,.included-details,.fit-list{grid-template-columns:1fr}
+	.community-challenges,.included-details,.included-checks,.fit-list{grid-template-columns:1fr}
 	.community-challenges li{padding-left:48px;font-size:1.125rem}
 	.community-included>li{padding-left:44px}
 	.community-included>li::before,.community-challenges li::before{font-size:1.6875rem}
@@ -173,15 +190,23 @@
 .community-explorer-head .stories-section-heading{margin-bottom:var(--s-3)}
 .community-explorer-head .body-lead{max-width:60ch;margin:0}
 .community-explorer .two-row-topic-nav{margin-bottom:var(--s-5)}
-/* The band is sunken, so the practice pills sit on white. */
-.community-explorer .tab-btn-primary:not([aria-pressed="true"]){background:var(--surface)}
+/* The value points heading runs on one line where it fits (no orphaned "Community"). */
+.community-points-heading{max-width:none;text-wrap:balance}
+/* Practice pills take their practice colour, as the homepage explorer's (content-explorer.css, [data-area]). */
 .community-explorer .community-panel-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:stretch}
 .community-explorer .community-panel-intro{justify-content:flex-start}
+/* The left column holds its content and stays beside the taller cards as you scroll. */
+.community-explorer .community-panel-grid>.community-panel-intro{position:sticky;top:24px;align-self:start}
 .community-explorer .community-panel-intro p+p{margin-top:var(--s-3)}
 .community-explorer .community-panel-intro .eyebrow{margin:0 0 var(--s-2);color:var(--accent-ink)}
 .community-panel-logo{display:block;width:auto;height:64px;max-width:200px;margin-bottom:var(--s-5);object-fit:contain;object-position:left center}
 .community-panel-for{font-size:.9375rem;color:var(--ink-700)}
-.community-panel-count{display:flex;align-items:baseline;gap:8px;font:500 .875rem/1.4 var(--font-label);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-700)}
+.community-panel-members{width:100%;margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line)}
+.community-panel-count{display:flex;align-items:baseline;gap:8px;margin:0;font:500 .875rem/1.4 var(--font-label);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-700)}
+.community-panel-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:var(--s-4) 0 0;padding:0;list-style:none}
+.community-panel-logos li{display:grid;place-items:center;min-height:52px;padding:8px;background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);text-align:center}
+.community-panel-logos img{max-width:100%;max-height:32px;filter:grayscale(1);opacity:.8}
+.community-panel-logos .logo-placeholder{font-size:.8125rem;line-height:1.25}
 .community-panel-stat{font:500 2rem/1 var(--font-display);letter-spacing:-.01em;text-transform:none;color:var(--accent-ink)}
 .community-explorer .community-cta-row{margin-top:var(--s-6)}
 .community-explorer .community-cta-row .link-arrow{margin-top:0}
@@ -192,6 +217,7 @@
 @media (max-width:980px){
 	.community-points,.community-points.has-four{grid-template-columns:1fr;gap:var(--s-5)}
 	.community-explorer .community-panel-grid{grid-template-columns:1fr}
+	.community-explorer .community-panel-grid>.community-panel-intro{position:static}
 }
 
 @media (max-width:640px){

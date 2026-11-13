@@ -1,10 +1,11 @@
 <?php
 /**
- * Community page band: the proof band. The member count and descriptor beside
- * the member-company logo wall (name tiles until approved logos exist). The
+ * Community page band: the proof band, "You're in good company". The member
+ * count, descriptor and functions line ("Members lead …") beside the
+ * member-company logo wall (name tiles until approved logos exist). The
  * index passes `stats` instead, figures from the Community directory ("13
- * Communities", "4 Practices"), shown with the member count as a row of big
- * numbers. Shared by the Board and index layouts; left out with nothing to show.
+ * Communities", "4 Practices"), shown with the member and company counts as a
+ * row of big numbers. Shared by the Board and index layouts; left out with nothing to show.
  *
  * @var array $args { page: a Community page view model, stats?: array<int,array{0:string,1:string}> value, label }
  */
@@ -14,10 +15,11 @@ defined( 'ABSPATH' ) || exit;
 $assemble_page    = (array) $args['page'];
 $assemble_members = (array) ( $assemble_page['members'] ?? array() );
 $assemble_company = (array) ( $assemble_page['company'] ?? array() );
+$assemble_lines   = '' !== (string) ( $assemble_members['functions'] ?? '' ) && empty( $args['stats'] ) ? (string) $assemble_members['functions'] : '';
 $assemble_stats   = array_values( array_filter( (array) ( $args['stats'] ?? array() ), static fn( $stat ) => '' !== (string) ( $stat[0] ?? '' ) ) );
 $assemble_t       = static fn( string $text ): string => assemble_community_text( $text, $assemble_page );
 
-if ( empty( $assemble_members['count'] ) && empty( $assemble_members['logos'] ) && ! $assemble_stats ) {
+if ( empty( $assemble_members['count'] ) && empty( $assemble_members['logos'] ) && ! $assemble_stats && '' === $assemble_lines ) {
 	return;
 }
 ?>
@@ -30,6 +32,10 @@ if ( empty( $assemble_members['count'] ) && empty( $assemble_members['logos'] ) 
 				<?php endif; ?>
 				<?php if ( $assemble_stats ) : ?>
 					<?php
+					$assemble_companies = (array) ( $assemble_members['companies'] ?? array() );
+					if ( ! empty( $assemble_companies['count'] ) ) {
+						array_unshift( $assemble_stats, array( (string) $assemble_companies['count'], $assemble_t( (string) ( $assemble_companies['descriptor'] ?? '' ) ) ) );
+					}
 					if ( ! empty( $assemble_members['count'] ) ) {
 						array_unshift( $assemble_stats, array( (string) $assemble_members['count'], $assemble_t( (string) ( $assemble_members['descriptor'] ?? '' ) ) ) );
 					}
@@ -45,6 +51,9 @@ if ( empty( $assemble_members['count'] ) && empty( $assemble_members['logos'] ) 
 				<?php elseif ( ! empty( $assemble_members['count'] ) ) : ?>
 					<p class="community-stat"><?php echo esc_html( $assemble_members['count'] ); ?></p>
 					<p class="community-proof-line"><?php echo esc_html( $assemble_t( (string) ( $assemble_members['descriptor'] ?? '' ) ) ); ?></p>
+				<?php endif; ?>
+				<?php if ( '' !== $assemble_lines ) : ?>
+					<p class="community-proof-functions"><?php echo esc_html( $assemble_t( $assemble_lines ) ); ?></p>
 				<?php endif; ?>
 			</div>
 			<?php if ( ! empty( $assemble_members['logos'] ) ) : ?>

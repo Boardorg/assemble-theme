@@ -47,7 +47,7 @@ $assemble_stats = array(
 					<div class="page-hero-actions">
 						<a class="btn-solid" href="#find"><?php echo esc_html( $assemble_find ); ?></a>
 						<?php if ( ! empty( $assemble_included['items'] ) ) : ?>
-							<a class="link-arrow" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
+							<a class="btn-outline" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -67,7 +67,7 @@ $assemble_stats = array(
 			<div class="wrap">
 				<section aria-labelledby="community-points">
 					<?php if ( ! empty( $assemble_points['heading'] ) ) : ?>
-						<h2 class="community-heading" id="community-points"><?php echo esc_html( $assemble_t( (string) $assemble_points['heading'] ) ); ?></h2>
+						<h2 class="community-heading community-points-heading" id="community-points"><?php echo esc_html( $assemble_t( (string) $assemble_points['heading'] ) ); ?></h2>
 					<?php endif; ?>
 					<ol class="community-points<?php echo 4 === count( $assemble_points['items'] ) ? ' has-four' : ''; ?>"<?php echo empty( $assemble_points['heading'] ) ? ' aria-label="' . esc_attr__( 'Why join', 'assemble' ) . '"' : ''; ?>>
 						<?php foreach ( $assemble_points['items'] as $assemble_point ) : ?>
