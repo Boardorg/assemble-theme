@@ -79,7 +79,7 @@ function assemble_for_you_list( array $names ): string {
 /**
  * Everything page-for-you.php prints.
  *
- * @return array{available:bool,name:string,notice:string,chips:array,current:string,interests:string,cards:array,total:int,page:int,pages:int,follows_any:bool,fallback:array,discover:array,manage_url:string,base_url:string}
+ * @return array{available:bool,name:string,notice:string,chips:array,current:string,interests:string,cards:array,total:int,page:int,pages:int,follows_any:bool,fallback:array,discover:array,summits:array,manage_url:string,base_url:string}
  */
 function assemble_for_you_view(): array {
 	$user_id = get_current_user_id();
@@ -107,6 +107,7 @@ function assemble_for_you_view(): array {
 		'follows_any' => false,
 		'fallback'    => array(),
 		'discover'    => array(),
+		'summits'     => array(),
 		'manage_url'  => assemble_account_link( 'account' ) . '#interests',
 		'base_url'    => assemble_account_link( 'for_you' ),
 	);
@@ -151,6 +152,8 @@ function assemble_for_you_view(): array {
 		);
 	}
 
+	$view['summits'] = assemble_for_you_summits( $feed['chips'] );
+
 	// Up to three practice areas they don't follow yet.
 	$followed = array_unique( wp_list_pluck( $feed['chips'], 'area' ) );
 	foreach ( assemble_practice_areas() as $area => $label ) {
@@ -172,4 +175,48 @@ function assemble_for_you_page_url( array $view, int $page ): string {
 	$url = $view['current'] ? add_query_arg( 'for', $view['current'], $view['base_url'] ) : $view['base_url'];
 
 	return $page > 1 ? add_query_arg( 'pg', $page, $url ) : $url;
+}
+
+/**
+ * Upcoming Summits for what the person follows (Kristen's v2 edits, Cale
+ * 2026-11-12), soonest first: a summit in a followed practice area that is
+ * open to the whole area (no Communities, or "*"), or mapped to a followed
+ * Community. A followed area with no Communities (Finance) takes every summit
+ * in it. Facts and links come from assemble_upcoming_summits() and
+ * assemble_summit_url(), as everywhere else.
+ *
+ * @param array $chips The feed's chips: key => { type, key, area }.
+ * @return array<int,array>
+ */
+function assemble_for_you_summits( array $chips, int $count = 3 ): array {
+	$areas       = array();
+	$communities = array();
+	foreach ( $chips as $chip ) {
+		$area = (string) ( $chip['area'] ?? '' );
+		if ( 'community' === ( $chip['type'] ?? '' ) ) {
+			$areas[ $area ] = $areas[ $area ] ?? false;
+			$communities[]  = (string) $chip['key'];
+		} else {
+			$areas[ $area ] = true; // The whole area.
+		}
+	}
+
+	if ( ! $areas ) {
+		return array();
+	}
+
+	$matches = array_filter(
+		assemble_upcoming_summits(),
+		static function ( array $summit ) use ( $areas, $communities ): bool {
+			$area = (string) $summit['area'];
+			if ( ! isset( $areas[ $area ] ) ) {
+				return false;
+			}
+			$mapped = (array) ( $summit['communities'] ?? array() );
+
+			return $areas[ $area ] || ! $mapped || in_array( '*', $mapped, true ) || array_intersect( $communities, $mapped );
+		}
+	);
+
+	return array_slice( array_values( $matches ), 0, $count );
 }

@@ -18,6 +18,7 @@ function assemble_label( string $key ): string {
 		'account'          => __( 'Account Settings', 'assemble' ), // Masthead, signed in (Cale, 2026-11-10).
 		'for_you'          => __( 'My Page', 'assemble' ), // The signed-in feed (wireframe 8), in the masthead (Cale, 2026-11-10).
 		'sign_out'         => __( 'Sign out', 'assemble' ),
+		'account_menu'     => __( 'Account', 'assemble' ), // The signed-in masthead menu: Account Settings and Sign out (Kristen's v2 edits).
 		'search'           => __( 'Search', 'assemble' ),
 		'members_only'     => __( 'Board Members only', 'assemble' ), // The gated label, everywhere (wireframe edits A).
 		'menu'             => __( 'Menu', 'assemble' ),

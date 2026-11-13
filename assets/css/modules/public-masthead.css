@@ -34,7 +34,22 @@ header.site-header{background:var(--bg);position:relative}
 /* Featured row: 16px and full ink (Kristen 2026-11-09: it got lost at 13px). */
 .header-row-2{display:flex;justify-content:center;gap:48px;padding-top:14px;padding-bottom:14px;font:500 1rem/1.7 var(--font-body);color:var(--ink-900)}
 .header-row-2 a{color:inherit;text-decoration:none;white-space:nowrap}
-.header-row-2 a:hover,.header-row-2 a[aria-current="page"]{color:var(--ink-900);text-decoration:underline;text-underline-offset:6px}
+.header-row-2 a:hover{color:var(--ink-900);text-decoration:underline;text-underline-offset:6px}
+/* Active section (Kristen's v2 edits): on the section's page or anywhere inside it. */
+.header-row-2 a[aria-current]{color:var(--ink-900);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+
+/* Signed-in Account menu: Account Settings and Sign out (Kristen's v2 edits). A <details>, so it works without JavaScript. */
+.account-menu{position:relative}
+.account-menu>summary{list-style:none;user-select:none}
+.account-menu>summary::-webkit-details-marker{display:none}
+.account-menu>summary.is-current{background:var(--surface-sunken)}
+.account-menu__chevron{width:12px;height:12px;transition:transform var(--motion)}
+.account-menu[open] .account-menu__chevron{transform:rotate(180deg)}
+.account-menu__panel{position:absolute;right:0;top:calc(100% + 8px);z-index:20;min-width:200px;margin:0;padding:6px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(38,37,31,.12)}
+.account-menu__panel a{display:flex;align-items:center;min-height:44px;padding:0 14px;border-radius:calc(var(--r-md) - 4px);color:var(--ink-900);font:500 .875rem/1.4 var(--font-body);text-decoration:none;white-space:nowrap}
+.account-menu__panel a:hover,.account-menu__panel a:focus-visible{background:var(--surface-sunken)}
+.account-menu__panel a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
+.account-menu__panel li+li{border-top:1px solid var(--line);margin-top:4px;padding-top:4px}
 
 /* Menu button: hidden on desktop, where the mockup's left column is empty. */
 .menu-toggle{display:none;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:-10px;padding:0;border:0;border-radius:var(--r-pill);background:none;color:var(--ink-900)}
@@ -51,15 +66,15 @@ header.site-header{background:var(--bg);position:relative}
 .site-drawer__nav{list-style:none;margin:0;padding:0}
 .site-drawer__nav li{border-bottom:1px solid var(--line)}
 .site-drawer__nav a{display:flex;align-items:center;min-height:56px;color:var(--ink-900);font:500 1.25rem/1.25 var(--font-text);text-decoration:none}
-.site-drawer__nav a[aria-current="page"]{text-decoration:underline;text-underline-offset:6px}
+.site-drawer__nav a[aria-current]{text-decoration-thickness:2px;text-decoration:underline;text-underline-offset:6px}
 .site-drawer__utility{list-style:none;margin:var(--s-4) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 24px}
 .site-drawer__utility a{display:flex;align-items:center;min-height:44px;color:var(--ink-700);font:500 .9375rem/1.4 var(--font-body);text-decoration:none}
 .site-drawer__utility a:hover,.site-drawer__utility a[aria-current="page"]{color:var(--ink-900);text-decoration:underline;text-underline-offset:4px}
 .site-drawer__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:var(--s-5)}
 
-/* Signed in, "My Page" and "Account Settings" are wider than the logged-out pair: keep them clear of the centred logo. */
+/* Signed in, "My Page" and the Account menu are wider than the logged-out pair: keep them clear of the centred logo. */
 @media (max-width:1180px){
-	.header-account-action{padding-inline:14px}
+	a.header-account-action,.account-menu>summary{padding-inline:14px}
 }
 
 @media (max-width:980px){

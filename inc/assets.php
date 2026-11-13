@@ -168,7 +168,7 @@ add_action(
 
 		// For You (wireframe 8): the signed-in feed. account-header carries the notice style.
 		if ( assemble_is_for_you_page() ) {
-			foreach ( array( 'logged-in-feed-hero', 'featured-intelligence-grid', 'personalized-feed-rows', 'feed-discovery-prompt' ) as $assemble_module ) {
+			foreach ( array( 'logged-in-feed-hero', 'featured-intelligence-grid', 'personalized-feed-rows', 'summits-practice-detail', 'for-you-summits', 'feed-discovery-prompt' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
 		}
