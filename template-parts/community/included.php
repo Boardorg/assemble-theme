@@ -4,6 +4,11 @@
  * defaults (plus a Board’s own), numbered, as #membership.
  * Shared by the Board and index layouts.
  *
+ * Every pillar's right column starts with the same label style (the tags intro,
+ * "Topics include" / "Access", reads like the Working Sessions names), so the
+ * rows match (Kristen, 2026-11-12). The index lists tags as check marks; Board
+ * pages keep them as the practice-coloured tags.
+ *
  * @var array $args { page: a Community page view model }
  */
 
@@ -11,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 $assemble_page     = (array) $args['page'];
 $assemble_included = (array) ( $assemble_page['included'] ?? array() );
+$assemble_checks   = 'index' === ( $assemble_page['kind'] ?? '' );
 $assemble_t        = static fn( string $text ): string => assemble_community_text( $text, $assemble_page );
 
 if ( empty( $assemble_included['items'] ) ) {
@@ -30,13 +36,21 @@ if ( empty( $assemble_included['items'] ) ) {
 							<p><?php echo esc_html( $assemble_t( (string) $assemble_item['body'] ) ); ?></p>
 						</div>
 						<?php if ( ! empty( $assemble_item['tags'] ) ) : ?>
-							<div class="included-tags">
+							<div class="included-tags<?php echo $assemble_checks ? ' is-checks' : ''; ?>">
 								<?php if ( ! empty( $assemble_item['tags_in'] ) ) : ?>
-									<p class="meta"><?php echo esc_html( (string) $assemble_item['tags_in'] ); ?></p>
+									<p class="included-label"><?php echo esc_html( $assemble_t( (string) $assemble_item['tags_in'] ) ); ?></p>
 								<?php endif; ?>
-								<?php foreach ( $assemble_item['tags'] as $assemble_tag ) : ?>
-									<span class="tag tag-area"><?php echo esc_html( (string) $assemble_tag ); ?></span>
-								<?php endforeach; ?>
+								<?php if ( $assemble_checks ) : ?>
+									<ul class="included-checks">
+										<?php foreach ( $assemble_item['tags'] as $assemble_tag ) : ?>
+											<li><?php echo esc_html( $assemble_t( (string) $assemble_tag ) ); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								<?php else : ?>
+									<?php foreach ( $assemble_item['tags'] as $assemble_tag ) : ?>
+										<span class="tag tag-area"><?php echo esc_html( $assemble_t( (string) $assemble_tag ) ); ?></span>
+									<?php endforeach; ?>
+								<?php endif; ?>
 							</div>
 						<?php elseif ( ! empty( $assemble_item['details'] ) ) : ?>
 							<dl class="included-details">

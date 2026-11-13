@@ -5,9 +5,10 @@
  * Marketing's section order (their AEO mockup), in the design system: hero with
  * the Board logo, member count beside the logo wall, the problem and challenges,
  * recent Insights (ours), upcoming Working Sessions, impact at three levels,
- * what's included, requirements, good company, featured Summits (ours, when
- * any), and the closing apply band. Sections sit in full-width bands that
- * alternate the page background with the guide's sunken surface (as the
+ * what's included, requirements, featured Summits (ours, when any), and the
+ * closing apply band with the join form. "You're in good company" appears once,
+ * in the proof band under the hero, with the functions line (Cale, 2026-11-12).
+ * Sections sit in full-width bands that alternate the page background with the guide's sunken surface (as the
  * homepage's peer-intelligence splash). Any section without data is left out.
  * No wireframe: on-system, flag for design.
  *
@@ -21,12 +22,10 @@ $assemble_area      = assemble_area( (string) $assemble_page['area'] );
 $assemble_slug      = (string) ( $assemble_page['community_slug'] ?? '' );
 $assemble_logo      = (array) ( $assemble_page['logo'] ?? array() );
 $assemble_hero      = (array) ( $assemble_page['hero'] ?? array() );
-$assemble_members   = (array) ( $assemble_page['members'] ?? array() );
 $assemble_problem   = (array) ( $assemble_page['problem'] ?? array() );
 $assemble_challenge = (array) ( $assemble_page['challenges'] ?? array() );
 $assemble_impact    = (array) ( $assemble_page['impact'] ?? array() );
 $assemble_included  = (array) ( $assemble_page['included'] ?? array() );
-$assemble_company   = (array) ( $assemble_page['company'] ?? array() );
 $assemble_sessions  = assemble_community_sessions( $assemble_page );
 $assemble_stories   = '' !== $assemble_slug ? assemble_community_stories( $assemble_slug, 3 ) : array();
 $assemble_summits   = '' !== $assemble_slug && assemble_has_summits() ? assemble_featured_summits( $assemble_slug, $assemble_area, 3 ) : array();
@@ -196,36 +195,24 @@ $assemble_t         = static fn( string $text ): string => assemble_community_te
 
 	<?php get_template_part( 'template-parts/community/fit', null, array( 'page' => $assemble_page ) ); ?>
 
-	<?php if ( ! empty( $assemble_company['heading'] ) || $assemble_summits ) : ?>
+	<?php if ( $assemble_summits ) : ?>
 		<div class="community-band">
 			<div class="wrap">
-				<?php if ( ! empty( $assemble_company['heading'] ) ) : ?>
-					<section class="community-company" aria-labelledby="community-company">
-						<p class="eyebrow"><?php echo esc_html( (string) $assemble_company['eyebrow'] ); ?></p>
-						<h2 class="community-heading" id="community-company"><?php echo esc_html( $assemble_t( (string) $assemble_company['heading'] ) ); ?></h2>
-						<?php if ( ! empty( $assemble_members['functions'] ) ) : ?>
-							<p><?php echo esc_html( $assemble_t( (string) $assemble_members['functions'] ) ); ?></p>
-						<?php endif; ?>
-					</section>
-				<?php endif; ?>
-
-				<?php if ( $assemble_summits ) : ?>
-					<section class="community-section" aria-labelledby="community-summits">
-						<h2 class="stories-section-heading" id="community-summits"><?php esc_html_e( 'Meet in person at a Summit', 'assemble' ); ?></h2>
-						<div class="event-card-grid">
-							<?php foreach ( $assemble_summits as $assemble_summit ) : ?>
-								<article class="event-card">
-									<h3><?php echo esc_html( $assemble_summit['title'] ); ?></h3>
-									<p class="event-when"><span><?php echo esc_html( assemble_summit_dates( $assemble_summit, 'short' ) ); ?></span></p>
-									<?php if ( '' !== $assemble_summit['blurb'] ) : ?>
-										<p><?php echo esc_html( $assemble_summit['blurb'] ); ?></p>
-									<?php endif; ?>
-									<a class="btn-outline" href="<?php echo esc_url( assemble_summit_url( $assemble_summit ) ); ?>"><?php echo esc_html( assemble_label( 'summit_details' ) ); ?><span class="screen-reader-text">: <?php echo esc_html( $assemble_summit['title'] ); ?></span></a>
-								</article>
-							<?php endforeach; ?>
-						</div>
-					</section>
-				<?php endif; ?>
+				<section aria-labelledby="community-summits">
+					<h2 class="stories-section-heading" id="community-summits"><?php esc_html_e( 'Meet in person at a Summit', 'assemble' ); ?></h2>
+					<div class="event-card-grid">
+						<?php foreach ( $assemble_summits as $assemble_summit ) : ?>
+							<article class="event-card">
+								<h3><?php echo esc_html( $assemble_summit['title'] ); ?></h3>
+								<p class="event-when"><span><?php echo esc_html( assemble_summit_dates( $assemble_summit, 'short' ) ); ?></span></p>
+								<?php if ( '' !== $assemble_summit['blurb'] ) : ?>
+									<p><?php echo esc_html( $assemble_summit['blurb'] ); ?></p>
+								<?php endif; ?>
+								<a class="btn-outline" href="<?php echo esc_url( assemble_summit_url( $assemble_summit ) ); ?>"><?php echo esc_html( assemble_label( 'summit_details' ) ); ?><span class="screen-reader-text">: <?php echo esc_html( $assemble_summit['title'] ); ?></span></a>
+							</article>
+						<?php endforeach; ?>
+					</div>
+				</section>
 			</div>
 		</div>
 	<?php endif; ?>

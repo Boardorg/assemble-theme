@@ -6,9 +6,12 @@
  * Insights panel. Same classes and data attributes as content-explorer.php and
  * summits-selector.php, so content-explorer.js runs unchanged.
  *
- * Each panel: the Community's logo and name, its one-liner (its sales page's,
- * else the first sentence of its Contentful boilerplate), who it's for, its
- * member count (sales page only) and two buttons; beside them its three newest
+ * Each panel: the Community's logo (in black and white) and name, its one-liner
+ * (its sales page's, else the first sentence of its Contentful boilerplate),
+ * who it's for, two buttons, then its member count and member-company strip
+ * (sales page only). The left column is sticky on wide screens, so it stays
+ * beside the taller Insights and Summit cards (Kristen, 2026-11-12: no group
+ * photo; fill and pin the column instead). Beside it are its three newest
  * Insights (ld-insights-card) and its next Working Session (sales page) or
  * next Summit (ld-summit-card). With a sales page the buttons are "Explore the
  * AEO Board" and "Apply to join"; without one, "Read AEO Insights" and "Talk to
@@ -78,7 +81,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 				$assemble_first   = $assemble_area['communities'][0]['slug'] ?? 'area-' . $assemble_key;
 				$assemble_pressed = $assemble_first === $assemble_opening || in_array( $assemble_opening, array_column( $assemble_area['communities'], 'slug' ), true );
 				?>
-				<button class="tab-btn tab-btn-primary" type="button" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_first ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
+				<button class="tab-btn tab-btn-primary" type="button" data-area="<?php echo esc_attr( $assemble_key ); ?>" aria-pressed="<?php echo $assemble_pressed ? 'true' : 'false'; ?>" data-explorer-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_first ) ); ?>"><?php echo esc_html( $assemble_area['label'] ); ?></button>
 			<?php endforeach; ?>
 		</div>
 		<div class="topic-row-secondary-wrap">
@@ -89,7 +92,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 				}
 				$assemble_open_row = in_array( $assemble_opening, array_column( $assemble_area['communities'], 'slug' ), true );
 				?>
-				<div class="topic-row topic-row-secondary" role="group" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
+				<div class="topic-row topic-row-secondary" role="group" data-area="<?php echo esc_attr( $assemble_key ); ?>" data-explorer-group="<?php echo esc_attr( $assemble_key ); ?>" aria-label="<?php echo esc_attr( $assemble_area['label'] . ' ' . assemble_label( 'communities' ) ); ?>"<?php echo $assemble_open_row ? '' : ' hidden'; ?>>
 					<?php foreach ( $assemble_area['communities'] as $assemble_community ) : ?>
 						<button class="tab-btn" type="button" aria-pressed="<?php echo $assemble_community['slug'] === $assemble_opening ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>" data-explorer-target="<?php echo esc_attr( $assemble_panel_id( $assemble_community['slug'] ) ); ?>"><?php echo esc_html( $assemble_community['label'] ); ?></button>
 					<?php endforeach; ?>
@@ -156,12 +159,6 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 									?>
 								</p>
 							<?php endif; ?>
-							<?php if ( '' !== (string) ( $assemble_page['member_count'] ?? '' ) ) : ?>
-								<p class="community-panel-count">
-									<span class="community-panel-stat"><?php echo esc_html( (string) $assemble_page['member_count'] ); ?></span>
-									<?php esc_html_e( 'members', 'assemble' ); ?>
-								</p>
-							<?php endif; ?>
 							<div class="community-cta-row">
 								<?php if ( $assemble_page ) : ?>
 									<a class="btn-solid" href="<?php echo esc_url( $assemble_page['url'] ); ?>">
@@ -170,7 +167,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 										printf( esc_html__( 'Explore %s', 'assemble' ), esc_html( $assemble_in_text ) );
 										?>
 									</a>
-									<a class="link-arrow" href="<?php echo esc_url( $assemble_page['url'] . '#apply' ); ?>"><?php esc_html_e( 'Apply to join', 'assemble' ); ?></a>
+									<a class="btn-outline" href="<?php echo esc_url( $assemble_page['url'] . '#apply' ); ?>"><?php esc_html_e( 'Apply to join', 'assemble' ); ?></a>
 								<?php else : ?>
 									<a class="btn-solid" href="<?php echo esc_url( assemble_community_url( $assemble_community['slug'] ) ); ?>">
 										<?php
@@ -178,9 +175,32 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 										printf( esc_html__( 'Read %1$s %2$s', 'assemble' ), esc_html( $assemble_community['label'] ), esc_html( assemble_label( 'insights' ) ) );
 										?>
 									</a>
-									<a class="link-arrow" href="<?php echo esc_url( $assemble_join_url ); ?>"><?php esc_html_e( 'Talk to us about joining', 'assemble' ); ?></a>
+									<a class="btn-outline" href="<?php echo esc_url( $assemble_join_url ); ?>"><?php esc_html_e( 'Talk to us about joining', 'assemble' ); ?></a>
 								<?php endif; ?>
 							</div>
+							<?php if ( '' !== (string) ( $assemble_page['member_count'] ?? '' ) || ! empty( $assemble_page['logos'] ) ) : ?>
+								<div class="community-panel-members">
+									<?php if ( '' !== (string) ( $assemble_page['member_count'] ?? '' ) ) : ?>
+										<p class="community-panel-count">
+											<span class="community-panel-stat"><?php echo esc_html( (string) $assemble_page['member_count'] ); ?></span>
+											<?php esc_html_e( 'members', 'assemble' ); ?>
+										</p>
+									<?php endif; ?>
+									<?php if ( ! empty( $assemble_page['logos'] ) ) : ?>
+										<ul class="community-panel-logos" aria-label="<?php esc_attr_e( 'Member companies include', 'assemble' ); ?>">
+											<?php foreach ( array_slice( (array) $assemble_page['logos'], 0, 6 ) as $assemble_member ) : ?>
+												<li>
+													<?php if ( ! empty( $assemble_member['url'] ) ) : ?>
+														<img src="<?php echo esc_url( (string) $assemble_member['url'] ); ?>" alt="<?php echo esc_attr( (string) $assemble_member['name'] ); ?>" loading="lazy" decoding="async">
+													<?php else : ?>
+														<span class="logo-placeholder"><?php echo esc_html( (string) $assemble_member['name'] ); ?></span>
+													<?php endif; ?>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
 						</div>
 
 						<div class="ld-side-stack">
