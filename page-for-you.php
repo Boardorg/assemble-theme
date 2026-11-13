@@ -67,6 +67,10 @@ $assemble_view = assemble_for_you_view();
 		<?php endif; ?>
 
 		<?php
+		if ( $assemble_view['summits'] ) {
+			get_template_part( 'template-parts/modules/for-you-summits', null, array( 'summits' => $assemble_view['summits'] ) );
+		}
+
 		if ( $assemble_view['available'] && $assemble_view['chips'] && $assemble_view['discover'] ) {
 			get_template_part( 'template-parts/modules/feed-discovery-prompt', null, array( 'links' => $assemble_view['discover'] ) );
 		}

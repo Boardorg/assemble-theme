@@ -49,10 +49,11 @@ $assemble_name = (string) ( $assemble_view['name'] ?? '' );
 
 	<div class="personalization-strip">
 		<p>
+			<?php esc_html_e( 'Your feed updates as new peer intelligence is published.', 'assemble' ); ?>
 			<strong><?php esc_html_e( 'Personalized from your interests:', 'assemble' ); ?></strong>
 			<?php
 			/* translators: %s: the topics and practice areas the person follows. */
-			echo esc_html( sprintf( __( '%s. Your feed updates as new peer intelligence is published.', 'assemble' ), $assemble_view['interests'] ) );
+			echo esc_html( sprintf( __( '%s.', 'assemble' ), $assemble_view['interests'] ) );
 			?>
 		</p>
 		<a class="link-arrow manage" href="<?php echo esc_url( $assemble_view['manage_url'] ); ?>"><?php esc_html_e( 'Manage what you follow', 'assemble' ); ?></a>

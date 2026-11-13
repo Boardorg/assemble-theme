@@ -17,6 +17,11 @@
 .account-widget .account-form-actions:first-child,.account-section-title+.account-form-actions{margin-top:0}
 .account-create{margin-top:24px}
 .account-form>.account-form-actions{margin-top:24px}
+/* Sign in, lost and reset password: tighter fields (Kristen's v2 edits; was 64px between fields). */
+.account-form--narrow{gap:18px}
+.account-widget .account-form--narrow .form-row{margin-bottom:0}
+.account-form--narrow>.account-form-actions{margin-top:6px}
+.account-form--narrow .account-check{margin-top:0}
 
 .account-message{padding:14px 18px;border-radius:var(--r-sm);border-left:3px solid var(--ink-900);background:var(--surface);font-size:16px;line-height:1.5}
 .account-message--error{border-left-color:var(--account-error)}

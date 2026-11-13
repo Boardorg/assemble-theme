@@ -95,7 +95,7 @@ function assemble_utility_nav_fallback(): array {
  *
  * @param string                                   $location Theme location.
  * @param array<int,array{label:string,url:string}> $fallback Used when the location has no menu or it's empty.
- * @return array<int,array{label:string,url:string,current:bool}>
+ * @return array<int,array{label:string,url:string,current:bool,section:bool}>
  */
 function assemble_nav_items( string $location, array $fallback ): array {
 	$items     = array();
@@ -121,10 +121,69 @@ function assemble_nav_items( string $location, array $fallback ): array {
 	$found = false;
 	foreach ( $items as $i => $item ) {
 		$items[ $i ]['current'] = ! $found && untrailingslashit( $item['url'] ) === $here;
+		$items[ $i ]['section'] = false;
 		$found                  = $found || $items[ $i ]['current'];
 	}
 
+	// Anywhere inside a section (Kristen's v2 edits, Cale 2026-11-12): the item whose URL is the longest prefix of this one.
+	if ( ! $found ) {
+		$best = -1;
+		$len  = 0;
+		foreach ( $items as $i => $item ) {
+			$path = untrailingslashit( (string) wp_parse_url( $item['url'], PHP_URL_PATH ) );
+			if ( '' !== $path && assemble_nav_in_section( $item['url'], $here ) && strlen( $path ) > $len ) {
+				$best = $i;
+				$len  = strlen( $path );
+			}
+		}
+		if ( $best >= 0 ) {
+			$items[ $best ]['section'] = true;
+		}
+	}
+
 	return $items;
+}
+
+/**
+ * Is this URL inside the section a nav item leads to? A path under the item's
+ * own (/communities/aeo/ under /communities/), and for Insights also the
+ * playbooks (/playbooks/), which are peer intelligence too.
+ *
+ * @param string $item_url The nav item's URL.
+ * @param string $here     This page's URL, untrailingslashed, no query.
+ */
+function assemble_nav_in_section( string $item_url, string $here ): bool {
+	$item = untrailingslashit( strtok( $item_url, '?' ) );
+	if ( '' === $item || untrailingslashit( home_url( '/' ) ) === $item ) {
+		return false;
+	}
+
+	$in = 0 === strpos( $here . '/', $item . '/' );
+	if ( ! $in && untrailingslashit( assemble_insights_url() ) === $item ) {
+		$in = is_singular( 'playbook' ) || is_post_type_archive( 'playbook' );
+	}
+
+	/**
+	 * Filter whether this page counts as inside a nav item's section.
+	 *
+	 * @param bool   $in
+	 * @param string $item_url
+	 */
+	return (bool) apply_filters( 'assemble/nav_in_section', $in, $item_url );
+}
+
+/**
+ * The aria-current attribute for a nav item: "page" on its own URL, "true"
+ * anywhere else in its section, else nothing. Already escaped.
+ *
+ * @param array $item From assemble_nav_items().
+ */
+function assemble_nav_current_attr( array $item ): string {
+	if ( ! empty( $item['current'] ) ) {
+		return ' aria-current="page"';
+	}
+
+	return ! empty( $item['section'] ) ? ' aria-current="true"' : '';
 }
 
 /**

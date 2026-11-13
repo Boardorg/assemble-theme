@@ -30,9 +30,10 @@
 .interest-communities legend{margin:0 0 10px;padding:0;font:500 14px/1.4 var(--font-body);color:var(--ink-900)}
 .community-options{display:flex;flex-wrap:wrap;gap:8px}
 .community-option{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);color:var(--ink-700);font:500 14px/1.4 var(--font-body);cursor:pointer}
-.community-option::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--ink-300)}
+/* Check marks, not bullets (Kristen's v2 edits): an empty ring off, a ticked accent circle on. */
+.community-option::before{content:"";flex:none;box-sizing:border-box;width:18px;height:18px;border:1.5px solid var(--ink-300);border-radius:50%;background:transparent center/12px 12px no-repeat}
 .community-option:has(input:checked){border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent-soft) 42%,#fff);color:var(--accent-ink)}
-.community-option:has(input:checked)::before{background:var(--accent)}
+.community-option:has(input:checked)::before{border-color:var(--accent);background-color:var(--accent);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 
 @media (max-width:640px){
 	.interest-item{flex-wrap:wrap;padding-left:14px}
