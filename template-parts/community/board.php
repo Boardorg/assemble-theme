@@ -70,7 +70,7 @@ $assemble_t         = static fn( string $text ): string => assemble_community_te
 						<div class="community-cta-row">
 							<a class="btn-solid" href="#apply"><?php esc_html_e( 'Apply to join', 'assemble' ); ?></a>
 							<?php if ( $assemble_included ) : ?>
-								<a class="link-arrow" href="#membership"><?php esc_html_e( 'See how membership works', 'assemble' ); ?></a>
+								<a class="btn-solid" href="#membership"><?php esc_html_e( 'See how membership works', 'assemble' ); ?></a>
 							<?php endif; ?>
 						</div>
 					</header>

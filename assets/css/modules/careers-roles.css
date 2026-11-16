@@ -1,0 +1,34 @@
+/* Careers: ADP's open-roles widget (production's ADP Workforce Now feed) in the site's colours and pill buttons (Kristen, 2026-11-13). Only ADP's design tokens are set (the layout is ADP's). ADP resets them inside its shadow DOM, so assets/js/careers-roles.js copies these values in. */
+recruitment-current-openings{
+	--sdf-context-button-style-primary-standard-base-fill-color:var(--ink-900);
+	--sdf-context-button-style-primary-standard-base-stroke-color:var(--ink-900);
+	--sdf-context-button-style-primary-standard-base-text-color:#fff;
+	--sdf-context-button-style-primary-standard-hover-fill-color:var(--ink-700);
+	--sdf-context-button-style-primary-standard-hover-stroke-color:var(--ink-700);
+	--sdf-context-button-style-primary-standard-active-fill-color:var(--ink-700);
+	--sdf-context-button-style-primary-standard-active-stroke-color:var(--ink-700);
+	--sdf-context-button-style-primary-standard-focus-stroke-outer-color:var(--ink-900);
+	--sdf-context-button-style-secondary-standard-base-fill-color:var(--surface);
+	--sdf-context-button-style-secondary-standard-base-stroke-color:var(--ink-900);
+	--sdf-context-button-style-secondary-standard-base-stroke-inner-color:var(--ink-900);
+	--sdf-context-button-style-secondary-standard-base-stroke-outer-color:transparent;
+	--sdf-context-button-style-secondary-standard-base-text-color:var(--ink-900);
+	--sdf-context-button-style-secondary-standard-base-icon-color:var(--ink-900);
+	--sdf-context-button-layout-sm-radius-top-left:var(--r-pill);
+	--sdf-context-button-layout-sm-radius-top-right:var(--r-pill);
+	--sdf-context-button-layout-sm-radius-bottom-left:var(--r-pill);
+	--sdf-context-button-layout-sm-radius-bottom-right:var(--r-pill);
+	--sdf-context-button-layout-md-radius-top-left:var(--r-pill);
+	--sdf-context-button-layout-md-radius-top-right:var(--r-pill);
+	--sdf-context-button-layout-md-radius-bottom-left:var(--r-pill);
+	--sdf-context-button-layout-md-radius-bottom-right:var(--r-pill);
+	--sdf-context-button-layout-lg-radius-top-left:var(--r-pill);
+	--sdf-context-button-layout-lg-radius-top-right:var(--r-pill);
+	--sdf-context-button-layout-lg-radius-bottom-left:var(--r-pill);
+	--sdf-context-button-layout-lg-radius-bottom-right:var(--r-pill);
+	--sdf-context-link-style-base-text-color:var(--ink-900);
+	--sdf-context-link-style-hover-text-color:var(--ink-700);
+	--sdf-context-link-style-focus-stroke-outer-color:var(--ink-900);
+	--sdf-context-button-style-tertiary-standard-base-text-color:var(--ink-900);
+	--sdf-context-button-style-tertiary-standard-base-icon-color:var(--ink-900);
+}

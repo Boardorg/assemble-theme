@@ -146,32 +146,141 @@ function assemble_community_stories( string $community_slug, int $count = 3 ): a
 }
 
 /**
- * Field Reports matching a search, newest first, as cards. Matched on the title
- * and excerpt only: the stored post_content is the full rendered report, and a
- * match on it would reveal what a gated report says (see inc/pages.php).
+ * Field Reports matching a search, newest first, as cards. A report matches on
+ * its title or excerpt, on its Community ("social media" finds SocialMedia.org's
+ * reports) or on one of its topics (Kristen, 2026-11-13: "social media" found
+ * one report). Never on post_content: the stored body is the full rendered
+ * report, and a match on it would reveal what a gated report says (see
+ * inc/pages.php). Members-only pieces are dropped by assemble-core's query filter.
  *
  * @return array<int,array> Cards from assemble_story().
  */
-function assemble_search_stories( string $terms, int $count = 9 ): array {
+function assemble_search_stories( string $terms, int $count = 12 ): array {
 	if ( ! assemble_has_feed() || '' === trim( $terms ) ) {
 		return array();
 	}
 
-	$query = new WP_Query(
-		array(
-			'post_type'           => AC_Field_Report_Type::POST_TYPE,
-			'post_status'         => 'publish',
-			's'                   => $terms,
-			'search_columns'      => array( 'post_title', 'post_excerpt' ),
-			'posts_per_page'      => $count,
-			'orderby'             => 'date',
-			'order'               => 'DESC',
-			'ignore_sticky_posts' => true,
-			'no_found_rows'       => true,
-		)
+	$base = array(
+		'post_type'           => AC_Field_Report_Type::POST_TYPE,
+		'post_status'         => 'publish',
+		'posts_per_page'      => $count,
+		'orderby'             => 'date',
+		'order'               => 'DESC',
+		'ignore_sticky_posts' => true,
+		'no_found_rows'       => true,
 	);
 
-	return array_map( 'assemble_story', $query->posts );
+	$posts = ( new WP_Query( array_merge( $base, array( 's' => $terms, 'search_columns' => array( 'post_title', 'post_excerpt' ) ) ) ) )->posts;
+
+	$matches = assemble_search_matches( $terms );
+	if ( $matches['communities'] ) {
+		$posts = array_merge(
+			$posts,
+			( new WP_Query(
+				array_merge(
+					$base,
+					array(
+						'tax_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- one indexed term lookup.
+							array(
+								'taxonomy' => AC_Field_Report_Type::TAXONOMY,
+								'field'    => 'slug',
+								'terms'    => wp_list_pluck( $matches['communities'], 'slug' ),
+							),
+						),
+					)
+				)
+			) )->posts
+		);
+	}
+	if ( $matches['topics'] ) {
+		$posts = array_merge(
+			$posts,
+			( new WP_Query(
+				array_merge(
+					$base,
+					array(
+						'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- one indexed key, a few values.
+							array(
+								'key'     => '_ac_topic',
+								'value'   => wp_list_pluck( $matches['topics'], 'slug' ),
+								'compare' => 'IN',
+							),
+						),
+					)
+				)
+			) )->posts
+		);
+	}
+
+	// One copy of each, newest first.
+	$unique = array();
+	foreach ( $posts as $post ) {
+		$unique[ $post->ID ] = $post;
+	}
+	usort( $unique, static fn( WP_Post $a, WP_Post $b ): int => strcmp( $b->post_date_gmt, $a->post_date_gmt ) );
+
+	return array_map( 'assemble_story', array_slice( $unique, 0, $count ) );
+}
+
+/**
+ * Communities and topics whose names match a search, for search results and
+ * their "Browse" links. Letters and digits only, so "social media",
+ * "SocialMedia.org" and "socialmedia" all find SocialMedia.org.
+ *
+ * @return array{communities: array<int,array{slug:string,name:string,url:string}>, topics: array<int,array{slug:string,name:string,url:string}>}
+ */
+function assemble_search_matches( string $terms ): array {
+	static $cache = array();
+
+	$key = strtolower( (string) preg_replace( '/[^a-z0-9]+/i', '', $terms ) );
+	if ( isset( $cache[ $key ] ) ) {
+		return $cache[ $key ];
+	}
+
+	$found = array(
+		'communities' => array(),
+		'topics'      => array(),
+	);
+	if ( strlen( $key ) < 3 ) {
+		return $cache[ $key ] = $found;
+	}
+
+	$squash = static fn( string $text ): string => strtolower( (string) preg_replace( '/[^a-z0-9]+/i', '', $text ) );
+
+	foreach ( array_keys( assemble_practice_areas() ) as $area ) {
+		foreach ( assemble_area_communities( $area ) as $community ) {
+			foreach ( array( $community['name'], $community['label'], assemble_community_pill_label( $community ), $community['slug'] ) as $name ) {
+				$name = $squash( (string) $name );
+				if ( '' !== $name && ( str_contains( $name, $key ) || ( strlen( $name ) >= 6 && str_contains( $key, $name ) ) ) ) {
+					$found['communities'][ $community['slug'] ] = array(
+						'slug' => $community['slug'],
+						'name' => $community['name'],
+						'url'  => assemble_community_url( $community['slug'] ),
+					);
+					break;
+				}
+			}
+		}
+	}
+
+	global $wpdb;
+	$like  = '%' . $wpdb->esc_like( sanitize_title( $terms ) ) . '%';
+	$slugs = (array) $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT meta_value FROM {$wpdb->postmeta} WHERE meta_key = '_ac_topic' AND meta_value LIKE %s LIMIT 12", $like ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- a small distinct list, once per search.
+	foreach ( $slugs as $slug ) {
+		$name = function_exists( 'assemble_insights_topic_name' ) ? assemble_insights_topic_name( (string) $slug ) : '';
+		if ( '' !== $name ) {
+			$found['topics'][ $slug ] = array(
+				'slug' => (string) $slug,
+				'name' => $name,
+				'url'  => assemble_topic_url( (string) $slug ),
+			);
+		}
+	}
+
+	$found['communities'] = array_values( $found['communities'] );
+	$found['topics']      = array_values( $found['topics'] );
+
+	return $cache[ $key ] = $found;
 }
 
 /** Where a community's full list of Insights lives. */

@@ -34,10 +34,10 @@ while ( have_posts() ) :
 						<div class="page-hero-actions">
 							<a class="btn-solid" href="#take-the-survey"><?php esc_html_e( 'Take the survey', 'assemble' ); ?></a>
 							<?php if ( $assemble_editions ) : ?>
-								<a class="link-arrow" href="#benchmark-reports"><?php esc_html_e( 'Read the reports', 'assemble' ); ?></a>
+								<a class="btn-solid" href="#benchmark-reports"><?php esc_html_e( 'Read the reports', 'assemble' ); ?></a>
 							<?php endif; ?>
 							<?php if ( $assemble_results ) : ?>
-								<a class="link-arrow" href="<?php echo esc_url( $assemble_results ); ?>" rel="noopener"><?php esc_html_e( 'See your results', 'assemble' ); ?></a>
+								<a class="btn-solid" href="<?php echo esc_url( $assemble_results ); ?>" rel="noopener"><?php esc_html_e( 'See your results', 'assemble' ); ?></a>
 							<?php endif; ?>
 						</div>
 					</div>
@@ -76,7 +76,7 @@ while ( have_posts() ) :
 								<h3><?php echo esc_html( $assemble_areas[ $assemble_area ] ?? __( 'More reports', 'assemble' ) ); ?></h3>
 								<ul class="benchmark-links">
 									<?php foreach ( $assemble_reports as $assemble_report ) : ?>
-										<li><a class="link-arrow" href="<?php echo esc_url( (string) $assemble_report['url'] ); ?>" rel="noopener"><?php echo esc_html( (string) $assemble_report['label'] ); ?></a></li>
+										<li><a class="link-arrow" href="<?php echo esc_url( (string) $assemble_report['url'] ); ?>" target="_blank" rel="noopener"><?php echo esc_html( (string) $assemble_report['label'] ); ?></a></li>
 									<?php endforeach; ?>
 								</ul>
 							</div>

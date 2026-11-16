@@ -41,7 +41,7 @@ $assemble_view = assemble_for_you_view();
 						<a class="link-arrow feed-pager-newer" href="<?php echo esc_url( assemble_for_you_page_url( $assemble_view, $assemble_view['page'] - 1 ) ); ?>"><?php esc_html_e( 'Newer', 'assemble' ); ?></a>
 					<?php endif; ?>
 					<?php if ( $assemble_view['page'] < $assemble_view['pages'] ) : ?>
-						<a class="link-arrow feed-pager-older" href="<?php echo esc_url( assemble_for_you_page_url( $assemble_view, $assemble_view['page'] + 1 ) ); ?>"><?php esc_html_e( 'Older', 'assemble' ); ?></a>
+						<a class="btn-outline feed-load-more" href="<?php echo esc_url( assemble_for_you_page_url( $assemble_view, $assemble_view['page'] + 1 ) ); ?>"><?php esc_html_e( 'Load more', 'assemble' ); ?></a>
 					<?php endif; ?>
 				</nav>
 			<?php endif; ?>

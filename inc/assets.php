@@ -171,6 +171,17 @@ add_action(
 			foreach ( array( 'logged-in-feed-hero', 'featured-intelligence-grid', 'personalized-feed-rows', 'summits-practice-detail', 'for-you-summits', 'feed-discovery-prompt' ) as $assemble_module ) {
 				assemble_enqueue_module_style( $assemble_module );
 			}
+			// "Load more" under the feed rows (Kristen, 2026-11-13); without JS it's a link to the next page.
+			wp_enqueue_script(
+				'assemble-feed-load-more',
+				get_template_directory_uri() . '/assets/js/feed-load-more.js',
+				array(),
+				assemble_asset_version( 'assets/js/feed-load-more.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
 		}
 
 		// Account pages (Phase 7): Sign in, Create account, Account.
@@ -236,6 +247,20 @@ add_action(
 		if ( is_page( 'our-team' ) || ( is_page() && assemble_page_has_bands( get_queried_object() instanceof WP_Post ? get_queried_object() : null ) ) ) {
 			assemble_enqueue_module_style( 'page-bands' );
 			assemble_enqueue_module_style( 'team' );
+		}
+		// Careers: ADP's open-roles widget in the site's colours (Kristen, 2026-11-13).
+		if ( is_page( 'careers' ) ) {
+			assemble_enqueue_module_style( 'careers-roles' );
+			wp_enqueue_script(
+				'assemble-careers-roles',
+				get_template_directory_uri() . '/assets/js/careers-roles.js',
+				array(),
+				assemble_asset_version( 'assets/js/careers-roles.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
 		}
 		if ( is_page( 'benchmark' ) ) {
 			foreach ( array( 'page-hero', 'page-bands', 'benchmark-page' ) as $assemble_module ) {

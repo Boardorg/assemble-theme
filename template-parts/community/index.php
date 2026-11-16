@@ -47,7 +47,7 @@ $assemble_stats = array(
 					<div class="page-hero-actions">
 						<a class="btn-solid" href="#find"><?php echo esc_html( $assemble_find ); ?></a>
 						<?php if ( ! empty( $assemble_included['items'] ) ) : ?>
-							<a class="btn-outline" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
+							<a class="btn-solid" href="#membership"><?php echo esc_html( $assemble_t( (string) $assemble_included['heading'] ) ); ?></a>
 						<?php endif; ?>
 					</div>
 				</div>

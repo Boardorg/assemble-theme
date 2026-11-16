@@ -6,8 +6,8 @@
  *
  * Every pillar's right column starts with the same label style (the tags intro,
  * "Topics include" / "Access", reads like the Working Sessions names), so the
- * rows match (Kristen, 2026-11-12). The index lists tags as check marks; Board
- * pages keep them as the practice-coloured tags.
+ * rows match (Kristen, 2026-11-12). Every page lists tags as check marks (Board pages
+ * dropped the practice-coloured tags, Kristen 2026-11-13).
  *
  * @var array $args { page: a Community page view model }
  */
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 $assemble_page     = (array) $args['page'];
 $assemble_included = (array) ( $assemble_page['included'] ?? array() );
-$assemble_checks   = 'index' === ( $assemble_page['kind'] ?? '' );
+$assemble_checks   = true; // Check marks on every page now, Board pages too (Kristen, 2026-11-13).
 $assemble_t        = static fn( string $text ): string => assemble_community_text( $text, $assemble_page );
 
 if ( empty( $assemble_included['items'] ) ) {

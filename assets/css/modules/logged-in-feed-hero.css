@@ -16,7 +16,9 @@
 .for-you-empty{margin:0 0 24px;font-size:1rem;line-height:1.7;color:var(--ink-700)}
 .for-you-empty .link-arrow{margin-left:.5em}
 .feed-pager{display:flex;justify-content:space-between;gap:24px;margin:24px 0 0}
-.feed-pager-older{margin-left:auto}
+.feed-pager{align-items:center}
+.feed-load-more{margin-inline:auto}
+.feed-load-more[aria-busy="true"]{opacity:.6;pointer-events:none}
 /* Shared card bits (featured grid and feed rows). */
 .for-you-main .tag-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 12px}
 .for-you-main .reason{font-size:.875rem;line-height:1.55;color:var(--ink-700)}

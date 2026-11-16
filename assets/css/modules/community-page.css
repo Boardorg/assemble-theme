@@ -32,7 +32,7 @@
 .community-hero .eyebrow{color:var(--accent-ink)}
 .community-hero h1{max-width:20ch;margin-bottom:var(--s-5)}
 .community-hero .body-lead{margin-bottom:var(--s-6)}
-.community-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6)}
+.community-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4)}
 .community-art{aspect-ratio:4/3;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
 .community-art>img{object-fit:contain;padding:6%}
 

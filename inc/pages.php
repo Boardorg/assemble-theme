@@ -49,11 +49,35 @@ function assemble_team_person( WP_Post $post ): array {
 	);
 }
 
+/**
+ * Pages that only redirect (assemble-core's map, e.g. the old Field Notes
+ * sign-up pages): kept out of search, where they turned up as dead ends
+ * (Kristen, 2026-11-13).
+ *
+ * @return int[]
+ */
+function assemble_redirected_page_ids(): array {
+	if ( ! function_exists( 'assemble_redirect_map' ) ) {
+		return array();
+	}
+
+	$ids = array();
+	foreach ( array_keys( assemble_redirect_map() ) as $path ) {
+		$page = get_page_by_path( trim( (string) $path, '/' ) );
+		if ( $page instanceof WP_Post ) {
+			$ids[] = (int) $page->ID;
+		}
+	}
+
+	return $ids;
+}
+
 /*
  * Search: the main query lists pages and team members only. Field Reports are
- * searched separately by assemble_search_stories(), on their title and excerpt
- * only, because their stored post_content is the full rendered report: matching
- * on it would tell an anonymous visitor what a gated report says.
+ * searched separately by assemble_search_stories() (title, excerpt, Community,
+ * topic; never post_content, the full rendered report: matching on it would
+ * tell an anonymous visitor what a gated report says). Pages that only
+ * redirect are left out.
  */
 add_action(
 	'pre_get_posts',
@@ -61,6 +85,7 @@ add_action(
 		if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
 			$query->set( 'post_type', array( 'page', 'team' ) );
 			$query->set( 'posts_per_page', 10 );
+			$query->set( 'post__not_in', array_merge( (array) $query->get( 'post__not_in' ), assemble_redirected_page_ids() ) );
 		}
 	}
 );
