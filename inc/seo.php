@@ -1,12 +1,36 @@
 <?php
 /**
  * Yoast SEO for Field Reports and playbooks: the share image from the entry's
- * Contentful featuredImage (Images API, 1200×630), the dek as the meta
- * description, and "Insights" / "Playbooks" titles for the indexes and Community
- * archives. Each hook does nothing without Yoast or the feed.
+ * Contentful featuredImage (Images API, 1200×630), the editor's SEO title and
+ * meta description from Contentful (else the headline and the dek), and
+ * "Insights" / "Playbooks" titles for the indexes and Community archives. Each
+ * hook does nothing without Yoast or the feed.
  */
 
 defined( 'ABSPATH' ) || exit;
+
+/**
+ * The editor's SEO overrides from Contentful (`seoTitle`, `metaDescription`,
+ * `focusKeyword`) for a report or playbook: each '' when unset, or when the feed
+ * is older than 2.2.0 and can't supply them.
+ *
+ * @param int|null $post_id Defaults to the queried post.
+ * @return array{title: string, description: string, keyword: string}
+ */
+function assemble_seo_overrides( ?int $post_id = null ): array {
+	$empty = array(
+		'title'       => '',
+		'description' => '',
+		'keyword'     => '',
+	);
+
+	$post_id = $post_id ?? (int) get_queried_object_id();
+	if ( ! $post_id || ! method_exists( 'AC_Post_Type_Content', 'seo' ) ) {
+		return $empty;
+	}
+
+	return array_merge( $empty, array_map( 'strval', (array) AC_Post_Type_Content::seo( $post_id ) ) );
+}
 
 /** A Contentful image URL cropped to the 1200×630 share size, or ''. */
 function assemble_share_image_url( ?array $asset ): string {
@@ -45,15 +69,41 @@ add_action(
 	}
 );
 
-// The dek (the feed's excerpt) as the meta description when Yoast has none.
+// The editor's meta description from Contentful; else the dek (the feed's
+// excerpt) when Yoast has none.
 add_filter(
 	'wpseo_metadesc',
 	static function ( $description ) {
-		if ( '' === (string) $description && is_singular( array( 'field_report', 'playbook' ) ) ) {
+		if ( ! is_singular( array( 'field_report', 'playbook' ) ) || assemble_is_report_preview() ) {
+			return $description;
+		}
+
+		$override = assemble_seo_overrides()['description'];
+		if ( '' !== $override ) {
+			return $override;
+		}
+
+		if ( '' === (string) $description ) {
 			return wp_trim_words( (string) get_the_excerpt( get_queried_object_id() ), 30 );
 		}
 
 		return $description;
+	}
+);
+
+// The editor's SEO title from Contentful, used as the whole <title> (no site
+// name: search results show it separately, and 60 characters is the budget).
+// Blank leaves Yoast's "Headline - Assemble". Social titles keep the headline.
+add_filter(
+	'wpseo_title',
+	static function ( $title ) {
+		if ( ! is_singular( array( 'field_report', 'playbook' ) ) || assemble_is_report_preview() ) {
+			return $title;
+		}
+
+		$override = assemble_seo_overrides()['title'];
+
+		return '' !== $override ? $override : $title;
 	}
 );
 
@@ -125,6 +175,7 @@ function assemble_article_schema( WP_Post $post, string $page_id, string $org_id
 	}
 
 	$article_id = $page_id . '#article';
+	$seo        = assemble_seo_overrides( $post->ID );
 	$publisher  = '' !== $org_id
 		? array( '@id' => $org_id )
 		: array(
@@ -139,11 +190,12 @@ function assemble_article_schema( WP_Post $post, string $page_id, string $org_id
 		'isPartOf'         => array( '@id' => $page_id ),
 		'mainEntityOfPage' => array( '@id' => $page_id ),
 		'headline'         => wp_strip_all_tags( html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' ) ),
-		'description'      => wp_strip_all_tags( html_entity_decode( (string) get_the_excerpt( $post ), ENT_QUOTES, 'UTF-8' ) ),
+		'description'      => '' !== $seo['description'] ? $seo['description'] : wp_strip_all_tags( html_entity_decode( (string) get_the_excerpt( $post ), ENT_QUOTES, 'UTF-8' ) ),
 		'datePublished'    => (string) get_post_time( DATE_W3C, true, $post ),
 		'dateModified'     => (string) get_post_modified_time( DATE_W3C, true, $post ),
 		'publisher'        => $publisher,
 		'inLanguage'       => get_bloginfo( 'language' ),
+		'keywords'         => $seo['keyword'],
 	);
 
 	$image = assemble_share_image_url( assemble_story( $post )['image'] );
