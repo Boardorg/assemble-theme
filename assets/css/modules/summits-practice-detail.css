@@ -14,6 +14,8 @@
 
 .event-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .event-card{display:flex;flex-direction:column;padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+/* Featured Summit cards carry their practice area's accent edge, as on For You (Kristen, 2026-11-13). */
+.summits-practice-detail .event-card{border-top:3px solid var(--accent)}
 .event-card h4{margin:0 0 9px;font:500 1.25rem/1.25 var(--font-text)}
 .event-card h4 a{color:inherit;text-decoration:none}
 .event-card h4 a:hover,.event-card h4 a:focus-visible{text-decoration:underline;text-underline-offset:3px}

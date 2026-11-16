@@ -39,10 +39,11 @@
 .band-hero h1{max-width:14ch;margin:12px 0 var(--s-5);font:500 4.375rem/.98 var(--font-display);letter-spacing:-.02em}
 .band-hero .is-style-lead{max-width:34ch;margin-bottom:var(--s-6);font-size:1.375rem}
 .band-art{display:grid;place-items:center;aspect-ratio:4/3;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
-.band-art{overflow:hidden}
-.band-art img{width:auto;height:88%;max-width:92%;object-fit:contain}
+/* The art sits absolutely in the 4:3 frame: a percentage height on a grid item never resolved, so tall art overflowed and was cut off (Kristen, 2026-11-13). */
+.band-art{position:relative;overflow:hidden}
+.band-art img{position:absolute;inset:6% 4%;width:92%;height:88%;max-width:none;object-fit:contain}
 /* The speech-bubble PNGs carry ~25% transparent margin; scale them to fill the frame (Kristen 2026-11-09: the art looked small and "floating"). */
-.band-art img[src*="speech-bubbles"]{height:100%;max-width:100%;transform:scale(1.22)}
+.band-art img[src*="speech-bubbles"]{inset:0;width:100%;height:100%;transform:scale(1.08)}
 
 /* Copy-only hero (Our Team): the headline runs wider. */
 .band-hero.is-copy-only{grid-template-columns:minmax(0,1fr)}

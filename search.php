@@ -1,7 +1,7 @@
 <?php
 /**
- * Search results: matching Insights as report cards (title and excerpt matches
- * only; see assemble_search_stories()), then matching pages and team members
+ * Search results: "Browse" links to matching Communities and topics, matching
+ * Insights as report cards (see assemble_search_stories()), then matching pages and team members
  * as plain rows (the main query, paginated). With no terms (the masthead's
  * search icon), just the form. No wireframe: on-system, flagged.
  */
@@ -47,6 +47,18 @@ $assemble_pages   = '' !== $assemble_terms ? (int) $GLOBALS['wp_query']->found_p
 		<?php if ( $assemble_stories ) : ?>
 			<section class="search-section" aria-labelledby="search-insights">
 				<h2 class="stories-section-heading" id="search-insights"><?php echo esc_html( assemble_label( 'insights' ) ); ?></h2>
+				<?php
+				$assemble_matches = assemble_search_matches( $assemble_terms );
+				$assemble_browse  = array_filter( array_merge( $assemble_matches['communities'], $assemble_matches['topics'] ), static fn( $m ) => '' !== $m['url'] );
+				?>
+				<?php if ( $assemble_browse ) : ?>
+					<p class="search-browse meta">
+						<?php esc_html_e( 'Browse:', 'assemble' ); ?>
+						<?php foreach ( array_slice( $assemble_browse, 0, 6 ) as $assemble_match ) : ?>
+							<a class="link-arrow" href="<?php echo esc_url( $assemble_match['url'] ); ?>"><?php echo esc_html( $assemble_match['name'] ); ?></a>
+						<?php endforeach; ?>
+					</p>
+				<?php endif; ?>
 				<div class="related-grid">
 					<?php
 					foreach ( $assemble_stories as $assemble_story ) {

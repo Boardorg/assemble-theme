@@ -6,7 +6,7 @@
 
 .peer-intelligence-splash{padding:64px 0;background:var(--surface-sunken);color:var(--ink-900)}
 .peer-intelligence-banner{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:34px}
-.pi-headline{max-width:14ch;margin:0 0 18px}
+.pi-headline{max-width:18ch;margin:0 0 18px} /* 3 lines at desktop, not 4 (Kristen, 2026-11-13) */
 .pi-text{max-width:60ch;margin:0;font-size:1.125rem;line-height:1.65}
 .pi-link{display:inline-block;margin-top:16px;font-size:.875rem;color:var(--ink-900)}
 /* The mockup has no art for this slot: a white on-system frame (guide .peer-intelligence-splash__media) holding the speech-bubbles illustration. */

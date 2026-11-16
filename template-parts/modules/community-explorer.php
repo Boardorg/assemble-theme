@@ -183,7 +183,7 @@ $assemble_panel_id = static fn ( string $slug ): string => 'find-' . sanitize_ht
 									<?php if ( '' !== (string) ( $assemble_page['member_count'] ?? '' ) ) : ?>
 										<p class="community-panel-count">
 											<span class="community-panel-stat"><?php echo esc_html( (string) $assemble_page['member_count'] ); ?></span>
-											<?php esc_html_e( 'members', 'assemble' ); ?>
+											<?php echo empty( $assemble_page['logos'] ) ? esc_html__( 'members', 'assemble' ) : esc_html__( 'members, including', 'assemble' ); ?>
 										</p>
 									<?php endif; ?>
 									<?php if ( ! empty( $assemble_page['logos'] ) ) : ?>

@@ -6,6 +6,7 @@
 .search-page__form{max-width:1120px;margin:0 auto}
 .search-page__summary{margin:-16px 0 40px}
 .search-section{max-width:1120px;margin:0 auto 56px}
+.search-browse{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:-8px 0 22px}
 .search-rows{margin:0;padding:0;list-style:none}
 .search-row{padding:20px 0;border-bottom:1px solid var(--line)}
 .search-row h3{margin:0 0 6px;font:500 1.25rem/1.25 var(--font-text)}
