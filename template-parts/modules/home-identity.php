@@ -24,7 +24,7 @@ $assemble_proof = assemble_home_proof();
 					<?php if ( ! is_user_logged_in() ) : ?>
 						<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
 					<?php endif; ?>
-					<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'how_it_works_url', '/about-us/' ) ) ); ?>"><?php esc_html_e( 'How Assemble works', 'assemble' ); ?></a>
+					<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'how_it_works_url', '/about-us/' ) ) ); ?>"><?php esc_html_e( 'More about Assemble', 'assemble' ); ?></a>
 				</div>
 				<?php if ( $assemble_proof['stats'] ) : ?>
 					<dl class="home-identity-stats">

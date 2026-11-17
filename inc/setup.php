@@ -19,7 +19,7 @@ add_action(
 		register_nav_menus(
 			array(
 				'primary' => __( 'Primary (masthead row)', 'assemble' ),
-				'utility' => __( 'Utility (bar above the masthead)', 'assemble' ),
+				'utility' => __( 'Utility (the masthead\'s About menu)', 'assemble' ),
 			)
 		);
 
@@ -67,15 +67,15 @@ function assemble_primary_nav_fallback(): array {
 function assemble_utility_nav_fallback(): array {
 	return array(
 		array(
-			'label' => __( 'About', 'assemble' ),
+			'label' => __( 'About Us', 'assemble' ),
 			'url'   => home_url( '/about-us/' ),
 		),
 		array(
-			'label' => __( 'Our product', 'assemble' ),
+			'label' => __( 'Our Product', 'assemble' ),
 			'url'   => home_url( '/our-product/' ),
 		),
 		array(
-			'label' => __( 'Our team', 'assemble' ),
+			'label' => __( 'Our Team', 'assemble' ),
 			'url'   => home_url( '/our-team/' ),
 		),
 		array(
