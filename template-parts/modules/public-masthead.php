@@ -105,6 +105,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 						<?php else : ?>
 							<?php $assemble_has_links = (bool) array_filter( array_column( $assemble_panel['groups'], 'links' ) ); ?>
 							<div class="nav-panel nav-panel--groups<?php echo $assemble_has_links ? ' has-links' : ''; ?>">
+								<div class="nav-panel__box">
 								<ul class="nav-panel__groups">
 									<?php foreach ( $assemble_panel['groups'] as $assemble_group ) : ?>
 										<li data-area="<?php echo esc_attr( $assemble_group['area'] ); ?>">
@@ -124,6 +125,7 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 									<?php endforeach; ?>
 								</ul>
 								<a class="link-arrow nav-panel__all" href="<?php echo esc_url( $assemble_panel['all'][1] ); ?>"><?php echo esc_html( $assemble_panel['all'][0] ); ?></a>
+								</div>
 							</div>
 						<?php endif; ?>
 					</div>
