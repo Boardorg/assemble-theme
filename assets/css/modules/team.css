@@ -1,13 +1,12 @@
 /*
  * Our Team (/our-team/) and team bios (/our-team/<slug>/). No wireframe:
  * on-system and flagged for design. Square headshots (IMG S3/S4), name in
- * IvyOra Text, title as meta. The headshot PNGs carry their own rounded,
- * transparent corners, so the frame adds no fill or radius of its own.
+ * IvyOra Text, title as meta. Headshots are the square, cream-ground
+ * Assemble hedcuts (2026-11-17), so the frame's own 8px radius rounds them.
  */
 
 .team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 24px;max-width:1120px;margin:48px auto 0;padding:0;list-style:none}
 .team-card__photo-link{display:block}
-.team-card__photo,.team-profile__photo{background:none;border-radius:0}
 .team-card__photo{margin-bottom:14px;transition:opacity .15s}
 .team-card__photo-link:hover .team-card__photo{opacity:.88}
 .team-card:has(.team-card__photo-link:hover) .team-card__name a{text-decoration:underline;text-underline-offset:3px}
