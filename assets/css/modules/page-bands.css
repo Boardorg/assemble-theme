@@ -171,10 +171,13 @@
 }
 
 /* Our Product (Cale 2026-11-17): Assemble first, then the three offerings as cards, then the two companies as a quieter band. */
+/* Hero whose lead runs about as wide as the headline, so the band isn't taller than it needs to be (Our Product). */
+.is-wide-lead .band-hero .is-style-lead{max-width:26em}
+.is-wide-lead .band-hero h1{margin-top:0}
 /* Offer cards: art, eyebrow, title, copy, and a link pinned to the bottom. */
 .offer-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px!important;margin-top:var(--s-8)}
 .offer-card{display:flex;flex-direction:column;padding:28px 28px 30px;background:#fff;border:1px solid var(--line);border-radius:var(--r-md)}
-.offer-card .offer-card__art{display:flex;align-items:flex-end;height:150px;margin:0 0 var(--s-5)}
+.offer-card .offer-card__art{display:flex;align-items:flex-end;justify-content:center;height:150px;margin:0 0 var(--s-5)}
 .offer-card .offer-card__art img{width:auto;height:100%}
 .offer-card h3{margin:0 0 var(--s-4);font:500 1.75rem/1.15 var(--font-display);letter-spacing:-.01em;color:var(--ink-900)}
 .offer-card p{margin:0 0 var(--s-4);font-size:.9375rem;line-height:1.6}
