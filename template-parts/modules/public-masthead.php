@@ -2,20 +2,21 @@
 /**
  * Module: public-masthead (web-style-guide.html → Web modules → Site chrome).
  *
- * Logo only in the masthead, no date (settled 2026-10-01). Search, account
- * actions and the main navigation row. Below 980px the account actions and nav
- * row move into a drawer; the drawer has no wireframe yet, so it is a plain,
- * on-system version flagged for design.
+ * One row (David's homepage review, Cale 2026-11-17; was logo row + nav row +
+ * utility bar): logo left, primary nav in the middle, search and the account
+ * actions right, with "Create free account" as the solid button. Insights opens
+ * a panel (by practice, by type); the utility (company) pages fold into an
+ * "About" item. Panels open on hover and keyboard focus, CSS only.
  *
- * The utility bar above the masthead (company pages, menu location "utility")
- * has no wireframe either: on-system, flagged for design. It moves into the
- * drawer too, under the main navigation.
+ * Below 980px the nav and account actions move into the drawer (plain,
+ * on-system, flagged for design), which keeps the company pages as their own list.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$assemble_nav     = assemble_primary_nav_items();
-$assemble_utility = assemble_utility_nav_items();
+$assemble_nav          = assemble_primary_nav_items();
+$assemble_utility      = assemble_utility_nav_items();
+$assemble_masthead_nav = assemble_masthead_nav();
 
 // Signed in: My Page, and an Account menu holding Account Settings and Sign out
 // (Kristen's v2 edits: Sign out was only in the drawer); the drawer lists all three.
@@ -44,7 +45,7 @@ $assemble_account = is_user_logged_in()
 		array(
 			'label' => assemble_label( 'create' ),
 			'url'   => assemble_account_link( 'register' ),
-			'class' => 'btn-solid',
+			'class' => 'btn-solid is-primary-cta',
 		),
 	);
 $assemble_drawer_actions = $assemble_account;
@@ -71,27 +72,62 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 	</div>
 <?php endif; ?>
 <header class="site-header" data-area="neutral">
-	<?php if ( $assemble_utility ) : ?>
-		<nav class="utility-bar" aria-label="<?php esc_attr_e( 'Company', 'assemble' ); ?>">
-			<div class="wrap utility-bar__row">
-				<?php foreach ( $assemble_utility as $assemble_item ) : ?>
-					<a href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo assemble_nav_current_attr( $assemble_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute. ?>><?php echo esc_html( $assemble_item['label'] ); ?></a>
-				<?php endforeach; ?>
-			</div>
-		</nav>
-	<?php endif; ?>
-	<div class="wrap header-row-1">
+	<div class="wrap header-row">
 		<div class="left">
 			<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-drawer">
 				<span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span>
 				<span class="screen-reader-text"><?php echo esc_html( assemble_label( 'menu' ) ); ?></span>
 			</button>
-		</div>
-		<div class="masthead">
 			<a class="masthead__home" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
 				<?php echo assemble_logo(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-owned SVG. ?>
 			</a>
 		</div>
+		<nav class="header-nav" aria-label="<?php esc_attr_e( 'Primary', 'assemble' ); ?>">
+			<?php foreach ( $assemble_masthead_nav as $assemble_item ) : ?>
+				<?php if ( empty( $assemble_item['panel'] ) ) : ?>
+					<a class="header-nav__link" href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo assemble_nav_current_attr( $assemble_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute. ?>><?php echo esc_html( $assemble_item['label'] ); ?></a>
+				<?php else : ?>
+					<?php $assemble_panel = $assemble_item['panel']; ?>
+					<div class="header-nav__item has-panel">
+						<a class="header-nav__link" href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo assemble_nav_current_attr( $assemble_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute. ?>>
+							<?php echo esc_html( $assemble_item['label'] ); ?>
+							<svg class="header-nav__chevron" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</a>
+						<?php if ( isset( $assemble_panel['links'] ) ) : ?>
+							<div class="nav-panel">
+								<ul class="nav-panel__list">
+									<?php foreach ( $assemble_panel['links'] as $assemble_link ) : ?>
+										<li><a href="<?php echo esc_url( $assemble_link['url'] ); ?>"<?php echo assemble_nav_current_attr( $assemble_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute. ?>><?php echo esc_html( $assemble_link['label'] ); ?></a></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php else : ?>
+							<div class="nav-panel nav-panel--wide">
+								<?php if ( $assemble_panel['practices'] ) : ?>
+									<div>
+										<p class="nav-panel__label"><?php esc_html_e( 'By practice', 'assemble' ); ?></p>
+										<ul class="nav-panel__practices">
+											<?php foreach ( $assemble_panel['practices'] as $assemble_practice ) : ?>
+												<li data-area="<?php echo esc_attr( $assemble_practice['key'] ); ?>"><a href="<?php echo esc_url( $assemble_practice['url'] ); ?>"><strong><?php echo esc_html( $assemble_practice['label'] ); ?></strong><span><?php echo esc_html( $assemble_practice['blurb'] ); ?></span></a></li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
+								<?php endif; ?>
+								<div>
+									<p class="nav-panel__label"><?php esc_html_e( 'By type', 'assemble' ); ?></p>
+									<ul class="nav-panel__list">
+										<?php foreach ( $assemble_panel['types'] as $assemble_link ) : ?>
+											<li><a href="<?php echo esc_url( $assemble_link['url'] ); ?>"><?php echo esc_html( $assemble_link['label'] ); ?></a></li>
+										<?php endforeach; ?>
+									</ul>
+									<a class="link-arrow nav-panel__all" href="<?php echo esc_url( $assemble_panel['all'] ); ?>"><?php esc_html_e( 'All insights', 'assemble' ); ?></a>
+								</div>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</nav>
 		<div class="right">
 			<a class="header-search-icon" href="<?php echo esc_url( add_query_arg( 's', '', home_url( '/' ) ) ); ?>" aria-label="<?php echo esc_attr( assemble_label( 'search' ) ); ?>">
 				<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -116,16 +152,10 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 			<?php endif; ?>
 		</div>
 	</div>
-	<hr class="header-rule">
-	<nav class="wrap header-row-2" aria-label="<?php esc_attr_e( 'Primary', 'assemble' ); ?>">
-		<?php foreach ( $assemble_nav as $assemble_item ) : ?>
-			<a href="<?php echo esc_url( $assemble_item['url'] ); ?>"<?php echo assemble_nav_current_attr( $assemble_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- fixed attribute. ?>><?php echo esc_html( $assemble_item['label'] ); ?></a>
-		<?php endforeach; ?>
-	</nav>
-	<hr class="header-rule header-rule--last">
 
 	<div class="site-drawer" id="site-drawer" hidden>
 		<div class="wrap">
+			<div class="site-drawer__search"><?php get_search_form(); ?></div>
 			<nav aria-label="<?php esc_attr_e( 'Primary', 'assemble' ); ?>">
 				<ul class="site-drawer__nav">
 					<?php foreach ( $assemble_nav as $assemble_item ) : ?>

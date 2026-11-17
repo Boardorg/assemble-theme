@@ -203,3 +203,81 @@ function assemble_primary_nav_items(): array {
 function assemble_utility_nav_items(): array {
 	return assemble_nav_items( 'utility', assemble_utility_nav_fallback() );
 }
+
+/**
+ * The masthead's one-row nav (David's homepage review, Cale 2026-11-17): the
+ * primary items, with a dropdown panel on Insights (by practice, by type) and
+ * the utility (company) pages folded into an "About" item at the end.
+ *
+ * @return array<int,array{label:string,url:string,current:bool,section:bool,panel:array}>
+ */
+function assemble_masthead_nav(): array {
+	$items    = assemble_primary_nav_items();
+	$insights = untrailingslashit( assemble_insights_url() );
+
+	foreach ( $items as $i => $item ) {
+		$items[ $i ]['panel'] = array();
+		if ( untrailingslashit( (string) $item['url'] ) === $insights ) {
+			$items[ $i ]['panel'] = assemble_insights_nav_panel();
+		}
+	}
+
+	$utility = assemble_utility_nav_items();
+	if ( $utility ) {
+		$current = (bool) array_filter( $utility, static fn( $u ) => ! empty( $u['current'] ) || ! empty( $u['section'] ) );
+		$items[] = array(
+			'label'   => __( 'About', 'assemble' ),
+			'url'     => (string) $utility[0]['url'],
+			'current' => false,
+			'section' => $current,
+			'panel'   => array( 'links' => $utility ),
+		);
+	}
+
+	return $items;
+}
+
+/**
+ * The Insights dropdown: practice areas that have Communities (each to its
+ * /insights/area/… page, with its one-line blurb), then content types.
+ *
+ * @return array{practices:array,types:array,all:string}
+ */
+function assemble_insights_nav_panel(): array {
+	$practices = array();
+	foreach ( assemble_interest_areas() as $area ) {
+		if ( ! empty( $area['communities'] ) ) {
+			$practices[] = array(
+				'key'   => $area['key'],
+				'label' => $area['label'],
+				'blurb' => $area['blurb'],
+				'url'   => assemble_area_url( $area['key'] ),
+			);
+		}
+	}
+
+	$types = array(
+		array(
+			'label' => __( 'Field Reports', 'assemble' ),
+			'url'   => assemble_insights_url(),
+		),
+	);
+	if ( get_page_by_path( 'benchmark' ) ) {
+		$types[] = array(
+			'label' => __( 'Benchmarks', 'assemble' ),
+			'url'   => home_url( '/benchmark/' ),
+		);
+	}
+	if ( post_type_exists( 'playbook' ) ) {
+		$types[] = array(
+			'label' => __( 'Playbooks', 'assemble' ),
+			'url'   => assemble_playbooks_url(),
+		);
+	}
+
+	return array(
+		'practices' => $practices,
+		'types'     => $types,
+		'all'       => assemble_insights_url(),
+	);
+}

@@ -54,7 +54,7 @@ add_action(
 		}
 		if ( ( is_front_page() && ! assemble_is_report_preview() ) || is_post_type_archive( 'field_report' ) ) {
 			if ( is_front_page() ) {
-				foreach ( array( 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
+				foreach ( array( 'home-identity', 'home-top-stories', 'peer-intelligence-splash', 'content-explorer', 'learn-more-band' ) as $assemble_module ) {
 					assemble_enqueue_module_style( $assemble_module );
 				}
 			}
