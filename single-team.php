@@ -1,6 +1,7 @@
 <?php
 /**
- * One person (/our-team/<slug>/): headshot, name, title and bio, from the `team`
+ * One person (/our-team/<slug>/): headshot, name, title, bio and LinkedIn link
+ * (when set), from the `team`
  * post type (assemble-core). No wireframe: on-system and flagged for design.
  */
 
@@ -49,6 +50,19 @@ while ( have_posts() ) :
 				</div>
 				<div class="team-profile__bio page-content">
 					<?php echo wp_kses_post( wpautop( $assemble_person['bio'] ) ); ?>
+					<?php if ( '' !== ( $assemble_person['linkedin'] ?? '' ) ) : ?>
+						<p class="team-profile__linkedin">
+							<a class="share-link" href="<?php echo esc_url( $assemble_person['linkedin'] ); ?>" rel="me noopener" target="_blank">
+								<?php echo assemble_icon( 'linkedin' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?>
+								<span>
+									<?php
+									/* translators: %s: the person's first name. */
+									echo esc_html( sprintf( __( '%s on LinkedIn', 'assemble' ), strtok( $assemble_person['name'], ' ' ) ) );
+									?>
+								</span>
+							</a>
+						</p>
+					<?php endif; ?>
 					<p><a class="link-arrow" href="<?php echo esc_url( $assemble_team ); ?>"><?php esc_html_e( 'Meet the rest of the team', 'assemble' ); ?></a></p>
 				</div>
 			</div>

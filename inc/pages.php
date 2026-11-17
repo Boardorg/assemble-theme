@@ -32,7 +32,7 @@ function assemble_team(): array {
 /**
  * One person, via assemble-core; the post title alone without it.
  *
- * @return array{id:int,name:string,position:string,bio:string,image_id:int,url:string}
+ * @return array{id:int,name:string,position:string,bio:string,linkedin:string,image_id:int,url:string}
  */
 function assemble_team_person( WP_Post $post ): array {
 	if ( function_exists( 'assemble_team_member' ) ) {
@@ -44,6 +44,7 @@ function assemble_team_person( WP_Post $post ): array {
 		'name'     => get_the_title( $post ),
 		'position' => '',
 		'bio'      => '',
+		'linkedin' => '',
 		'image_id' => (int) get_post_thumbnail_id( $post ),
 		'url'      => (string) get_permalink( $post ),
 	);
