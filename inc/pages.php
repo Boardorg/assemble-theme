@@ -269,11 +269,20 @@ add_shortcode(
  * Summit with a library logo, once per logo (Spring and Fall share one), linked
  * to its event page. Communities: each Board or Council in the Community
  * directory with a logo, linked to its page, else its panel on /communities/.
+ * limit="6" shows the first six and hides the rest behind a "Show all" button
+ * under the list (assets/js/logo-strip.js), so the band isn't a wall of logos
+ * (Cale 2026-11-17). Without script every logo shows.
  */
 add_shortcode(
 	'assemble_logo_strip',
 	static function ( $atts ): string {
-		$atts  = shortcode_atts( array( 'type' => 'summits' ), (array) $atts );
+		$atts  = shortcode_atts(
+			array(
+				'type'  => 'summits',
+				'limit' => 0,
+			),
+			(array) $atts
+		);
 		$items = array();
 
 		if ( 'communities' === $atts['type'] ) {
@@ -308,14 +317,35 @@ add_shortcode(
 			return '';
 		}
 
+		$type  = 'communities' === $atts['type'] ? 'communities' : 'summits';
+		$limit = max( 0, (int) $atts['limit'] );
+		$fold  = $limit && count( $items ) > $limit;
+		$id    = wp_unique_id( 'logo-strip-' );
+
+		if ( $fold ) {
+			wp_enqueue_script(
+				'assemble-logo-strip',
+				get_template_directory_uri() . '/assets/js/logo-strip.js',
+				array(),
+				assemble_asset_version( 'assets/js/logo-strip.js' ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+
 		ob_start();
 		?>
-		<ul class="logo-strip logo-strip--<?php echo esc_attr( 'communities' === $atts['type'] ? 'communities' : 'summits' ); ?>" role="list">
-			<?php foreach ( $items as $item ) : ?>
+		<ul id="<?php echo esc_attr( $id ); ?>" class="logo-strip logo-strip--<?php echo esc_attr( $type ); ?>" role="list"<?php echo $fold ? ' data-limit="' . esc_attr( (string) $limit ) . '"' : ''; ?>>
+			<?php foreach ( array_values( $items ) as $item ) : ?>
 				<li><a href="<?php echo esc_url( $item['url'] ); ?>"<?php echo str_starts_with( $item['url'], home_url() ) ? '' : ' rel="noopener"'; ?>><img src="<?php echo esc_url( $item['logo'] ); ?>" alt="<?php echo esc_attr( $item['label'] ); ?>" loading="lazy" decoding="async"></a></li>
 			<?php endforeach; ?>
 		</ul>
-		<?php
+		<?php if ( $fold ) : ?>
+			<button type="button" class="logo-strip-toggle" aria-controls="<?php echo esc_attr( $id ); ?>" aria-expanded="false" data-open="<?php echo esc_attr( sprintf( /* translators: %d: number of logos in all. */ __( 'Show all %d', 'assemble' ), count( $items ) ) ); ?>" data-close="<?php esc_attr_e( 'Show fewer', 'assemble' ); ?>" hidden></button>
+			<?php
+		endif;
 		return (string) ob_get_clean();
 	}
 );
