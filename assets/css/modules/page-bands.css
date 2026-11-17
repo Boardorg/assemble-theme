@@ -181,8 +181,8 @@
 .offer-card strong{font-weight:600;color:var(--ink-900)}
 .offer-card .offer-card__link{margin-top:auto;padding-top:var(--s-3);margin-bottom:0}
 /* Companies: heading beside the two companies, each with a tidy grid of six logos and "Show all". */
-.page-band-brands{padding-block:72px}
-.page-band-brands .band-split{align-items:start}
+.page-band-brands{padding-block:72px 16px}
+.page-band-brands .band-split{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start}
 .page-band-brands .band-split h2{font-size:1.75rem;line-height:1.2}
 .page-band-brands .band-split p{max-width:34ch;font-size:.9375rem}
 .brand-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-7)!important}
@@ -198,10 +198,10 @@
 .logo-strip-toggle:hover{text-decoration-thickness:2px}
 .logo-strip-toggle[hidden]{display:none}
 @media (max-width:980px){
-	.offer-cards,.brand-cards{grid-template-columns:1fr}
+	.offer-cards,.brand-cards,.page-band-brands .band-split{grid-template-columns:1fr}
 	.offer-card .offer-card__art{height:120px}
 }
 @media (max-width:640px){
-	.page-band-brands{padding-block:48px}
+	.page-band-brands{padding-block:48px 8px}
 	.offer-card{padding:24px 22px 26px}
 }
