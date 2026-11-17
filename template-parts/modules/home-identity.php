@@ -23,10 +23,10 @@ $assemble_proof = assemble_home_proof();
 					<?php
 					printf(
 						/* translators: 1: Communities link, 2: Summits link, 3: Insights link. */
-						esc_html__( 'We run the %1$s, %2$s, and %3$s that equip senior business leaders with trusted peer intelligence to move faster and make better decisions.', 'assemble' ),
-						'<a href="' . esc_url( home_url( '/communities/' ) ) . '">' . esc_html__( 'Communities', 'assemble' ) . '</a>',
-						'<a href="' . esc_url( assemble_summits_url() ) . '">' . esc_html__( 'Summits', 'assemble' ) . '</a>',
-						'<a href="' . esc_url( assemble_insights_url() ) . '">' . esc_html__( 'Insights', 'assemble' ) . '</a>'
+						esc_html__( 'We run the %1$s, %2$s, and %3$s that connect senior business leaders with trusted peers, so they can move faster and make better decisions.', 'assemble' ),
+						'<a href="' . esc_url( home_url( '/communities/' ) ) . '">' . esc_html__( 'communities', 'assemble' ) . '</a>',
+						'<a href="' . esc_url( assemble_summits_url() ) . '">' . esc_html__( 'summits', 'assemble' ) . '</a>',
+						'<a href="' . esc_url( assemble_insights_url() ) . '">' . esc_html__( 'insights', 'assemble' ) . '</a>'
 					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- links built and escaped above.
 					?>
 				</p>
