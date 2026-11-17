@@ -873,3 +873,35 @@ function assemble_summits_url(): string {
 
 	return $page ? (string) get_permalink( $page ) : home_url( '/summits/' );
 }
+
+/**
+ * The homepage's proof figures and member logos (David's homepage review, Cale
+ * 2026-11-17). Members and companies are the Communities index's own fields
+ * (Pages → Communities), so the figures are edited in one place. (The
+ * Community and Summit counts were cut, Cale 2026-11-17.) Logos are the index's member logos
+ * (Public Mention = OK only, and none until there are four).
+ *
+ * @return array{stats:array<int,array{0:string,1:string}>,logos:array}
+ */
+function assemble_home_proof(): array {
+	$stats = array();
+	$logos = array();
+	$index = get_page_by_path( 'communities' );
+
+	if ( $index && function_exists( 'assemble_community_field' ) ) {
+		foreach ( array( 'member', 'company' ) as $kind ) {
+			$count = (string) assemble_community_field( $kind . '_count', $index->ID );
+			if ( '' !== $count ) {
+				$stats[] = array( $count, (string) assemble_community_field( $kind . '_descriptor', $index->ID ) );
+			}
+		}
+		if ( function_exists( 'assemble_community_member_logos' ) ) {
+			$logos = assemble_community_member_logos( $index->ID );
+		}
+	}
+
+	return array(
+		'stats' => $stats,
+		'logos' => $logos,
+	);
+}

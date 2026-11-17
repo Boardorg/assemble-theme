@@ -19,7 +19,7 @@ add_action(
 		register_nav_menus(
 			array(
 				'primary' => __( 'Primary (masthead row)', 'assemble' ),
-				'utility' => __( 'Utility (bar above the masthead)', 'assemble' ),
+				'utility' => __( 'Utility (the masthead\'s About menu)', 'assemble' ),
 			)
 		);
 
@@ -67,15 +67,15 @@ function assemble_primary_nav_fallback(): array {
 function assemble_utility_nav_fallback(): array {
 	return array(
 		array(
-			'label' => __( 'About', 'assemble' ),
+			'label' => __( 'About Us', 'assemble' ),
 			'url'   => home_url( '/about-us/' ),
 		),
 		array(
-			'label' => __( 'Our product', 'assemble' ),
+			'label' => __( 'Our Product', 'assemble' ),
 			'url'   => home_url( '/our-product/' ),
 		),
 		array(
-			'label' => __( 'Our team', 'assemble' ),
+			'label' => __( 'Our Team', 'assemble' ),
 			'url'   => home_url( '/our-team/' ),
 		),
 		array(
@@ -202,4 +202,165 @@ function assemble_primary_nav_items(): array {
  */
 function assemble_utility_nav_items(): array {
 	return assemble_nav_items( 'utility', assemble_utility_nav_fallback() );
+}
+
+/**
+ * The masthead's one-row nav (David's homepage review, Cale 2026-11-17): the
+ * primary items, each of Insights, Communities and Summits with a panel
+ * grouped by practice area, and the utility (company) pages folded into an
+ * "About" item at the end.
+ *
+ * A panel is { groups, extra?, all } (practice groups, an optional extra row,
+ * and an "All …" link) or { links } (a plain list).
+ *
+ * @return array<int,array{label:string,url:string,current:bool,section:bool,panel:array}>
+ */
+function assemble_masthead_nav(): array {
+	$items  = assemble_primary_nav_items();
+	$panels = array(
+		untrailingslashit( assemble_insights_url() )      => 'assemble_insights_nav_panel',
+		untrailingslashit( home_url( '/communities/' ) )  => 'assemble_communities_nav_panel',
+		untrailingslashit( assemble_summits_url() )       => 'assemble_summits_nav_panel',
+	);
+
+	foreach ( $items as $i => $item ) {
+		$key                  = untrailingslashit( (string) $item['url'] );
+		$items[ $i ]['panel'] = isset( $panels[ $key ] ) ? call_user_func( $panels[ $key ] ) : array();
+	}
+
+	$utility = assemble_utility_nav_items();
+	if ( $utility ) {
+		$current = (bool) array_filter( $utility, static fn( $u ) => ! empty( $u['current'] ) || ! empty( $u['section'] ) );
+		$items[] = array(
+			'label'   => __( 'About', 'assemble' ),
+			'url'     => (string) $utility[0]['url'],
+			'current' => false,
+			'section' => $current,
+			'panel'   => array( 'links' => $utility ),
+		);
+	}
+
+	return $items;
+}
+
+/**
+ * Practice areas with Communities, in selector order, each with its Communities.
+ *
+ * @return array<string,array{label:string,blurb:string,communities:array}>
+ */
+function assemble_nav_practices(): array {
+	$areas = array();
+	foreach ( assemble_interest_areas() as $area ) {
+		if ( ! empty( $area['communities'] ) ) {
+			$areas[ $area['key'] ] = $area;
+		}
+	}
+
+	return $areas;
+}
+
+/**
+ * Insights: each practice area's /insights/area/… page, with its blurb (Cale:
+ * categories, no content types), then a Benchmarks row into /benchmark/ so the
+ * benchmark is one click from anywhere (Cale, 2026-11-17).
+ */
+function assemble_insights_nav_panel(): array {
+	$groups = array();
+	foreach ( assemble_nav_practices() as $key => $area ) {
+		$groups[] = array(
+			'area'  => $key,
+			'label' => $area['label'],
+			'url'   => assemble_area_url( $key ),
+			'blurb' => $area['blurb'],
+			'links' => array(),
+		);
+	}
+
+	$extra = array();
+	if ( get_page_by_path( 'benchmark' ) ) {
+		$page  = home_url( '/benchmark/' );
+		$links = array(
+			array( __( 'Read the reports', 'assemble' ), $page . '#benchmark-reports' ),
+			array( __( 'Take the survey', 'assemble' ), $page . '#take-the-survey' ),
+		);
+		if ( function_exists( 'assemble_benchmark_app_url' ) ) {
+			$links[] = array( __( 'See your results', 'assemble' ), assemble_benchmark_app_url( array( 'login' => '1' ) ) );
+		}
+		$extra = array(
+			'label' => __( 'Benchmarks', 'assemble' ),
+			'title' => __( 'The Decision Intelligence Benchmark', 'assemble' ),
+			'url'   => $page,
+			'links' => $links,
+		);
+	}
+
+	return array(
+		'groups' => $groups,
+		'extra'  => $extra,
+		'all'    => array( __( 'All insights', 'assemble' ), assemble_insights_url() ),
+	);
+}
+
+/** Communities: each practice area's Communities, to their sales pages (else the index's finder). */
+function assemble_communities_nav_panel(): array {
+	$pages = array();
+	if ( function_exists( 'assemble_community_directory' ) ) {
+		foreach ( assemble_community_directory() as $communities ) {
+			foreach ( $communities as $community ) {
+				$pages[ $community['slug'] ] = (string) ( $community['page']['url'] ?? '' );
+			}
+		}
+	}
+
+	$groups = array();
+	foreach ( assemble_nav_practices() as $key => $area ) {
+		$links = array();
+		foreach ( $area['communities'] as $community ) {
+			$url     = '' !== ( $pages[ $community['slug'] ] ?? '' ) ? $pages[ $community['slug'] ] : home_url( '/communities/#' . $community['slug'] );
+			$links[] = array( assemble_community_pill_label( $community ), $url );
+		}
+		$groups[] = array(
+			'area'  => $key,
+			'label' => $area['label'],
+			'url'   => '',
+			'blurb' => '',
+			'links' => $links,
+		);
+	}
+
+	return array(
+		'groups' => $groups,
+		'all'    => array( __( 'All Communities', 'assemble' ), home_url( '/communities/' ) ),
+	);
+}
+
+/**
+ * Summits: each practice area with upcoming Summits (so Finance, which has
+ * Summits but no Community yet, is in; an area with none is left out, Cale
+ * 2026-11-17), to its panel on /summits/
+ * (#<first Community's slug>, else #area-<key>), with its upcoming count.
+ */
+function assemble_summits_nav_panel(): array {
+	$upcoming = assemble_upcoming_summits();
+	$groups   = array();
+	foreach ( assemble_interest_areas() as $area ) {
+		$key   = $area['key'];
+		$count = count( array_filter( $upcoming, static fn( $summit ) => $summit['area'] === $key ) );
+		if ( ! $count ) {
+			continue;
+		}
+		$groups[] = array(
+			'area'  => $key,
+			'label' => $area['label'],
+			'url'   => assemble_summits_url() . '#' . ( $area['communities'] ? $area['communities'][0]['slug'] : 'area-' . $key ),
+			/* translators: %s: number of upcoming Summits. */
+			'blurb' => $count ? sprintf( _n( '%s upcoming Summit', '%s upcoming Summits', $count, 'assemble' ), number_format_i18n( $count ) ) : '',
+			'links' => array(),
+		);
+	}
+
+	return array(
+		'groups' => $groups,
+		'all'    => array( __( 'All Summits', 'assemble' ), assemble_summits_url() ),
+	);
 }

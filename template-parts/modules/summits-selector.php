@@ -51,7 +51,7 @@ if ( '' === $assemble_opening ) {
 /** The panel id for a Community slug (or "area-<key>"). */
 $assemble_panel_id = static fn ( string $id ): string => 'summits-' . sanitize_html_class( $id );
 ?>
-<div class="summits-explorer" data-content-explorer>
+<div class="summits-explorer" data-content-explorer data-explorer-hash="summits-">
 	<section class="summits-selector" aria-labelledby="summits-selector-title">
 		<div class="summits-selector-head">
 			<h2 id="summits-selector-title"><?php esc_html_e( 'Find your humans.', 'assemble' ); ?></h2>

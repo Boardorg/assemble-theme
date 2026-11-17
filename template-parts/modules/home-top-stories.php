@@ -16,7 +16,7 @@ $assemble_lead    = array_shift( $assemble_stories );
 <section class="home-top-stories wrap" aria-labelledby="home-top-stories-title">
 	<div class="widget">
 		<div class="home-top-stories-head">
-			<h1 class="stories-section-heading" id="home-top-stories-title"><?php esc_html_e( 'Top stories across Assemble', 'assemble' ); ?></h1>
+			<h2 class="stories-section-heading" id="home-top-stories-title"><?php esc_html_e( 'Top stories across Assemble', 'assemble' ); ?></h2>
 			<?php if ( $assemble_lead ) : ?>
 				<a class="link-arrow featured-more" href="<?php echo esc_url( assemble_insights_url() ); ?>"><?php esc_html_e( 'See more top stories', 'assemble' ); ?></a>
 			<?php endif; ?>

@@ -32,9 +32,17 @@
 	.featured-side-list .featured-image{flex:none;min-height:0;aspect-ratio:16/9}
 }
 
+/* Phones: the three stories are one swipeable row, not a long stack (David's review, Cale 2026-11-17). */
 @media (max-width:640px){
 	.home-top-stories{padding-block:32px 48px}
-	.home-top-stories .widget{padding:20px}
+	.home-top-stories .widget{padding:20px 0 20px 20px;overflow:hidden}
+	.home-top-stories-head{margin-right:20px}
+	.featured-split-grid{display:flex;gap:16px;padding-right:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+	.featured-split-grid::-webkit-scrollbar{display:none}
+	.featured-side-list{display:contents}
+	.featured-main,.featured-side-list .feed-card{flex:0 0 82%;scroll-snap-align:start}
+	.featured-main .featured-image,.featured-side-list .featured-image{flex:none;min-height:0;aspect-ratio:16/9;margin-bottom:14px}
+	.featured-headline{margin-bottom:0;font-size:1.25rem}
+	.featured-excerpt{display:none}
 	.feed-card h2{font-size:1.125rem}
-	.featured-side-list{grid-template-columns:1fr;gap:32px}
 }

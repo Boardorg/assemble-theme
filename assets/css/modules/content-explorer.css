@@ -84,6 +84,12 @@
 }
 
 @media (max-width:640px){
+	/* Pills swipe on one line each instead of wrapping (David's review, Cale 2026-11-17). */
+	.tab-buttons{max-width:100%;min-width:0}
+	.topic-row-secondary-wrap{max-width:100%;min-width:0}
+	.topic-row{flex-wrap:nowrap;max-width:100%;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+	.topic-row::-webkit-scrollbar{display:none}
+	.topic-row .tab-btn{flex:0 0 auto;white-space:nowrap}
 	.content-explorer{padding-block:32px}
 	.tab-buttons{margin-bottom:28px;padding-bottom:24px}
 	.tab-btn{padding:10px 16px}

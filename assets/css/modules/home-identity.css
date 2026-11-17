@@ -1,0 +1,61 @@
+/*
+ * Modules: home-identity (who we are + proof figures, above Top stories) and
+ * home-trust (member logos + free-account call to action, below them). David's
+ * homepage review, Cale 2026-11-17. No wireframe: on-system, flagged for design.
+ * .free-account-cta itself is styled in peer-intelligence-splash.css.
+ */
+
+/* Sunken band, as the splash was. The inner block is inset by the Top stories
+ * card's padding + border (33px; 21px on phones) so the text lines up with the card's content. */
+.home-identity{padding-block:48px;background:var(--surface-sunken)}
+.home-identity-inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center;padding-inline:33px}
+.home-identity-title{max-width:16ch;margin:0 0 18px;font-size:clamp(2.375rem,3.4vw,3.25rem);line-height:1.08}
+.home-identity-text{max-width:36em;margin:0 0 26px;font-size:1.125rem;line-height:1.65;color:var(--ink-700)}
+.home-identity-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
+/* Proof figures: a quiet row under a hairline, no boxes. */
+.home-identity-stats{display:flex;flex-wrap:wrap;gap:12px 48px;margin:32px 0 0;padding-top:24px;border-top:1px solid var(--line)}
+.home-identity-stats>div{display:flex;align-items:baseline;gap:10px}
+.home-identity-stats dt{font:400 2rem/1 var(--font-display);letter-spacing:-.01em;color:var(--ink-900)}
+.home-identity-stats dd{margin:0;font-size:.9375rem;color:var(--ink-700)}
+.home-identity-figure{display:flex;align-items:center;justify-content:center;aspect-ratio:16/11;margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.home-identity-figure img{width:auto;height:100%;max-width:100%;object-fit:contain;transform:scale(1.15)} /* the PNG has ~25% transparent margin */
+.home-identity+.home-top-stories{padding-top:48px}
+
+.home-trust{padding-block:0 72px}
+.home-trust.has-logos{padding-top:56px;background:var(--surface-sunken)}
+.home-trust .free-account-cta{margin-top:0}
+.home-trust-head{margin-bottom:28px;text-align:center}
+.home-trust-head .eyebrow{margin:0 0 8px}
+.home-trust-line{max-width:36em;margin:0 auto;font:400 1.5rem/1.3 var(--font-text)}
+.home-trust-logos{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px;margin:0 0 40px;padding:0;list-style:none}
+.home-trust-logos li{display:flex;align-items:center;justify-content:center;height:64px;padding:10px 14px;background:var(--surface);border-radius:var(--r-sm)}
+.home-trust-logos img{max-width:100%;max-height:40px;object-fit:contain;filter:grayscale(1)}
+.home-trust-logos .logo-placeholder{font:500 .8125rem/1.3 var(--font-body);color:var(--ink-700);text-align:center}
+
+@media (max-width:980px){
+	.home-identity-inner{grid-template-columns:1fr;gap:32px}
+	.home-identity-art{max-width:480px}
+}
+
+/* Phones: shorter band; no illustration; the header carries the free-account button, so the band doesn't repeat it. */
+@media (max-width:640px){
+	.home-identity{padding-block:32px}
+	.home-identity-inner{padding-inline:21px}
+	.home-identity-art{display:none}
+	.home-identity-title{font-size:2.125rem}
+	.home-identity-text{margin-bottom:18px;font-size:1rem}
+	.home-identity-actions .btn-solid{display:none}
+	.home-identity-stats{gap:10px 28px;margin-top:22px;padding-top:18px}
+	.home-identity-stats>div{flex-direction:column;gap:4px}
+	.home-identity-stats dt{font-size:1.625rem}
+	.home-identity-stats dd{font-size:.8125rem}
+	.home-identity+.home-top-stories{padding-top:24px}
+
+	.home-trust{padding-bottom:48px}
+	.home-trust.has-logos{padding-top:36px}
+	.home-trust-line{font-size:1.25rem}
+	/* Logos swipe instead of stacking. */
+	.home-trust-logos{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+	.home-trust-logos::-webkit-scrollbar{display:none}
+	.home-trust-logos li{flex:0 0 38%;scroll-snap-align:start}
+}
