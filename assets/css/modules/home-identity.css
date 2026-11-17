@@ -11,8 +11,6 @@
 .home-identity-inner{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center;padding-inline:33px}
 .home-identity-title{max-width:16ch;margin:0 0 18px;font-size:clamp(2.375rem,3.4vw,3.25rem);line-height:1.08}
 .home-identity-text{max-width:36em;margin:0 0 26px;font-size:1.125rem;line-height:1.65;color:var(--ink-700)}
-.home-identity-text a{color:var(--ink-900);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
-.home-identity-text a:hover{text-decoration-thickness:2px}
 .home-identity-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
 /* Proof figures: a quiet row under a hairline, no boxes. */
 .home-identity-stats{display:flex;flex-wrap:wrap;gap:12px 48px;margin:32px 0 0;padding-top:24px;border-top:1px solid var(--line)}

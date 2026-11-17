@@ -124,6 +124,18 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 										</li>
 									<?php endforeach; ?>
 								</ul>
+								<?php if ( ! empty( $assemble_panel['extra'] ) ) : ?>
+									<?php $assemble_extra = $assemble_panel['extra']; ?>
+									<div class="nav-panel__extra">
+										<p class="nav-panel__label"><?php echo esc_html( $assemble_extra['label'] ); ?></p>
+										<a class="nav-panel__extra-title" href="<?php echo esc_url( $assemble_extra['url'] ); ?>"><?php echo esc_html( $assemble_extra['title'] ); ?></a>
+										<ul class="nav-panel__extra-links">
+											<?php foreach ( $assemble_extra['links'] as $assemble_link ) : ?>
+												<li><a href="<?php echo esc_url( $assemble_link[1] ); ?>"><?php echo esc_html( $assemble_link[0] ); ?></a></li>
+											<?php endforeach; ?>
+										</ul>
+									</div>
+								<?php endif; ?>
 								<a class="link-arrow nav-panel__all" href="<?php echo esc_url( $assemble_panel['all'][1] ); ?>"><?php echo esc_html( $assemble_panel['all'][0] ); ?></a>
 								</div>
 							</div>

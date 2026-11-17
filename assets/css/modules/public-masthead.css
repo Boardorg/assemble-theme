@@ -53,6 +53,15 @@ a.nav-panel__group:hover,a.nav-panel__group:focus-visible{background:var(--surfa
 .nav-panel__group strong{display:block;font-weight:600;color:var(--accent-ink)}
 .nav-panel__group span{display:block;margin-top:2px;font-size:.875rem;line-height:1.45;color:var(--ink-700)}
 .has-links .nav-panel__group{margin:0;padding:10px 0 6px}
+.nav-panel__label{margin:0 0 8px;font:600 .75rem/1.4 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-700)}
+/* Extra row (the Benchmarks layer under Insights' practices). */
+.nav-panel__extra{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:4px 20px;margin:8px 0 4px;padding:14px 0 10px;border-block:1px solid var(--line)}
+.nav-panel__extra .nav-panel__label{grid-column:1/-1;margin:0}
+.nav-panel__extra-title{color:var(--ink-900);font-weight:600;text-decoration:none}
+.nav-panel__extra-title:hover,.nav-panel__extra-title:focus-visible{text-decoration:underline;text-underline-offset:4px}
+.nav-panel__extra-links{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0;list-style:none;justify-content:flex-end}
+.nav-panel__extra-links a{color:var(--ink-700);font-size:.875rem;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.nav-panel__extra-links a:hover,.nav-panel__extra-links a:focus-visible{color:var(--ink-900)}
 .nav-panel__sublinks{margin:0 0 10px;padding:0;list-style:none}
 .nav-panel__sublinks a{display:block;padding:5px 0;color:var(--ink-900);font:500 .9375rem/1.35 var(--font-body);text-decoration:none}
 .nav-panel__sublinks a:hover,.nav-panel__sublinks a:focus-visible{text-decoration:underline;text-underline-offset:4px}

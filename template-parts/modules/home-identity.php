@@ -19,17 +19,7 @@ $assemble_proof = assemble_home_proof();
 		<div class="home-identity-inner">
 			<div class="home-identity-copy">
 				<h1 class="home-identity-title type-brand-statement" id="home-identity-title"><?php esc_html_e( 'Peer intelligence for senior leaders', 'assemble' ); ?></h1>
-				<p class="home-identity-text">
-					<?php
-					printf(
-						/* translators: 1: communities link, 2: summits link, 3: insights link (shown insights, summits, communities). */
-						esc_html__( 'We power the %3$s, %2$s, and %1$s that enable senior business leaders to move faster and make better decisions.', 'assemble' ),
-						'<a href="' . esc_url( home_url( '/communities/' ) ) . '">' . esc_html__( 'communities', 'assemble' ) . '</a>',
-						'<a href="' . esc_url( assemble_summits_url() ) . '">' . esc_html__( 'summits', 'assemble' ) . '</a>',
-						'<a href="' . esc_url( assemble_insights_url() ) . '">' . esc_html__( 'insights', 'assemble' ) . '</a>'
-					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- links built and escaped above.
-					?>
-				</p>
+				<p class="home-identity-text"><?php esc_html_e( 'We power the insights, summits, and communities that enable senior business leaders to move faster and make better decisions.', 'assemble' ); ?></p>
 				<div class="home-identity-actions">
 					<?php if ( ! is_user_logged_in() ) : ?>
 						<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>

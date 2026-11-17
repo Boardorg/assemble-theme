@@ -210,8 +210,8 @@ function assemble_utility_nav_items(): array {
  * grouped by practice area, and the utility (company) pages folded into an
  * "About" item at the end.
  *
- * A panel is { groups, all } (practice groups, and an "All …" link) or
- * { links } (a plain list).
+ * A panel is { groups, extra?, all } (practice groups, an optional extra row,
+ * and an "All …" link) or { links } (a plain list).
  *
  * @return array<int,array{label:string,url:string,current:bool,section:bool,panel:array}>
  */
@@ -259,7 +259,11 @@ function assemble_nav_practices(): array {
 	return $areas;
 }
 
-/** Insights: each practice area's /insights/area/… page, with its blurb (Cale: categories only, no types for now). */
+/**
+ * Insights: each practice area's /insights/area/… page, with its blurb (Cale:
+ * categories, no content types), then a Benchmarks row into /benchmark/ so the
+ * benchmark is one click from anywhere (Cale, 2026-11-17).
+ */
 function assemble_insights_nav_panel(): array {
 	$groups = array();
 	foreach ( assemble_nav_practices() as $key => $area ) {
@@ -272,8 +276,27 @@ function assemble_insights_nav_panel(): array {
 		);
 	}
 
+	$extra = array();
+	if ( get_page_by_path( 'benchmark' ) ) {
+		$page  = home_url( '/benchmark/' );
+		$links = array(
+			array( __( 'Read the reports', 'assemble' ), $page . '#benchmark-reports' ),
+			array( __( 'Take the survey', 'assemble' ), $page . '#take-the-survey' ),
+		);
+		if ( function_exists( 'assemble_benchmark_app_url' ) ) {
+			$links[] = array( __( 'See your results', 'assemble' ), assemble_benchmark_app_url( array( 'login' => '1' ) ) );
+		}
+		$extra = array(
+			'label' => __( 'Benchmarks', 'assemble' ),
+			'title' => __( 'The Decision Intelligence Benchmark', 'assemble' ),
+			'url'   => $page,
+			'links' => $links,
+		);
+	}
+
 	return array(
 		'groups' => $groups,
+		'extra'  => $extra,
 		'all'    => array( __( 'All insights', 'assemble' ), assemble_insights_url() ),
 	);
 }
@@ -312,8 +335,9 @@ function assemble_communities_nav_panel(): array {
 }
 
 /**
- * Summits: each practice area with Communities or upcoming Summits (so Finance,
- * which has Summits but no Community yet, is in), to its panel on /summits/
+ * Summits: each practice area with upcoming Summits (so Finance, which has
+ * Summits but no Community yet, is in; an area with none is left out, Cale
+ * 2026-11-17), to its panel on /summits/
  * (#<first Community's slug>, else #area-<key>), with its upcoming count.
  */
 function assemble_summits_nav_panel(): array {
@@ -322,7 +346,7 @@ function assemble_summits_nav_panel(): array {
 	foreach ( assemble_interest_areas() as $area ) {
 		$key   = $area['key'];
 		$count = count( array_filter( $upcoming, static fn( $summit ) => $summit['area'] === $key ) );
-		if ( ! $count && empty( $area['communities'] ) ) {
+		if ( ! $count ) {
 			continue;
 		}
 		$groups[] = array(
