@@ -29,27 +29,33 @@ header.site-header{border-bottom:1px solid var(--line)}
 .header-nav__chevron{width:12px;height:12px;transition:transform var(--motion)}
 .has-panel:hover .header-nav__chevron,.has-panel:focus-within .header-nav__chevron{transform:rotate(180deg)}
 
-/* Dropdown panels. padding-top bridges the gap so the pointer can travel into the panel. */
+/* Dropdown panels. padding-top bridges the gap so the pointer can travel into the panel.
+ * The practice panels hang from the nav's left edge (not their item), so they never run off the right. */
+.header-nav{position:relative}
+.header-nav__item:has(.nav-panel--groups){position:static}
 .nav-panel{display:none;position:absolute;top:100%;left:-20px;z-index:30;padding-top:6px}
 .has-panel:hover>.nav-panel,.has-panel:focus-within>.nav-panel{display:block}
-.nav-panel>*{background:var(--surface)}
-.nav-panel__list,.nav-panel--wide{border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(38,37,31,.12)}
+.nav-panel>ul{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 8px 24px rgba(38,37,31,.12)}
 .nav-panel>.nav-panel__list{min-width:200px;margin:0;padding:6px;list-style:none}
-.nav-panel--wide{display:none;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;width:640px;padding:22px 24px;background:var(--surface)}
-.has-panel:hover>.nav-panel--wide,.has-panel:focus-within>.nav-panel--wide{display:grid}
-.nav-panel--wide .nav-panel__list{margin:0;padding:0;list-style:none;border:0;box-shadow:none}
-.nav-panel__label{margin:0 0 8px;font:600 .75rem/1.4 var(--font-label);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-700)}
-.nav-panel__practices{margin:0 -12px;padding:0;list-style:none}
-.nav-panel__practices a{display:block;padding:10px 12px;border-radius:var(--r-sm);color:var(--ink-900);text-decoration:none}
-.nav-panel__practices a:hover,.nav-panel__practices a:focus-visible{background:var(--surface-sunken)}
-.nav-panel__practices strong{display:block;font-weight:600;color:var(--accent-ink)}
-.nav-panel__practices span{display:block;margin-top:2px;font-size:.875rem;line-height:1.45;color:var(--ink-700)}
 .nav-panel__list a{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:calc(var(--r-md) - 4px);color:var(--ink-900);font:500 .9375rem/1.4 var(--font-body);text-decoration:none;white-space:nowrap}
-.nav-panel--wide .nav-panel__list a{padding:0;border-radius:0}
 .nav-panel__list a:hover,.nav-panel__list a:focus-visible{background:var(--surface-sunken)}
-.nav-panel--wide .nav-panel__list a:hover{background:none;text-decoration:underline;text-underline-offset:4px}
 .nav-panel__list a[aria-current]{text-decoration:underline;text-underline-offset:4px}
-.nav-panel__all{display:inline-block;margin-top:14px;font-size:.9375rem}
+
+.has-panel:hover>.nav-panel--groups,.has-panel:focus-within>.nav-panel--groups{display:block}
+.nav-panel--groups{width:580px}
+.nav-panel__groups,.nav-panel--groups .nav-panel__all{background:var(--surface)}
+.nav-panel__groups{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin:0;padding:18px 24px 8px;list-style:none;border:1px solid var(--line);border-bottom:0;border-radius:var(--r-md) var(--r-md) 0 0;box-shadow:0 8px 24px rgba(38,37,31,.12)}
+.nav-panel--groups .nav-panel__all{display:block;margin:0;padding:6px 24px 18px;border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r-md) var(--r-md);font-size:.9375rem;box-shadow:0 14px 24px rgba(38,37,31,.08)}
+.nav-panel--groups.has-links{width:820px}
+.has-links .nav-panel__groups{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 20px}
+.nav-panel__group{display:block;margin:0 -12px;padding:10px 12px;border-radius:var(--r-sm);color:var(--ink-900);text-decoration:none}
+a.nav-panel__group:hover,a.nav-panel__group:focus-visible{background:var(--surface-sunken)}
+.nav-panel__group strong{display:block;font-weight:600;color:var(--accent-ink)}
+.nav-panel__group span{display:block;margin-top:2px;font-size:.875rem;line-height:1.45;color:var(--ink-700)}
+.has-links .nav-panel__group{margin:0;padding:10px 0 6px}
+.nav-panel__sublinks{margin:0 0 10px;padding:0;list-style:none}
+.nav-panel__sublinks a{display:block;padding:5px 0;color:var(--ink-900);font:500 .9375rem/1.35 var(--font-body);text-decoration:none}
+.nav-panel__sublinks a:hover,.nav-panel__sublinks a:focus-visible{text-decoration:underline;text-underline-offset:4px}
 
 .header-search-icon{width:38px;height:38px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;color:var(--ink-700);border-radius:var(--r-pill)}
 .header-search-icon svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6}

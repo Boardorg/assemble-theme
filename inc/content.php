@@ -877,8 +877,8 @@ function assemble_summits_url(): string {
 /**
  * The homepage's proof figures and member logos (David's homepage review, Cale
  * 2026-11-17). Members and companies are the Communities index's own fields
- * (Pages → Communities), so the figures are edited in one place; Communities
- * and upcoming Summits are counted live. Logos are the index's member logos
+ * (Pages → Communities), so the figures are edited in one place. (The
+ * Community and Summit counts were cut, Cale 2026-11-17.) Logos are the index's member logos
  * (Public Mention = OK only, and none until there are four).
  *
  * @return array{stats:array<int,array{0:string,1:string}>,logos:array}
@@ -898,16 +898,6 @@ function assemble_home_proof(): array {
 		if ( function_exists( 'assemble_community_member_logos' ) ) {
 			$logos = assemble_community_member_logos( $index->ID );
 		}
-	}
-
-	$communities = function_exists( 'assemble_community_directory' ) ? array_sum( array_map( 'count', assemble_community_directory() ) ) : 0;
-	if ( $communities ) {
-		$stats[] = array( number_format_i18n( $communities ), _n( 'Community', 'Communities', $communities, 'assemble' ) );
-	}
-
-	$summits = count( assemble_upcoming_summits() );
-	if ( $summits ) {
-		$stats[] = array( number_format_i18n( $summits ), _n( 'upcoming Summit', 'upcoming Summits', $summits, 'assemble' ) );
 	}
 
 	return array(

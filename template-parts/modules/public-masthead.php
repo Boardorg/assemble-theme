@@ -5,7 +5,8 @@
  * One row (David's homepage review, Cale 2026-11-17; was logo row + nav row +
  * utility bar): logo left, primary nav in the middle, search and the account
  * actions right, with "Create free account" as the solid button. Insights opens
- * a panel (by practice, by type); the utility (company) pages fold into an
+ * a panel by practice area, as do Communities (each Community) and Summits
+ * (to its Community's panel on /summits/); the utility (company) pages fold into an
  * "About" item. Panels open on hover and keyboard focus, CSS only.
  *
  * Below 980px the nav and account actions move into the drawer (plain,
@@ -102,26 +103,27 @@ $assemble_banner_text = (string) assemble_setting( 'banner_text', '' );
 								</ul>
 							</div>
 						<?php else : ?>
-							<div class="nav-panel nav-panel--wide">
-								<?php if ( $assemble_panel['practices'] ) : ?>
-									<div>
-										<p class="nav-panel__label"><?php esc_html_e( 'By practice', 'assemble' ); ?></p>
-										<ul class="nav-panel__practices">
-											<?php foreach ( $assemble_panel['practices'] as $assemble_practice ) : ?>
-												<li data-area="<?php echo esc_attr( $assemble_practice['key'] ); ?>"><a href="<?php echo esc_url( $assemble_practice['url'] ); ?>"><strong><?php echo esc_html( $assemble_practice['label'] ); ?></strong><span><?php echo esc_html( $assemble_practice['blurb'] ); ?></span></a></li>
-											<?php endforeach; ?>
-										</ul>
-									</div>
-								<?php endif; ?>
-								<div>
-									<p class="nav-panel__label"><?php esc_html_e( 'By type', 'assemble' ); ?></p>
-									<ul class="nav-panel__list">
-										<?php foreach ( $assemble_panel['types'] as $assemble_link ) : ?>
-											<li><a href="<?php echo esc_url( $assemble_link['url'] ); ?>"><?php echo esc_html( $assemble_link['label'] ); ?></a></li>
-										<?php endforeach; ?>
-									</ul>
-									<a class="link-arrow nav-panel__all" href="<?php echo esc_url( $assemble_panel['all'] ); ?>"><?php esc_html_e( 'All insights', 'assemble' ); ?></a>
-								</div>
+							<?php $assemble_has_links = (bool) array_filter( array_column( $assemble_panel['groups'], 'links' ) ); ?>
+							<div class="nav-panel nav-panel--groups<?php echo $assemble_has_links ? ' has-links' : ''; ?>">
+								<ul class="nav-panel__groups">
+									<?php foreach ( $assemble_panel['groups'] as $assemble_group ) : ?>
+										<li data-area="<?php echo esc_attr( $assemble_group['area'] ); ?>">
+											<?php if ( '' !== $assemble_group['url'] ) : ?>
+												<a class="nav-panel__group" href="<?php echo esc_url( $assemble_group['url'] ); ?>"><strong><?php echo esc_html( $assemble_group['label'] ); ?></strong><?php echo '' !== $assemble_group['blurb'] ? '<span>' . esc_html( $assemble_group['blurb'] ) . '</span>' : ''; ?></a>
+											<?php else : ?>
+												<p class="nav-panel__group"><strong><?php echo esc_html( $assemble_group['label'] ); ?></strong></p>
+											<?php endif; ?>
+											<?php if ( $assemble_group['links'] ) : ?>
+												<ul class="nav-panel__sublinks">
+													<?php foreach ( $assemble_group['links'] as $assemble_link ) : ?>
+														<li><a href="<?php echo esc_url( $assemble_link[1] ); ?>"><?php echo esc_html( $assemble_link[0] ); ?></a></li>
+													<?php endforeach; ?>
+												</ul>
+											<?php endif; ?>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+								<a class="link-arrow nav-panel__all" href="<?php echo esc_url( $assemble_panel['all'][1] ); ?>"><?php echo esc_html( $assemble_panel['all'][0] ); ?></a>
 							</div>
 						<?php endif; ?>
 					</div>

@@ -15,9 +15,8 @@ $assemble_proof = assemble_home_proof();
 ?>
 <section class="home-identity wrap" aria-labelledby="home-identity-title">
 	<div class="home-identity-copy">
-		<p class="eyebrow"><?php esc_html_e( 'Peer intelligence for senior leaders', 'assemble' ); ?></p>
-		<h1 class="home-identity-title" id="home-identity-title"><?php esc_html_e( 'See what leaders at the world’s largest companies are really doing.', 'assemble' ); ?></h1>
-		<p class="home-identity-text"><?php esc_html_e( 'Assemble brings senior leaders together in private Communities and executive Summits. We turn what they share into practical insight you can use, free to read.', 'assemble' ); ?></p>
+		<h1 class="home-identity-title" id="home-identity-title"><?php esc_html_e( 'Peer intelligence for senior leaders', 'assemble' ); ?></h1>
+		<p class="home-identity-text"><?php esc_html_e( 'Discover what leaders at the world’s largest companies are really doing. Assemble brings them together in private Communities and executive Summits, and turns what they share into practical insight, free to read.', 'assemble' ); ?></p>
 		<div class="home-identity-actions">
 			<?php if ( ! is_user_logged_in() ) : ?>
 				<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
