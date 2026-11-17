@@ -187,6 +187,8 @@
 .page-band-brands .band-split p{max-width:34ch;font-size:.9375rem}
 .brand-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-7)!important}
 .brand-card h3{margin:0 0 6px;font:500 1.25rem/1.3 var(--font-text)}
+.brand-card .brand-card__logo{margin:0 0 var(--s-3)}
+.brand-card .brand-card__logo img{display:block;width:auto;max-width:100%;height:32px}
 .brand-card p{margin:0;font-size:.9375rem}
 .brand-card .logo-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:var(--s-5);padding:0;border-top:1px solid var(--line)}
 .brand-card .logo-strip li{display:flex;align-items:center;min-height:64px;border-bottom:1px solid var(--line)}
