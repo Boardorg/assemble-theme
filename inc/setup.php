@@ -265,13 +265,22 @@ function assemble_nav_practices(): array {
  * benchmark is one click from anywhere (Cale, 2026-11-17).
  */
 function assemble_insights_nav_panel(): array {
+	// What each practice's Insights cover, from its Communities (Cale, 2026-11-17).
+	// The menu's own lines: the "Peer conversations on …" blurbs stay on the interests grid.
+	$topics = array(
+		'human-resources' => __( 'Talent, learning, culture, and DEI', 'assemble' ),
+		'manufacturing'   => __( 'Supply chain, manufacturing, and sustainability', 'assemble' ),
+		'marketing'       => __( 'Digital marketing, social media, and AI search', 'assemble' ),
+		'technology'      => __( 'Data, AI strategy, and privacy', 'assemble' ),
+	);
+
 	$groups = array();
 	foreach ( assemble_nav_practices() as $key => $area ) {
 		$groups[] = array(
 			'area'  => $key,
 			'label' => $area['label'],
 			'url'   => assemble_area_url( $key ),
-			'blurb' => $area['blurb'],
+			'blurb' => $topics[ $key ] ?? $area['blurb'],
 			'links' => array(),
 		);
 	}
