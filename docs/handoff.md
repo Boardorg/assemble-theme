@@ -130,6 +130,7 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Log
 
+- **2026-11-17 (theme 0.23.6, same branch, on the beta only):** Tagline (Cale): "We power the insights, summits, and communities that enable senior business leaders to move faster and make better decisions."
 - **2026-11-17 (theme 0.23.5, same branch, on the beta only):** Tagline reworded (Cale: no second "intelligence" under the H1, lowercase): "We run the communities, summits, and insights that connect senior business leaders with trusted peers, so they can move faster and make better decisions."
 - **2026-11-17 (theme 0.23.4, same branch, on the beta only):** Tagline works Communities, Summits and Insights back in (David's "what is Assemble" point): "We run the Communities, Summits, and Insights that equip senior business leaders with trusted peer intelligence to move faster and make better decisions." The three words link to their sections.
 - **2026-11-17 (theme 0.23.3, same branch, on the beta only):** Homepage tagline under the H1 is now Cale's line: "We enable senior business leaders with trusted peer insights to help them move faster and make better decisions."
