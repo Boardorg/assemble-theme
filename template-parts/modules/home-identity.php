@@ -19,7 +19,7 @@ $assemble_proof = assemble_home_proof();
 		<div class="home-identity-inner">
 			<div class="home-identity-copy">
 				<h1 class="home-identity-title type-brand-statement" id="home-identity-title"><?php esc_html_e( 'Peer intelligence for senior leaders', 'assemble' ); ?></h1>
-				<p class="home-identity-text"><?php esc_html_e( 'Discover what leaders at the world’s largest companies are really doing. Assemble brings them together in private Communities and executive Summits, and turns what they share into practical insight, free to read.', 'assemble' ); ?></p>
+				<p class="home-identity-text"><?php esc_html_e( 'We enable senior business leaders with trusted peer insights to help them move faster and make better decisions.', 'assemble' ); ?></p>
 				<div class="home-identity-actions">
 					<?php if ( ! is_user_logged_in() ) : ?>
 						<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
