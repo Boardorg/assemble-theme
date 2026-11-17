@@ -311,16 +311,24 @@ function assemble_communities_nav_panel(): array {
 	);
 }
 
-/** Summits: each practice area, to its first Community's panel on /summits/ (#slug), with its upcoming count. */
+/**
+ * Summits: each practice area with Communities or upcoming Summits (so Finance,
+ * which has Summits but no Community yet, is in), to its panel on /summits/
+ * (#<first Community's slug>, else #area-<key>), with its upcoming count.
+ */
 function assemble_summits_nav_panel(): array {
 	$upcoming = assemble_upcoming_summits();
 	$groups   = array();
-	foreach ( assemble_nav_practices() as $key => $area ) {
-		$count    = count( array_filter( $upcoming, static fn( $summit ) => $summit['area'] === $key ) );
+	foreach ( assemble_interest_areas() as $area ) {
+		$key   = $area['key'];
+		$count = count( array_filter( $upcoming, static fn( $summit ) => $summit['area'] === $key ) );
+		if ( ! $count && empty( $area['communities'] ) ) {
+			continue;
+		}
 		$groups[] = array(
 			'area'  => $key,
 			'label' => $area['label'],
-			'url'   => assemble_summits_url() . '#' . $area['communities'][0]['slug'],
+			'url'   => assemble_summits_url() . '#' . ( $area['communities'] ? $area['communities'][0]['slug'] : 'area-' . $key ),
 			/* translators: %s: number of upcoming Summits. */
 			'blurb' => $count ? sprintf( _n( '%s upcoming Summit', '%s upcoming Summits', $count, 'assemble' ), number_format_i18n( $count ) ) : '',
 			'links' => array(),
