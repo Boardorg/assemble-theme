@@ -10,9 +10,7 @@
  * does). No illustration there: the form fills the right column (Kristen: the
  * image made the section too large). Without a form (no HubSpot config, or the
  * index) it's the button to Site Settings → membership_url, with the closing
- * illustration. Shared by the Board and index layouts. The form is our own
- * markup (template-parts/community/join-form.php) posting to the same HubSpot
- * form, not HubSpot's iframe, so it carries the site's styles (Cale, 2026-11-17).
+ * illustration. Shared by the Board and index layouts.
  *
  * @var array $args { page: a Community page view model }
  */
@@ -44,16 +42,14 @@ $assemble_t       = static fn( string $text ): string => assemble_community_text
 			</div>
 			<?php if ( $assemble_has_form ) : ?>
 				<div class="community-apply-form">
-					<?php
-					get_template_part(
-						'template-parts/community/join-form',
-						null,
-						array(
-							'join'     => $assemble_join,
-							'fallback' => assemble_url( $assemble_apply ),
-						)
-					);
-					?>
+					<div
+						class="hs-form-frame"
+						data-region="<?php echo esc_attr( (string) ( $assemble_join['region'] ?? 'na1' ) ); ?>"
+						data-form-id="<?php echo esc_attr( (string) $assemble_join['form'] ); ?>"
+						data-portal-id="<?php echo esc_attr( (string) $assemble_join['portal'] ); ?>"
+						data-assemble-join-field="<?php echo esc_attr( (string) ( $assemble_join['field'] ?? '' ) ); ?>"
+						data-assemble-join-value="<?php echo esc_attr( (string) ( $assemble_join['value'] ?? '' ) ); ?>"
+					></div>
 					<noscript>
 						<a class="btn-solid" href="<?php echo esc_url( assemble_url( $assemble_apply ) ); ?>"><?php echo esc_html( '' !== $assemble_cta ? $assemble_t( $assemble_cta ) : __( 'Apply to join', 'assemble' ) ); ?></a>
 					</noscript>
