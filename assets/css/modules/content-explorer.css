@@ -75,8 +75,11 @@
 .ld-summit-body{display:flex;flex-direction:column;gap:14px}
 .ld-summit-body h5{margin:0;font:500 1.25rem/1.18 var(--font-text);letter-spacing:-.012em}
 .ld-summit-body p{margin:0;color:var(--ink-700);font-size:.875rem;line-height:1.65}
-.ld-summit-visual{display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;padding:12%;background:var(--surface-sunken);border-radius:var(--r-sm)}
-.ld-summit-visual img{display:block;width:100%;height:100%;object-fit:contain}
+/* The logo sits absolutely in the frame: Safari can't resolve height:100% on a
+ * flex item whose parent's height comes only from aspect-ratio, so on iPhone a
+ * wide wordmark (NAHRES) drew outside the frame once it lazy-loaded. */
+.ld-summit-visual{position:relative;aspect-ratio:16/9;background:var(--surface-sunken);border-radius:var(--r-sm);overflow:hidden}
+.ld-summit-visual img{position:absolute;inset:0;display:block;width:76%;height:57%;margin:auto;object-fit:contain}
 
 @media (max-width:1180px){
 	.ld-card-grid,.ld-card-grid--two,.ld-topic-intro-row{grid-template-columns:1fr}
