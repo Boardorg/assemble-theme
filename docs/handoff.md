@@ -130,6 +130,8 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Log
 
+- **2026-11-19 (beta, theme 0.25.2 + assemble-content 2.4.2; Cale: Resources never on the public site):** The public site template no longer prints the Field Report Resources section at all (removed from `article-body.php` and its CSS), and the plugin only builds it on the Member Center (site channel `Member Center`, which also hosts the Networks). The public site serves the public and subscribers, so nobody, admins included, sees Resources there.
+
 - **2026-11-19 (PRODUCTION, theme 0.25.1 + assemble-content 2.4.1; Cale's go-ahead in chat):** The Field Report section from `memberResources` now reads "Resources", with no "Members only" eyebrow (still shown only to Board Members, Board Chairs and Council Chairs). Runs 44608237089 (theme) and 44608232765 (plugin), green. Checked live: style.css 0.25.1, home, /insights/ and a report return 200, no Resources markup signed out.
 
 - **2026-11-19 (PRODUCTION, theme 0.25.0; Cale's go-ahead in chat, "you can push the new code"):** Member resources template live on theassemble.com (run 44591232418, green). `main` since the last production deploy (afdefa6) changed only this feature and handoff notes. No database change. Nothing shows on the public site: it prints only when the view model has `member_resources`, which needs assemble-content 2.4.0 (production still runs 2.2.0) and a Board Member or above (the public site serves the public and subscribers only). Checked live: home, /insights/ and two reports load (200), no member resources markup. The plugin's production deploy is waiting on the `WPE_PROD_ENV` repository variable in Boardorg/assemble-content (Cale).
