@@ -107,7 +107,6 @@ foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'mem
 			// Only in the view model for Board Members and above (assemble-content decides).
 			?>
 			<section class="report-section report-member-resources">
-				<p class="eyebrow report-label"><?php esc_html_e( 'Members only', 'assemble' ); ?></p>
 				<h2><?php echo esc_html( $assemble_section['label'] ); ?></h2>
 				<?php echo wp_kses_post( $assemble_section['html'] ); ?>
 			</section>
