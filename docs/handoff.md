@@ -130,6 +130,8 @@ The running build log for the public site. Plan and architecture: `BUILD-INSTRUC
 
 ## Log
 
+- **2026-11-19 (PRODUCTION, theme 0.25.2 + assemble-content 2.4.2; Cale's go-ahead in chat):** The public site no longer prints Field Report Resources, and the plugin only builds them on the Member Center. Runs 44609452377 (theme) and 44609445966 (plugin), green. Checked live: style.css 0.25.2; home, /insights/ and a report return 200; no Resources markup.
+
 - **2026-11-19 (beta, theme 0.25.2 + assemble-content 2.4.2; Cale: Resources never on the public site):** The public site template no longer prints the Field Report Resources section at all (removed from `article-body.php` and its CSS), and the plugin only builds it on the Member Center (site channel `Member Center`, which also hosts the Networks). The public site serves the public and subscribers, so nobody, admins included, sees Resources there.
 
 - **2026-11-19 (PRODUCTION, theme 0.25.1 + assemble-content 2.4.1; Cale's go-ahead in chat):** The Field Report section from `memberResources` now reads "Resources", with no "Members only" eyebrow (still shown only to Board Members, Board Chairs and Council Chairs). Runs 44608237089 (theme) and 44608232765 (plugin), green. Checked live: style.css 0.25.1, home, /insights/ and a report return 200, no Resources markup signed out.
