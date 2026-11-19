@@ -64,6 +64,9 @@
 .report-take:not(.report-take--speaker) .report-take-who{padding-left:23px}
 
 /* Key Takeaways: numbered with the accent numeral; bold leads come from the Rich Text. */
+/* Member resources: Board Members and above only (assemble-content leaves it out for everyone else). */
+.article-body .report-member-resources{margin-top:48px;padding:24px 28px;border-left:3px solid var(--accent);border-radius:var(--r-sm);background:var(--surface-sunken)}
+.article-body .report-member-resources a{color:var(--accent-ink)}
 .article-body .report-takeaways{counter-reset:takeaway;padding:0;list-style:none}
 .report-takeaways > li{counter-increment:takeaway;position:relative;margin-bottom:20px;padding-left:48px}
 .report-takeaways > li::before{content:counter(takeaway);position:absolute;top:-4px;left:0;font:500 1.875rem/1 var(--font-display);color:var(--accent-ink)}

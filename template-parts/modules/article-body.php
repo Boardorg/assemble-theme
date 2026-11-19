@@ -34,7 +34,7 @@ $assemble_quoted = static fn( string $text ): string => preg_match( '/^["\x{201C
 
 // The full report: in the council view it sits behind the expander.
 ob_start();
-foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'community' ) as $assemble_key ) {
+foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'member_resources', 'community' ) as $assemble_key ) {
 	if ( ! isset( $assemble_s[ $assemble_key ] ) ) {
 		continue;
 	}
@@ -99,6 +99,17 @@ foreach ( array( 'picking_up', 'pullquote', 'charts', 'focus', 'takeaways', 'com
 			<section class="report-section">
 				<h2><?php echo esc_html( $assemble_section['label'] ); ?></h2>
 				<?php echo wp_kses_post( str_replace( '<ol>', '<ol class="report-takeaways">', $assemble_section['html'] ) ); ?>
+			</section>
+			<?php
+			break;
+
+		case 'member_resources':
+			// Only in the view model for Board Members and above (assemble-content decides).
+			?>
+			<section class="report-section report-member-resources">
+				<p class="eyebrow report-label"><?php esc_html_e( 'Members only', 'assemble' ); ?></p>
+				<h2><?php echo esc_html( $assemble_section['label'] ); ?></h2>
+				<?php echo wp_kses_post( $assemble_section['html'] ); ?>
 			</section>
 			<?php
 			break;
