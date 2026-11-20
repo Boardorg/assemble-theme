@@ -4,12 +4,16 @@
  * index: a page head and a grid of report cards
  * from the main query, with pagination. No wireframe: on-system, flagged.
  *
- * @var array $args { title, intro, area, crumbs: [ { label, url } ] }
+ * The breadcrumbs end with this page itself, unlinked (aria-current), as on
+ * standard pages: "Insights › Human Resources".
+ *
+ * @var array $args { title, intro, area, crumbs: [ { label, url } ], current?: string (defaults to title) }
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$assemble_crumbs = (array) ( $args['crumbs'] ?? array() );
+$assemble_crumbs  = (array) ( $args['crumbs'] ?? array() );
+$assemble_current = (string) ( $args['current'] ?? ( $args['title'] ?? '' ) );
 ?>
 <div class="article-shell report-archive" data-area="<?php echo esc_attr( (string) ( $args['area'] ?? 'neutral' ) ); ?>">
 	<div class="wrap">
@@ -19,6 +23,9 @@ $assemble_crumbs = (array) ( $args['crumbs'] ?? array() );
 					<?php foreach ( $assemble_crumbs as $assemble_crumb ) : ?>
 						<li><a href="<?php echo esc_url( $assemble_crumb['url'] ); ?>"><?php echo esc_html( $assemble_crumb['label'] ); ?></a></li>
 					<?php endforeach; ?>
+					<?php if ( '' !== $assemble_current ) : ?>
+						<li><span aria-current="page"><?php echo esc_html( $assemble_current ); ?></span></li>
+					<?php endif; ?>
 				</ol>
 			</nav>
 		<?php endif; ?>

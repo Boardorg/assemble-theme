@@ -25,15 +25,8 @@ if ( $assemble_filter ) {
 		),
 	);
 
-	if ( 'area' === $assemble_filter['type'] ) {
-		/* translators: 1: practice area, 2: "Communities". */
-		$assemble_intro = sprintf( __( 'Peer intelligence from Assemble’s %1$s %2$s, newest first.', 'assemble' ), $assemble_filter['label'], assemble_label( 'communities' ) );
-		$assemble_area  = $assemble_filter['key'];
-	} else {
-		/* translators: %s: topic name, e.g. "Manager Capability". */
-		$assemble_intro = sprintf( __( 'Every Insight on %s, newest first.', 'assemble' ), $assemble_filter['label'] );
-		$assemble_area  = 'neutral';
-	}
+	$assemble_intro = assemble_insights_filter_intro( $assemble_filter );
+	$assemble_area  = 'area' === $assemble_filter['type'] ? $assemble_filter['key'] : 'neutral';
 
 	get_template_part(
 		'template-parts/modules/report-archive',
