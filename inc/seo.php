@@ -298,7 +298,7 @@ add_filter(
 add_filter(
 	'wpseo_frontend_presentation',
 	static function ( $presentation ) {
-		if ( ! is_object( $presentation ) || ( ! is_post_type_archive( 'field_report' ) && ! is_tax( 'field_report_community' ) ) ) {
+		if ( ! is_object( $presentation ) || ( ! is_post_type_archive( array( 'field_report', 'playbook' ) ) && ! is_tax( 'field_report_community' ) ) ) {
 			return $presentation;
 		}
 
@@ -331,7 +331,22 @@ add_filter(
 					'label' => $filter['label'],
 					'url'   => assemble_insights_filter_url( $filter ),
 				);
+			} elseif ( is_post_type_archive( 'playbook' ) ) {
+				$crumbs[] = array(
+					'label' => assemble_label( 'playbooks' ),
+					'url'   => (string) get_post_type_archive_link( 'playbook' ),
+				);
 			}
+		}
+
+		// Yoast drops the last crumb past page 1, expecting its own "Page 2".
+		$paged = (int) get_query_var( 'paged' );
+		if ( $paged > 1 ) {
+			$crumbs[] = array(
+				/* translators: %d: page number. */
+				'label' => sprintf( __( 'Page %d', 'assemble' ), $paged ),
+				'url'   => '',
+			);
 		}
 
 		$presentation->breadcrumbs = array_merge(
