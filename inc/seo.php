@@ -284,3 +284,85 @@ add_filter(
 		return $nodes ? array_merge( $graph, $nodes ) : $graph;
 	}
 );
+
+/**
+ * Insights archives in Yoast's head and schema (2026-11-20). Yoast treats the
+ * area and topic pages as the plain Insights archive: canonical /insights/
+ * (which asks Google to drop them), its description, "Field Reports Archive"
+ * as the schema name and "Home › Field Reports" as the breadcrumb trail.
+ * Each filtered page now names itself, and every Insights archive's trail
+ * matches the one on the page: Home › Insights › practice area › Community.
+ * Set on the presentation, before Yoast reads it, so the canonical tag,
+ * og:url, the description and the schema graph all agree.
+ */
+add_filter(
+	'wpseo_frontend_presentation',
+	static function ( $presentation ) {
+		if ( ! is_object( $presentation ) || ( ! is_post_type_archive( 'field_report' ) && ! is_tax( 'field_report_community' ) ) ) {
+			return $presentation;
+		}
+
+		$home   = array(
+			'url'  => home_url( '/' ),
+			'text' => __( 'Home', 'assemble' ),
+		);
+		$filter = assemble_insights_filter();
+
+		if ( is_tax( 'field_report_community' ) ) {
+			$term      = get_queried_object();
+			$community = ( $term instanceof WP_Term && class_exists( 'AC_Communities' ) ) ? (array) AC_Communities::get( $term->slug ) : array();
+			$crumbs    = assemble_report_crumbs(
+				array(
+					'name'          => $term instanceof WP_Term ? $term->name : '',
+					'short_name'    => (string) ( $community['short_name'] ?? '' ),
+					'slug'          => $term instanceof WP_Term ? $term->slug : '',
+					'practice_area' => (string) ( $community['practice_area'] ?? '' ),
+				)
+			);
+		} else {
+			$crumbs = array(
+				array(
+					'label' => assemble_label( 'insights' ),
+					'url'   => assemble_insights_url(),
+				),
+			);
+			if ( $filter ) {
+				$crumbs[] = array(
+					'label' => $filter['label'],
+					'url'   => assemble_insights_filter_url( $filter ),
+				);
+			}
+		}
+
+		$presentation->breadcrumbs = array_merge(
+			array( $home ),
+			array_map(
+				static fn( $crumb ) => array(
+					'url'  => $crumb['url'],
+					'text' => $crumb['label'],
+				),
+				$crumbs
+			)
+		);
+
+		$title = (string) apply_filters( 'wpseo_title', '' );
+		if ( '' !== $title ) {
+			$presentation->title = $title;
+		}
+
+		if ( $filter ) {
+			$url = assemble_insights_filter_url( $filter );
+			if ( '' !== $url ) {
+				$presentation->canonical      = $url;
+				$presentation->permalink      = $url;
+				$presentation->open_graph_url = $url;
+			}
+
+			$description                          = assemble_insights_filter_intro( $filter );
+			$presentation->meta_description       = $description;
+			$presentation->open_graph_description = $description;
+		}
+
+		return $presentation;
+	}
+);

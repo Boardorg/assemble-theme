@@ -17,17 +17,18 @@ $assemble_kicker    = array(
 	'practice_area' => (string) ( $assemble_community['practice_area'] ?? '' ),
 );
 $assemble_crumbs    = assemble_report_crumbs( $assemble_kicker );
-array_pop( $assemble_crumbs ); // This page is the Community crumb.
+array_pop( $assemble_crumbs ); // This page is the Community crumb, shown unlinked as `current`.
 
 get_template_part(
 	'template-parts/modules/report-archive',
 	null,
 	array(
 		/* translators: 1: Community label, e.g. "AEO", 2: "Insights". */
-		'title'  => sprintf( __( '%1$s %2$s', 'assemble' ), assemble_community_label( $assemble_kicker ), assemble_label( 'insights' ) ),
-		'intro'  => assemble_first_sentence( (string) ( $assemble_community['boilerplate'] ?? '' ) ),
-		'area'   => assemble_area( $assemble_kicker['practice_area'] ),
-		'crumbs' => $assemble_crumbs,
+		'title'   => sprintf( __( '%1$s %2$s', 'assemble' ), assemble_community_label( $assemble_kicker ), assemble_label( 'insights' ) ),
+		'intro'   => assemble_first_sentence( (string) ( $assemble_community['boilerplate'] ?? '' ) ),
+		'area'    => assemble_area( $assemble_kicker['practice_area'] ),
+		'crumbs'  => $assemble_crumbs,
+		'current' => assemble_community_label( $assemble_kicker ),
 	)
 );
 

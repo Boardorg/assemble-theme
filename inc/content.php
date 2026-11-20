@@ -613,6 +613,35 @@ function assemble_insights_filter(): ?array {
 	return null;
 }
 
+/**
+ * The URL of a filtered Insights page (a practice area or a topic), with its
+ * page number past page 1, or '' when nothing provides the page.
+ *
+ * @param array $filter From assemble_insights_filter().
+ */
+function assemble_insights_filter_url( array $filter ): string {
+	$url = 'area' === $filter['type'] ? assemble_area_url( (string) $filter['key'] ) : assemble_topic_url( (string) $filter['key'] );
+
+	if ( '' === $url || assemble_insights_url() === $url ) {
+		return '';
+	}
+
+	$paged = (int) get_query_var( 'paged' );
+
+	return $paged > 1 ? trailingslashit( $url ) . user_trailingslashit( 'page/' . $paged, 'paged' ) : $url;
+}
+
+/** The dek of a filtered Insights page; also its meta description. */
+function assemble_insights_filter_intro( array $filter ): string {
+	if ( 'area' === $filter['type'] ) {
+		/* translators: 1: practice area, 2: "Communities". */
+		return sprintf( __( 'Peer intelligence from Assemble’s %1$s %2$s, newest first.', 'assemble' ), $filter['label'], assemble_label( 'communities' ) );
+	}
+
+	/* translators: %s: topic name, e.g. "Manager Capability". */
+	return sprintf( __( 'Every Insight on %s, newest first.', 'assemble' ), $filter['label'] );
+}
+
 /** Twelve cards a page on the Community archives (a 3-up grid). */
 add_action(
 	'pre_get_posts',
