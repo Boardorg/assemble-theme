@@ -109,6 +109,16 @@ a.tag-area:hover,a.tag-topic:hover{background:color-mix(in srgb,var(--accent-sof
 .media-logo>img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
 .media-natural{display:block;width:100%;height:auto;border-radius:var(--r-sm)}
 .media-frame>.img-x{display:block;width:100%;height:100%}
+/* Team photos (Cale, 2026-11-23): the real photo sits over the hedcut and fades in
+ * when the card is hovered or focused. Pointer devices only; touch keeps the hedcut.
+ * The photo PNGs have their own rounded corners, so a 6% zoom crops them away. */
+.media-frame:has(>.team-photo-real){position:relative}
+.media-frame>.team-photo-real{position:absolute;inset:0;opacity:0;transform:scale(1.06);transition:opacity .35s ease}
+@media (hover:hover){
+	.team-card:hover .team-photo-real,.team-strip__person:hover .team-photo-real,.team-profile__photo:hover .team-photo-real{opacity:1}
+}
+.team-card:focus-within .team-photo-real,.team-strip__person:focus-within .team-photo-real{opacity:1}
+@media (prefers-reduced-motion:reduce){.media-frame>.team-photo-real{transition:none}}
 .media-caption{font:400 .875rem/1.55 var(--font-body);color:var(--ink-700);margin-top:8px}
 
 /* ------------------------------------------------------------------

@@ -8,7 +8,7 @@
 .team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px 24px;max-width:1120px;margin:48px auto 0;padding:0;list-style:none}
 .team-card__photo-link{display:block}
 .team-card__photo{margin-bottom:14px;transition:opacity .15s}
-.team-card__photo-link:hover .team-card__photo{opacity:.88}
+.team-card__photo-link:hover .team-card__photo:not(:has(.team-photo-real)){opacity:.88}
 .team-card:has(.team-card__photo-link:hover) .team-card__name a{text-decoration:underline;text-underline-offset:3px}
 .team-card__name{margin:0 0 4px;font:500 1.25rem/1.25 var(--font-text);letter-spacing:-.012em}
 .team-card__name a{color:var(--ink-900);text-decoration:none}

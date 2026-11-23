@@ -51,6 +51,32 @@ function assemble_team_person( WP_Post $post ): array {
 }
 
 /**
+ * A person's real photo, layered over their hedcut and revealed on hover
+ * (Cale, 2026-11-23: the hedcuts read a little AI on their own). The team
+ * post's `_assemble_photo_id` meta holds the photo's attachment ID (the
+ * pre-hedcut headshots, kept in the media library). '' when unset.
+ */
+function assemble_team_real_photo( int $person_id, string $size, string $sizes ): string {
+	$photo_id = (int) get_post_meta( $person_id, '_assemble_photo_id', true );
+	if ( ! $photo_id || ! wp_attachment_is_image( $photo_id ) ) {
+		return '';
+	}
+
+	return (string) wp_get_attachment_image(
+		$photo_id,
+		$size,
+		false,
+		array(
+			'class'    => 'team-photo-real',
+			'sizes'    => $sizes,
+			'alt'      => '',
+			'loading'  => 'lazy',
+			'decoding' => 'async',
+		)
+	);
+}
+
+/**
  * Pages that only redirect (assemble-core's map, e.g. the old Field Notes
  * sign-up pages): kept out of search, where they turned up as dead ends
  * (Kristen, 2026-11-13).
@@ -249,6 +275,7 @@ add_shortcode(
 									'loading' => 'lazy',
 								)
 							);
+							echo assemble_team_real_photo( (int) $person['id'], 'assemble-s3', '(max-width: 640px) 33vw, 180px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core image markup.
 							?>
 						</span>
 						<span class="team-strip__name"><?php echo esc_html( $person['name'] ); ?></span>
