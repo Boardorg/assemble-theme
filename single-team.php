@@ -45,6 +45,7 @@ while ( have_posts() ) :
 								'alt'   => '',
 							)
 						);
+						echo assemble_team_real_photo( (int) $assemble_person['id'], 'assemble-s4', '(max-width: 640px) 100vw, 320px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core image markup.
 					}
 					?>
 				</div>

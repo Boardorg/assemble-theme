@@ -34,6 +34,7 @@ if ( ! $assemble_people ) {
 							'loading' => 'lazy',
 						)
 					);
+					echo assemble_team_real_photo( (int) $assemble_person['id'], 'assemble-s3', '(max-width: 640px) 50vw, (max-width: 980px) 33vw, 260px' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core image markup.
 				}
 				?>
 			</div>
