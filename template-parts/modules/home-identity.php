@@ -2,7 +2,7 @@
 /**
  * Module: home-identity. The homepage's short "who we are" band, above Top
  * stories (David's homepage review, Cale 2026-11-17): what Assemble is, who
- * it's for and why it matters, the free-account button, and the proof
+ * it's for and why it matters, links to Insights and About, and the proof
  * figures (assemble_home_proof()), beside the speech-bubbles illustration on
  * the sunken band the splash used. Text lines up with the Top stories card's
  * content below. Content-first stays: a band, not a brochure hero. No wireframe: on-system, flagged for design.
@@ -21,9 +21,8 @@ $assemble_proof = assemble_home_proof();
 				<h1 class="home-identity-title type-brand-statement" id="home-identity-title"><?php esc_html_e( 'Peer intelligence for senior leaders', 'assemble' ); ?></h1>
 				<p class="home-identity-text"><?php esc_html_e( 'We power the insights, summits, and communities that enable senior business leaders to move faster and make better decisions.', 'assemble' ); ?></p>
 				<div class="home-identity-actions">
-					<?php if ( ! is_user_logged_in() ) : ?>
-						<a class="btn-solid" href="<?php echo esc_url( assemble_account_link( 'register' ) ); ?>"><?php echo esc_html( assemble_label( 'create' ) ); ?></a>
-					<?php endif; ?>
+					<?php // Insights replaces the free-account button; the header carries sign-up (David's SEO review, Cale 2026-11-23). ?>
+					<a class="link-arrow" href="<?php echo esc_url( assemble_url( '/insights/' ) ); ?>"><?php esc_html_e( 'Explore our Insights', 'assemble' ); ?></a>
 					<a class="link-arrow" href="<?php echo esc_url( assemble_url( (string) assemble_setting( 'how_it_works_url', '/about-us/' ) ) ); ?>"><?php esc_html_e( 'More about Assemble', 'assemble' ); ?></a>
 				</div>
 				<?php if ( $assemble_proof['stats'] ) : ?>
